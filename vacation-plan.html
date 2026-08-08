@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Green Spain — 12 Nights, Bilbao to Oviedo</title>
+<style>
+:root{
+  --ink:#16221c;
+  --paper:#fcfaf5;
+  --stone:#efebe1;
+  --line:#d6d0c2;
+  --muted:#6b7770;
+  --rust:#a0442a;
+  --water:#2f6076;
+  --moss:#3c6247;
+  --gold:#b08a3e;
+  --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--stone);color:var(--ink);
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+  line-height:1.6;-webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:Georgia,"Times New Roman",serif;font-weight:400}
+a{color:var(--water)}
+
+/* ---------- hero ---------- */
+.hero{position:relative;background:#0e1a15;color:#eef3ef;overflow:hidden}
+.hero-inner{max-width:1080px;margin:auto;padding:72px 28px 220px;position:relative;z-index:2}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:#c8a24f}
+.hero h1{font-size:clamp(2.9rem,7vw,5.4rem);line-height:.96;margin:.22em 0 .3em;max-width:14ch}
+.hero h1 em{font-style:italic;color:#9dc4ae}
+.hero p{max-width:56ch;color:#cbd8d1;font-size:1.06rem}
+.ridge{position:absolute;left:0;right:0;bottom:0;width:100%;height:250px;display:block;z-index:1}
+.statline{display:flex;flex-wrap:wrap;gap:0;margin-top:34px;border-top:1px solid rgba(255,255,255,.18)}
+.statline div{padding:14px 26px 4px 0;margin-right:26px;border-right:1px solid rgba(255,255,255,.14)}
+.statline div:last-child{border-right:0}
+.statline b{display:block;font-family:var(--mono);font-size:1.5rem;color:#fff;font-weight:500}
+.statline span{font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:#8fa79b}
+
+/* ---------- nav ---------- */
+nav{position:sticky;top:0;z-index:20;background:rgba(252,250,245,.95);border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}
+nav .inner{max-width:1080px;margin:auto;padding:11px 28px;display:flex;gap:22px;overflow-x:auto;white-space:nowrap}
+nav a{text-decoration:none;font-size:.82rem;font-weight:600;color:var(--moss);letter-spacing:.01em}
+nav a:hover{color:var(--rust)}
+
+main{max-width:1080px;margin:auto;padding:8px 28px 90px}
+section{padding-top:46px}
+h2{font-size:2.1rem;line-height:1.15;margin:.6em 0 .5em;letter-spacing:-.01em}
+h3{font-size:1.42rem;margin:0 0 .35em}
+.lede{font-size:1.05rem;max-width:62ch;color:#3a4741}
+
+/* ---------- overview table ---------- */
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:4px;background:var(--paper)}
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+th,td{padding:12px 15px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+tr:last-child td{border-bottom:0}
+th{background:#e4ece5;color:var(--moss);font-family:var(--mono);font-size:.68rem;letter-spacing:.13em;text-transform:uppercase;font-weight:500}
+td.n{font-family:var(--mono);white-space:nowrap;color:var(--muted)}
+td strong{font-weight:650}
+.hotel-link{font-weight:650;text-decoration-thickness:1px;text-underline-offset:3px}
+.hotel-link::after{content:" ↗";font-size:.75em}
+
+/* ---------- the day logbook ---------- */
+.day{background:var(--paper);border:1px solid var(--line);border-radius:4px;margin:20px 0;overflow:hidden}
+.day-head{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;padding:22px 24px 6px}
+.daynum{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--rust);font-weight:600}
+.daydate{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;color:var(--muted)}
+.day-title{padding:0 24px 16px}
+.log{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#f7f4ed}
+.log div{padding:11px 14px;border-right:1px solid var(--line)}
+.log div:last-child{border-right:0}
+.log span{display:block;font-family:var(--mono);font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.log b{font-family:var(--mono);font-size:.88rem;font-weight:500;color:var(--ink)}
+.log b.none{color:#9aa49e}
+.log b.book{color:var(--rust)}
+.day-body{padding:20px 24px 24px}
+.day-body p{margin:0 0 .85em}
+.day-body p:last-child{margin-bottom:0}
+.day-body ul{margin:.2em 0 1em;padding-left:1.1em}
+.day-body li{margin-bottom:.3em}
+
+/* ---------- callouts ---------- */
+.callout{border-left:3px solid var(--water);background:#eef4f6;padding:13px 16px;margin:16px 0;font-size:.93rem;border-radius:0 3px 3px 0}
+.callout.warn{border-left-color:var(--rust);background:#f9eee9}
+.callout.local{border-left-color:var(--gold);background:#faf4e6}
+.callout b{display:block;margin-bottom:2px}
+
+/* ---------- booking board ---------- */
+.board{border:1px solid var(--line);border-radius:4px;background:var(--paper);overflow:hidden;margin-top:8px}
+.board-row{display:grid;grid-template-columns:130px 1fr;border-bottom:1px solid var(--line)}
+.board-row:last-child{border-bottom:0}
+.board-when{padding:15px;background:#f7f4ed;font-family:var(--mono);font-size:.7rem;letter-spacing:.11em;text-transform:uppercase;color:var(--rust);border-right:1px solid var(--line)}
+.board-what{padding:15px}
+.board-what ul{margin:0;padding-left:1.05em}
+.board-what li{margin-bottom:.32em}
+.board-what li:last-child{margin-bottom:0}
+
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.note-card{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:18px 20px}
+.note-card h4{margin:0 0 .4em;font-size:1.1rem}
+.note-card p{margin:0;font-size:.93rem;color:#3d4a44}
+
+footer{background:#0e1a15;color:#a9bcb2;margin-top:60px}
+footer .inner{max-width:1080px;margin:auto;padding:44px 28px}
+footer h3{color:#eef3ef;margin-top:0}
+footer p{max-width:60ch;font-size:.93rem}
+.fine{font-family:var(--mono);font-size:.7rem;letter-spacing:.09em;color:#668074;margin-top:26px}
+
+@media(max-width:720px){
+  .hero-inner{padding:52px 20px 150px}
+  .ridge{height:170px}
+  main{padding-left:18px;padding-right:18px}
+  .log{grid-template-columns:1fr 1fr}
+  .log div:nth-child(2){border-right:0}
+  .log div:nth-child(1),.log div:nth-child(2){border-bottom:1px solid var(--line)}
+  .pair{grid-template-columns:1fr}
+  .board-row{grid-template-columns:1fr}
+  .board-when{border-right:0;border-bottom:1px solid var(--line)}
+  .statline div{padding-right:18px;margin-right:18px}
+}
+@media print{
+  body{background:#fff}
+  nav,.ridge{display:none}
+  .hero{background:#fff;color:#000}
+  .hero h1,.hero p,.statline b{color:#000}
+  .day{break-inside:avoid;page-break-inside:avoid}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">20 September – 2 October 2026 · 12 nights · 6 bases</div>
+    <h1>Green Spain, <em>coast to cordillera</em></h1>
+    <p>Bilbao to Oviedo by car, through the Picos de Europa, the Castilian meseta, El Bierzo and the western Asturian mountains. Five walking days, one gorge, two Gaudís, one e-bike descent and a wine chapter.</p>
+    <div class="statline">
+      <div><b>1,250</b><span>km driving</span></div>
+      <div><b>4</b><span>walk days</span></div>
+      <div><b>1</b><span>mountain pass</span></div>
+      <div><b>3</b><span>UNESCO sites</span></div>
+    </div>
+  </div>
+  <svg class="ridge" viewBox="0 0 1200 250" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0,250 L0,150 L90,96 L165,132 L250,64 L330,116 L420,72 L505,128 L600,58 L690,120 L775,84 L860,140 L950,90 L1040,134 L1130,80 L1200,118 L1200,250 Z" fill="#1c3529"/>
+    <path d="M0,250 L0,190 L110,152 L200,186 L300,140 L400,178 L500,134 L600,180 L700,146 L800,188 L900,152 L1000,190 L1100,156 L1200,186 L1200,250 Z" fill="#264a38" opacity=".92"/>
+    <path d="M0,250 L0,222 L150,204 L300,224 L450,200 L600,222 L750,202 L900,226 L1050,206 L1200,224 L1200,250 Z" fill="#31604a" opacity=".85"/>
+  </svg>
+</header>
+
+<nav><div class="inner">
+  <a href="#shape">The shape</a>
+  <a href="#hotels">Hotels</a>
+  <a href="#days">Day by day</a>
+  <a href="#spare">If you want more</a>
+  <a href="#board">What to book</a>
+  <a href="#notes">Before you go</a>
+</div></nav>
+
+<main>
+
+<section id="shape">
+<h2>The shape of it</h2>
+<p class="lede">Six bases, no single-night stops except one — and that one is attached to a wine estate rather than a motorway. The middle of the trip is dense; the last third deliberately loosens.</p>
+
+<div class="tablewrap">
+<table>
+<thead><tr><th>Dates</th><th>Nights</th><th>Base</th><th>Hotel</th><th>What it's for</th></tr></thead>
+<tbody>
+<tr><td class="n">20–22 Sep</td><td class="n">2</td><td><strong>Llanes</strong></td><td>Montemar</td><td>Coast, Covadonga Lakes</td></tr>
+<tr><td class="n">22–25 Sep</td><td class="n">3</td><td><strong>Cosgaya / Potes</strong></td><td>Hotel del Oso</td><td>Fuente Dé, Cares Gorge, Liébana</td></tr>
+<tr><td class="n">25–27 Sep</td><td class="n">2</td><td><strong>León</strong></td><td>Occidental León Alfonso V</td><td>León, a cave or a bodega, tapas</td></tr>
+<tr><td class="n">27–29 Sep</td><td class="n">2</td><td><strong>Orellán, Las Médulas</strong></td><td>O Palleiro do Pe do Forno</td><td>Las Médulas on foot, Mencía and Godello</td></tr>
+<tr><td class="n">29 Sep–1 Oct</td><td class="n">2</td><td><strong>Llanuces, Quirós</strong></td><td>Solo Palacio</td><td>Senda del Oso, Marabio, quiet</td></tr>
+<tr><td class="n">1–2 Oct</td><td class="n">1</td><td><strong>Avilés</strong></td><td>Palacio de Avilés</td><td>Old quarter, Niemeyer, 20 min to the gate</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="callout" style="margin-top:22px">
+<b>Four changes from the earlier draft</b>
+The Cares Gorge is walked from Poncebos rather than Caín, saving about 80 minutes of mountain driving for the same canyon. The Senda del Oso e-bike has moved out of Oviedo to Llanuces, where the trailhead is 35 minutes away instead of an hour each way. Solo Palacio is two nights rather than three, with the saved night going to Oviedo — the Las Xanas gorge sits directly on the road between them, so that walk costs no extra driving at all. Astorga has moved from the León weekend onto Day 10, adding a destination level stop to the longest bend of the trip, it breaks the long transfer in half and opens up a free day in León. And the spare night has moved from Oviedo to the Bierzo, so Las Médulas gets a full day on foot rather than three hours from a viewpoint — with the base itself moved to Orellán, beside the viewpoint, rather than 45 minutes north at Canedo.
+</div>
+</section>
+
+<section id="hotels">
+<h2>Hotels</h2>
+<p class="lede">The six stays in order. Hotel names open directly in Google Maps for easy navigation.</p>
+
+<div class="tablewrap">
+<table>
+<thead><tr><th>Dates</th><th>Place</th><th>Hotel</th><th>Check-in</th><th>Check-out</th><th>Breakfast</th></tr></thead>
+<tbody>
+<tr><td class="n">20 Sep → 22 Sep</td><td><strong>Llanes</strong></td><td><a class="hotel-link" href="https://www.google.com/maps/search/?api=1&amp;query=Hotel+Montemar+Llanes" target="_blank" rel="noopener noreferrer" aria-label="Open Hotel Montemar Llanes in Google Maps">Hotel Montemar Llanes</a></td><td class="n">16:00–22:00</td><td class="n">08:00–12:00</td><td class="n">08:00–11:00</td></tr>
+<tr><td class="n">22 Sep → 25 Sep</td><td><strong>Cosgaya / Potes</strong></td><td><a class="hotel-link" href="https://www.google.com/maps/search/?api=1&amp;query=Hotel+del+Oso+Cosgaya" target="_blank" rel="noopener noreferrer" aria-label="Open Hotel del Oso in Google Maps">Hotel del Oso</a></td><td class="n">From 14:00</td><td class="n">By 12:00</td><td class="n">From 08:30</td></tr>
+<tr><td class="n">25 Sep → 27 Sep</td><td><strong>León</strong></td><td><a class="hotel-link" href="https://www.google.com/maps/search/?api=1&amp;query=Occidental+Le%C3%B3n+Alfonso+V" target="_blank" rel="noopener noreferrer" aria-label="Open Occidental León Alfonso V in Google Maps">Occidental León Alfonso V</a></td><td class="n">15:00–00:00</td><td class="n">07:30–12:00</td><td class="n">08:00–11:00</td></tr>
+<tr><td class="n">27 Sep → 29 Sep</td><td><strong>Orellán, Las Médulas</strong></td><td><a class="hotel-link" href="https://www.google.com/maps/search/?api=1&amp;query=O+Palleiro+do+Pe+do+Forno+Orell%C3%A1n" target="_blank" rel="noopener noreferrer" aria-label="Open O Palleiro do Pe do Forno in Google Maps">O Palleiro do Pe do Forno</a></td><td class="n">16:00–23:30</td><td class="n">By 12:00</td><td class="n">Arrange with host</td></tr>
+<tr><td class="n">29 Sep → 1 Oct</td><td><strong>Llanuces, Quirós</strong></td><td><a class="hotel-link" href="https://www.google.com/maps/search/?api=1&amp;query=Solo+Palacio+Llanuces" target="_blank" rel="noopener noreferrer" aria-label="Open Solo Palacio in Google Maps">Solo Palacio</a></td><td class="n">15:00–19:00</td><td class="n">By 12:00</td><td class="n">09:00–11:00</td></tr>
+<tr><td class="n">1 Oct → 2 Oct</td><td><strong>Avilés</strong></td><td><a class="hotel-link" href="https://www.google.com/maps/search/?api=1&amp;query=Palacio+de+Avil%C3%A9s+Affiliated+by+Meli%C3%A1" target="_blank" rel="noopener noreferrer" aria-label="Open Palacio de Avilés in Google Maps">Palacio de Avilés, Affiliated by Meliá</a></td><td class="n">From 15:00</td><td class="n">By 12:00</td><td class="n">07:00–10:30</td></tr>
+</tbody>
+</table>
+</div>
+<p class="fine">Breakfast times shown are for the days of your stay. O Palleiro serves a daily continental breakfast but publishes no fixed service window, so arrange the time directly with the host.</p>
+</section>
+
+<section id="days">
+<h2>Day by day</h2>
+
+<!-- DAY 1 -->
+<article class="day">
+  <div class="day-head"><span class="daynum">Day 1</span><span class="daydate">Sun 20 Sep</span></div>
+  <div class="day-title"><h3>Bilbao Airport → Llanes</h3></div>
+  <div class="log">
+    <div><span>Drive</span><b>2h15 · 200 km</b></div>
+    <div><span>Walk</span><b>Clifftop, 40 min</b></div>
+    <div><span>Sleep</span><b>Montemar, Llanes</b></div>
+    <div><span>Book</span><b class="none">Nothing</b></div>
+  </div>
+  <div class="day-body">
+    <p>Collect the car and take the A-8 west. If you land before midday, break the drive at Comillas for Gaudí's <em>El Capricho</em> — a sunflower-tiled folly built when he was thirty — or at San Vicente de la Barquera for the harbour and castle.</p>
+    <p>Walk the <strong>Paseo de San Pedro</strong> in the last hour of light — a clifftop green running above the town, and the quickest way to understand where you are. On the harbour breakwater are the <strong>Cubos de la Memoria</strong>, concrete blocks painted by the Basque artist Agustín Ibarrola: an accidental landmark that has become the town's signature.</p>
+    <p>The path passes above <strong>Playa de Toró</strong>, a small cove studded with limestone stacks left standing by the sea. Ten minutes from the hotel, and swimmable if the drive has left you wanting it.</p>
+    <div class="callout local"><b>Dinner</b>Montemar has no restaurant of its own. Cross the road to Don Paco, the sister hotel, and eat in the old convent dining hall.</div>
+  </div>
+</article>
+
+<!-- DAY 2 -->
+<article class="day">
+  <div class="day-head"><span class="daynum">Day 2</span><span class="daydate">Mon 21 Sep</span></div>
+  <div class="day-title"><h3>Llanes — Lagos de Covadonga</h3></div>
+  <div class="log">
+    <div><span>Drive</span><b>1h return + bus</b></div>
+    <div><span>Walk</span><b>3h · moderate</b></div>
+    <div><span>Sleep</span><b>Montemar, Llanes</b></div>
+    <div><span>Book</span><b class="book">Bus tickets</b></div>
+  </div>
+  <div class="day-body">
+    <div class="callout warn"><b>The lakes road is closed to private cars on your date</b>The access regulation runs from 1 June to 18 October 2026, around the clock. Park at Cangas de Onís or El Repelao (€2 for the day), then take the shuttle bus — €9 per adult, valid all day. Book through ALSA online: digital tickets take priority over those bought at the car parks.</div>
+    <p>Go early. The first buses run from around 8:30 and cloud typically builds over the lakes by late morning. Access to the <strong>Sanctuary of Covadonga</strong> itself is unrestricted year-round and can be done in your own car — the basilica, and the Santa Cueva set into the cliff face with its spring.</p>
+    <p>At the top, the <strong>Buferrera circular</strong> takes in both lakes, the abandoned manganese and iron workings, and the Mirador del Príncipe — roughly 6 km on good paths with steady undulation, about 3 hours at a photographing pace. On the way down, stop at the Mirador de la Reina for the view back over the Sierra del Sueve to the sea.</p>
+    <p><strong>You'll be back down by about three</strong>, with the afternoon loose. <strong>Playa de Gulpiyuri</strong> is worth twenty minutes on the way — a stretch of sand a hundred metres inland, fed through a sinkhole and rising and falling with the tide.</p>
+    <div class="callout local"><b>If you want the water</b>This is the one afternoon with room for it. <strong>Torimbia</strong>, fifteen minutes west, is a shell of sand with nothing built behind it and a ten-minute walk down from the car park — it is also partly nudist, so go knowing that. <strong>Ballota</strong> is the tamer version, with a sea stack offshore and a road right down to it.</div>
+  </div>
+</article>
+
+<!-- DAY 3 -->
+<article class="day">
+  <div class="day-head"><span class="daynum">Day 3</span><span class="daydate">Tue 22 Sep</span></div>
+  <div class="day-title"><h3>Llanes → Bufones de Pría → El Soplao → Cosgaya / Potes</h3></div>
+  <div class="log">
+    <div><span>Drive</span><b>2h30 with stops</b></div>
+    <div><span>Walk</span><b>1h30 + cave</b></div>
+    <div><span>Sleep</span><b>Hotel del Oso</b></div>
+    <div><span>Book</span><b class="book">El Soplao ticket</b></div>
+  </div>
+  <div class="day-body">
+    <p><strong>Morning — Bufones de Pría.</strong> Twenty minutes west of Llanes, a cliff meadow riddled with blowholes: sea caves that vent vertically through the limestone. With swell they roar and spout; on a flat day they merely breathe. Either way the clifftop walk is the best hour of coast on this trip. Allow 1h30 with the approach.</p>
+    <p><strong>Midday — El Soplao.</strong> Directly on your route east, a former lead and zinc mine that opened into a cave system famous for its eccentrics: helictites that grow sideways and upward, against gravity. Visited by guided tour on timed tickets.</p>
+    <div class="callout"><b>El Soplao is open on your Tuesday</b>Through September it runs every day, 10:00–14:00 and 15:00–18:00; the Monday closures only begin in October. Tito Bustillo at Ribadesella is the one with restricted early-week days — and it sits 30 minutes in the wrong direction. One cave is enough.</div>
+    <div class="callout local"><b>If you want a lighter day</b>Cut the Bufones. You'll have had the clifftop path and the coves around Llanes by now, and dropping them turns this into a civilised late start: coffee in Llanes, El Soplao at midday, the gorge in the afternoon.</div>
+    <p><strong>Afternoon — Desfiladero de la Hermida.</strong> The N-621 threads 20 km of limestone gorge, at points barely wider than the river and the road together. Stop at <strong>Santa María de Lebeña</strong>, a small 10th-century Mozarabic church standing alone beneath vertical rock — horseshoe arches, and a doorway with pre-Christian carving reused in the fabric.</p>
+    <div class="callout warn"><b>Dinner timing at Hotel del Oso</b>The restaurant opens at 20:30 and breakfast doesn't start until 08:30. Fine tonight; a problem for the two early starts that follow. Ask at check-in whether they can do a packed breakfast for Thursday.</div>
+  </div>
+</article>
+
+<!-- DAY 4 -->
+<article class="day">
+  <div class="day-head"><span class="daynum">Day 4</span><span class="daydate">Wed 23 Sep</span></div>
+  <div class="day-title"><h3>Cosgaya / Potes — Fuente Dé and the Áliva crossing</h3></div>
+  <div class="log">
+    <div><span>Drive</span><b>20 min each way</b></div>
+    <div><span>Walk</span><b>4h · mostly descent</b></div>
+    <div><span>Sleep</span><b>Hotel del Oso</b></div>
+    <div><span>Book</span><b class="book">Cable car, timed</b></div>
+  </div>
+  <div class="day-body">
+    <p>The cable car climbs 750 vertical metres in under four minutes and puts you on the rim at 1,823 m, staring into a limestone amphitheatre. Take the earliest slot you can — this is the single most weather-dependent hour of the trip, and mornings are clearer.</p>
+    <p><strong>The walk:</strong> from the top station, cross the <strong>Puertos de Áliva</strong> — high summer pasture, still grazed — past the Chalet Real, a hunting lodge built for Alfonso XIII, and descend the old mining track to <strong>Espinama</strong>. Around 13 km, four hours, almost entirely downhill, with the Picos walls beside you the whole way. Espinama sits 4 km from your hotel; take a taxi back or leave the car there and ride up.</p>
+    <div class="callout"><b>If the top is in cloud</b>Don't burn the ticket. Stay high, walk to the Horcadina de Covarrobres viewpoint and back — about 90 minutes — and come down by cable car. Then swap this day with Thursday and try again.</div>
+  </div>
+</article>
+
+<!-- DAY 5 -->
+<article class="day">
+  <div class="day-head"><span class="daynum">Day 5</span><span class="daydate">Thu 24 Sep</span></div>
+  <div class="day-title"><h3>Cosgaya / Potes — Cares Gorge, from Poncebos</h3></div>
+  <div class="log">
+    <div><span>Drive</span><b>1h20 each way</b></div>
+    <div><span>Walk</span><b>4h · 12 km return</b></div>
+    <div><span>Sleep</span><b>Hotel del Oso</b></div>
+    <div><span>Book</span><b class="none">Nothing</b></div>
+  </div>
+  <div class="day-body">
+    <p>The signature walk of the Picos, and the reason to leave early. The path was cut in the 1940s to service a hydroelectric channel and runs for 12 km through a canyon 1,500 m deep, carved 200 m above the river with tunnels and overhangs.</p>
+    <p>From Poncebos the first 30 minutes climb hard out of the valley; after that the path levels and the gorge closes in around you. <strong>Turn back at the two-hour mark wherever you are.</strong> Treat that as a rule rather than a target — the return leg is the same length and the light goes early in the canyon.</p>
+    <div class="callout warn"><b>No water, no shade, no fence</b>Carry 1.5 litres each. The drop is unguarded in places and the surface is loose in others; it is not exposed climbing, but it is not a promenade. Goats dislodge stones from above.</div>
+    <p><strong>On the way home:</strong> Arenas de Cabrales, where the cheese caves are open to visitors. Cabrales is ripened in natural limestone caves in the mountainside — cold, wet, and thick with the smell of it. Buy a wedge; it travels badly in a warm car, so make it the last stop.</p>
+  </div>
+</article>
+
+<!-- DAY 6 -->
+<article class="day">
+  <div class="day-head"><span class="daynum">Day 6</span><span class="daydate">Fri 25 Sep</span></div>
+  <div class="day-title"><h3>Cosgaya / Potes → Liébana → San Glorio → León</h3></div>
+  <div class="log">
+    <div><span>Drive</span><b>3h with stops</b></div>
+    <div><span>Walk</span><b>1h · village level</b></div>
+    <div><span>Sleep</span><b>Alfonso V, León</b></div>
+    <div><span>Book</span><b class="book">Refurbished room</b></div>
+  </div>
+  <div class="day-body">
+    <p><strong>Morning.</strong> <strong>Mogrovejo</strong> is a stone village of towers and slate roofs directly beneath the Picos, small enough to walk in twenty minutes and worth every one. Then <strong>Santo Toribio de Liébana</strong>, a monastery holding what is claimed to be the largest surviving fragment of the True Cross — one of a handful of sites in Christendom granted a perpetual jubilee year.</p>
+    <p><strong>The drive south</strong> is the point of the day. The N-621 climbs the <strong>Puerto de San Glorio</strong> to 1,609 m; a short track from the pass reaches the <strong>Mirador de Llesba</strong> and its stone bear, with the whole southern wall of the Picos laid out. Fifteen minutes' walk from the car, and arguably the best view of the trip.</p>
+    <div class="callout"><b>This is the only pass left on the route</b>And it is not the twisty kind. San Glorio is a broad, well-graded N-road built for lorries, with a viewpoint at the top. If the Hermida gorge on Day 3 was fine, this is easier.</div>
+    <p>Down through <strong>Riaño</strong>, where a reservoir drowned the old village in 1987. The replacement town sits high above the water with mountains on three sides — bleak and rather beautiful, and hard to look at without thinking about what's underneath.</p>
+    <p>Alfonso V sits on Padre Isla by Plaza de Santo Domingo, on a main avenue <em>outside</em> the traffic-restricted old town — so you drive straight to the door rather than threading a medieval street grid at the end of a long day. Cathedral 200 m, Barrio Húmedo seven minutes on foot.</p>
+    <div class="callout local"><b>Evening in the Barrio Húmedo</b>León is one of the last Spanish cities where a free tapa still comes with every drink, and it isn't token. Order small, drink slowly, move on after one round. Plaza San Martín and the streets off Calle Ancha. You will not need dinner.</div>
+    <div class="callout warn"><b>Two things at check-in</b><strong>Parking:</strong> the hotel's underground garage is in the building directly opposite, and it cannot be reserved — it's first come, and it's tight for anything larger than a compact. The doorman will sort you out; if it's full, there's a public underground garage across the road at a similar rate. Ask at reception before you go looking.<br><br><strong>Rooms:</strong> the 1923 building was fully remodelled in 2018 and the renovated rooms are excellent — spacious, soundproofed, air-conditioned. Some unrenovated stock survives and it is noticeably weaker, so ask for a refurbished room when you book rather than on arrival.</div>
+  </div>
+</article>
+
+<!-- DAY 7 -->
+<article class="day">
+  <div class="day-head"><span class="daynum">Day 7</span><span class="daydate">Sat 26 Sep</span></div>
+  <div class="day-title"><h3>León — Your own way</h3></div>
+  <div class="log">
+    <div><span>Drive</span><b class="none">Your choice</b></div>
+    <div><span>Walk</span><b>City walking</b></div>
+    <div><span>Sleep</span><b>Alfonso V, León</b></div>
+    <div><span>Book</span><b class="book">Only if Valporquero</b></div>
+  </div>
+  <div class="day-body">
+    <p>Astorga has moved to Day 10, where it breaks the long drive. That leaves this day genuinely open — decide over breakfast, based on weather and on how much you feel like being in a car.</p>
+    <ul>
+      <li><strong>Cueva de Valporquero · 45 min north.</strong> The better of the two caves on this route. The long tour covers seven chambers over 90–100 minutes, with departures at 11:30, 13:00 and 16:30; open every day until 30 September, so your Saturday qualifies. Only 30 tickets go online per departure and 30 at the desk — if you want this, book it in advance rather than deciding at breakfast.</li>
+      <li><strong>Valdevimbre · 25 min south.</strong> A village whose hillsides are honeycombed with old bodegas dug into the earth, many now working as restaurants where you eat underground. The grape is <strong>Prieto Picudo</strong>, which makes a dark, serious rosé barely known outside the province. A second wine chapter for the price of a short drive.</li>
+      <li><strong>Or don't drive at all.</strong> León at walking pace is a real option, and the city rewards it.</li>
+    </ul>
+    <p><strong>Whatever you do, be back for the last hour of daylight.</strong> The cathedral holds roughly 1,800 m² of stained glass, an extraordinary proportion of wall given over to window, and it only really works when the sun is low. Then <strong>Casa Botines</strong> (Gaudí) and the <strong>Panteón Real</strong> at San Isidoro, whose painted Romanesque vaults have survived nine centuries with their colour intact.</p>
+    <div class="callout local"><b>Second night in the Barrio Húmedo</b>Saturday is when it actually fills up. Same rule as Friday: order small, one drink per bar, let the free tapa decide where you stay.<br><br>If you'd rather sit down properly for one of the two nights, <strong>LAV</strong> is on the hotel's first floor overlooking Plaza de Santo Domingo and carries a Michelin guide mention — about the only reservation worth making in a city built for improvising.</div>
+  </div>
+</article>
+
+<!-- DAY 8 -->
+<article class="day">
+  <div class="day-head"><span class="daynum">Day 8</span><span class="daydate">Sun 27 Sep</span></div>
+  <div class="day-title"><h3>León → Las Médulas → Orellán</h3></div>
+  <div class="log">
+    <div><span>Drive</span><b>2h15 total</b></div>
+    <div><span>Walk</span><b>2h · easy</b></div>
+    <div><span>Sleep</span><b>O Palleiro, Orellán</b></div>
+    <div><span>Book</span><b class="book">Dinner, both nights</b></div>
+  </div>
+  <div class="day-body">
+    <p>Leave León mid-morning. Today is the view from above; tomorrow you walk into it. Treat this as reconnaissance and don't try to see everything before dinner.</p>
+    <p><strong>Las Médulas</strong> is what remains after Roman engineers dismantled a mountain range for its gold. The technique — <em>ruina montium</em> — meant driving tunnel networks into the rock, then releasing aqueduct water into them until the hydraulic pressure brought the whole hillside down. Pliny the Elder saw it and wrote that the engineers themselves were frightened by what they had made. What is left is a landscape of red pinnacles.</p>
+    <div class="callout warn"><b>The fire, honestly</b>August 2025 burned the chestnut groves that frame the site, and around 40% of them are rated poorly for medium-term recovery. But the CSIC assessment found fewer than 20% of individual chestnuts badly damaged, described the heritage damage as isolated and reversible, and named soil erosion as the main problem; the report sent to UNESCO in April 2026 says the same. Orellán reopened within two months of the fire. The pinnacles are geology and were never at risk.<br><br>The live issue is <strong>trail closures from rockfall risk</strong> where erosion has destabilised slopes. Which paths are open changes — ring the Casa del Parque the week before you travel. Go to the <strong>Mirador de Orellán</strong> for the late-afternoon light regardless; that is when the rock turns properly red.</div>
+    <p>You are sleeping in <strong>Orellán</strong> — the village the viewpoint belongs to. That is the whole point of this base: you walk up for the evening light rather than driving to it, and again at dawn tomorrow if the sky looks worth it.</p>
+    <div class="callout local"><b>Dinner at the hotel</b>O Palleiro cooks from old local recipes, some of them reconstructed Roman, and it is the only kitchen you need on either night. It is a small family place, so ring ahead and confirm dinner for both nights rather than trusting posted hours — Sunday evening in rural Bierzo is not a night to improvise.</div>
+  </div>
+</article>
+
+<!-- DAY 9 -->
+<article class="day">
+  <div class="day-head"><span class="daynum">Day 9</span><span class="daydate">Mon 28 Sep</span></div>
+  <div class="day-title"><h3>Orellán, Las Médulas — El Bierzo, unhurried</h3></div>
+  <div class="log">
+    <div><span>Drive</span><b>Short hops only</b></div>
+    <div><span>Walk</span><b>3h · easy</b></div>
+    <div><span>Sleep</span><b>O Palleiro, Orellán</b></div>
+    <div><span>Book</span><b class="none">Nothing</b></div>
+  </div>
+  <div class="day-body">
+    <p>This is the day the second night was bought for. Yesterday you looked down into Las Médulas from Orellán; today you walk into it, and you start from the door.</p>
+    <p><strong>Morning — Las Médulas on foot.</strong> Ten minutes down from Orellán. Start at the visitor centre in the village and ask which routes are currently open before you set off; erosion after the fire has closed paths at various points and the picture changes. The classic circuit runs out among the pinnacles and back through what remains of the chestnut groves, two to three hours at an easy pace. Being inside the collapsed workings, rather than looking down at them, is a completely different experience — the scale of what the Romans took apart only registers from the floor of it.</p>
+    <div class="callout local"><b>Peñalba de Santiago</b>If you'd rather go up than around: the Valle del Silencio climbs south from Ponferrada to a village of slate roofs at the head of a mountain valley, built around a 10th-century Mozarabic church with a horseshoe-arched double doorway. One of the more extraordinary things in this corner of Spain, and almost nobody goes. The road up is narrow and slow — about an hour each way — so it's this <em>or</em> the full Las Médulas walk, not both.</div>
+    <p><strong>Afternoon — the loop north for the wine.</strong> Forty-five minutes up to <strong>Palacio de Canedo</strong>, a restored mansion running as a working winery with a restaurant and a bodega shop. Late lunch there, then fifteen minutes on to <strong>Villafranca del Bierzo</strong>, a Camino town whose Puerta del Perdón granted pilgrims too ill to continue the same indulgence as reaching Santiago. Back to Orellán for sunset. About an hour and forty of driving spread across the whole afternoon.</p>
+    <p><strong>Ponferrada's</strong> Templar castle sits on the same road and takes an hour, if you want a third stop.</p>
+    <div class="callout"><b>Mencía and Godello</b>Mencía is the red — thin-skinned, high-altitude, closer to the Loire than to Rioja in build. Godello is the white, and the more surprising of the two. Neither travels much beyond Spain, which is the point of drinking them here. Buy at Canedo rather than promising yourself you'll find it at home.</div>
+  </div>
+</article>
+
+<!-- DAY 10 -->
+<article class="day">
+  <div class="day-head"><span class="daynum">Day 10</span><span class="daydate">Tue 29 Sep</span></div>
+  <div class="day-title"><h3>Orellán, Las Médulas → Astorga → Llanuces, Quirós</h3></div>
+  <div class="log">
+    <div><span>Drive</span><b>3h15 · max 2h at once</b></div>
+    <div><span>Walk</span><b>Astorga on foot</b></div>
+    <div><span>Sleep</span><b>Solo Palacio</b></div>
+    <div><span>Book</span><b class="book">Bistró, 2 nights</b></div>
+  </div>
+  <div class="day-body">
+    <p>The longest transfer of the trip, deliberately broken in the middle by somewhere worth stopping rather than a service station. All motorway, no passes.</p>
+    <ul>
+      <li><strong>08:30</strong> — leave Orellán.</li>
+      <li><strong>10:00</strong> — Astorga. Half an hour down to Ponferrada, then an hour on the A-6.</li>
+      <li><strong>13:00</strong> — lunch, which will take two hours whether you intend it to or not.</li>
+      <li><strong>15:00</strong> — back on the A-6, past León, north on the AP-66.</li>
+      <li><strong>17:00</strong> — Llanuces.</li>
+    </ul>
+    <p><strong>Astorga.</strong> The <strong>Palacio Episcopal</strong> is one of only three Gaudí buildings outside Catalonia — a granite fantasy of a bishop's palace so alarming to the diocese that no bishop ever lived in it. The cathedral stands immediately beside it, and the contrast is the whole visit. Add the Roman walls and the <em>ergástula</em>, and the <strong>Museo del Chocolate</strong>: Astorga was Spain's chocolate town, with dozens of factories at its peak.</p>
+    <div class="callout local"><b>Cocido maragato</b>Served backwards — nine or ten meats first, then the chickpeas and cabbage, and the soup last. The local story involves soldiers eating the best part before a battle could interrupt them. Order one between two unless you plan to skip dinner, which is the honest option.</div>
+    <div class="callout local"><b>A ten-minute stop on the A-66</b>At Pola de Lena, just off the motorway on the last leg north, <strong>Santa Cristina de Lena</strong> stands alone on a hillside — a small 9th-century church belonging to the same UNESCO listing as the Oviedo monuments you see on Day 12. Free, geographically speaking, and it breaks the final hour.</div>
+    <div class="callout warn"><b>One turning to avoid</b>Coming north on the A-66, do <em>not</em> take the Lena exit for the Cobertoria shortcut — that is precisely the hairpin road you have removed from this trip. Stay on the motorway as far as Trubia and come up the Quirós valley at river level. Twenty minutes longer, and flat.</div>
+    <div class="callout warn"><b>Arrival window</b>Check-in from 15:00; arrivals after 19:00 carry a fee. Llanuces has a population in the teens and no restaurant of any kind, so reserve the Solo Bistró for both nights when you book the room.</div>
+  </div>
+</article>
+
+<!-- DAY 11 -->
+<article class="day">
+  <div class="day-head"><span class="daynum">Day 11</span><span class="daydate">Wed 30 Sep</span></div>
+  <div class="day-title"><h3>Llanuces, Quirós — Senda del Oso by e-bike</h3></div>
+  <div class="log">
+    <div><span>Drive</span><b>35 min to Entrago</b></div>
+    <div><span>Ride</span><b>3h · 18–28 km</b></div>
+    <div><span>Sleep</span><b>Solo Palacio</b></div>
+    <div><span>Book</span><b class="book">Bikes, by WhatsApp</b></div>
+  </div>
+  <div class="day-body">
+    <p>The trail follows a dismantled mining railway through the Trubia gorges — tunnels, river, and limestone walls closing overhead at Peñas Juntas. Rent at <strong>Entrago</strong> and ride north; the whole thing runs downhill in that direction and the operator drives you back to your car at the end.</p>
+    <ul>
+      <li><strong>18 km · about 2h</strong> — Entrago to Tuñón, almost entirely descending.</li>
+      <li><strong>28 km · about 3h30</strong> — adding the spur up to the Valdemurio reservoir, which is the one uphill section and worth it.</li>
+    </ul>
+    <p>At <strong>Proaza</strong> the trail passes a large fenced valley holding a rescued Cantabrian brown bear. It is an enclosure and makes no pretence otherwise — but it is the only bear you will see on this trip, and the valley it lives in is large enough that finding it takes a few minutes of looking.</p>
+    <div class="callout local"><b>Afternoon option: Puertos de Marabio</b>The road up leaves from Entrago — the same turning as the bike rental. It climbs to a plateau of high karst pasture, a declared natural monument, with a waymarked circular route of low difficulty and little climbing. <em>Brañas</em> and herders' cabins, cattle and loose <em>asturcón</em> ponies, blind valleys and sinkholes, and small lagoons pooling on the limestone. Very close to what Somiedo would have given you, and no pass to reach it. The access lane is narrow, though short — worth knowing.</div>
+    <div class="callout"><b>Or don't</b>Infinity pool, sauna, outdoor jacuzzi. This is your only unhurried afternoon in twelve days. Marabio keeps until the next wet morning.</div>
+  </div>
+</article>
+
+<!-- DAY 12 -->
+<article class="day">
+  <div class="day-head"><span class="daynum">Day 12</span><span class="daydate">Thu 1 Oct</span></div>
+  <div class="day-title"><h3>Llanuces, Quirós → Las Xanas → Oviedo → Avilés</h3></div>
+  <div class="log">
+    <div><span>Drive</span><b>1h40 · all forward</b></div>
+    <div><span>Walk</span><b>3h30 + city</b></div>
+    <div><span>Sleep</span><b>Palacio de Avilés</b></div>
+    <div><span>Book</span><b class="book">Modern-wing room</b></div>
+  </div>
+  <div class="day-body">
+    <p>Check out and drive twenty minutes to Villanueva. This walk sits directly on the road from Quirós to Oviedo, which is the whole reason the schedule works — you are not doubling back on anything today.</p>
+    <p>The <strong>Desfiladero de las Xanas</strong> is a path barely a metre wide, chiselled into the wall of a limestone cleft in the 1920s to connect a village to its valley. It climbs about 2.5 km to the meadows at Pedroveya with the rock closing to a few metres overhead. It takes its name from the <em>xanas</em>, the water spirits of Asturian folklore, who are said to live in exactly this sort of place and to be less benign than they look.</p>
+    <p>Walk up, eat at Pedroveya, walk back down: about 3h30. It is the best short walk in central Asturias.</p>
+    <div class="callout"><b>If it's raining</b>Swap for <strong>Cueva Huerta</strong> at Teverga, a large river cave visited with a guide and entirely indifferent to weather — or <strong>Bandujo</strong>, a walled medieval hamlet with a defensive tower and a Romanesque church, almost entirely unvisited. Both are on the same road.</div>
+    <p><strong>Into Oviedo mid-afternoon.</strong> Stop on the hill before you drop into the city: <strong>Santa María del Naranco</strong> and <strong>San Miguel de Lillo</strong> are 9th-century Asturian pre-Romanesque, built when this small kingdom was the only unconquered Christian territory in Iberia, in a style with no real precedent and no descendants. Naranco began as a royal hall rather than a church, and it looks it. Twenty minutes apart, both UNESCO-listed.</p>
+    <p><strong>Then Oviedo, in the afternoon rather than overnight.</strong> An 11:00 flight means leaving your bed at 08:30 tomorrow, so there was never going to be a morning in the city — better to take it now while everything is open. The cathedral and its <strong>Cámara Santa</strong>, a pre-Romanesque chamber swallowed by the later Gothic building and holding the Cruz de la Victoria; then the <strong>Plaza del Fontán</strong> and the squares around it. The centre is compact and improbably well-scrubbed; two or three hours covers it.</p>
+    <div class="callout warn"><b>The one timed thing today</b>The Cámara Santa typically shuts at midday and reopens around four, closing at seven. Check the day's hours before you leave Llanuces, because the whole afternoon is built around getting there inside that window.</div>
+    
+    <div class="callout local"><b>Calle Gascona before you go</b>The cider street, and its bars open from lunchtime — so you get your <em>culín</em> in daylight instead of at midnight. Asturian <em>sidra natural</em> is unfiltered and still, and is poured <em>escanciada</em> from arm's length above the glass to aerate it on impact. Two fingers deep, drunk in one go before it flattens; the last drop goes on the floor to rinse the glass. Let the waiter pour — everyone tries it themselves once and everyone wears it. Whoever is driving to Avilés sits this one out.</div>
+    <p><strong>Thirty minutes on to Avilés.</strong> A working estuary town rather than a cathedral city, and the only place on this route that isn't limestone and Romanesque. <strong>Calle Galiana</strong> is an arcaded medieval street running down to the old quarter, and the streets around Plaza de España are compact and almost entirely untouristed. Across the water sits the <strong>Centro Niemeyer</strong> — Oscar Niemeyer's only European cultural complex, white curves dropped into a post-industrial estuary. Lit up after dark it is worth the ten-minute walk even if you don't go in.</p>
+    <div class="callout"><b>At the hotel</b>Palacio de Avilés is a 17th-century palace on Plaza de España with a modern wing attached, and guests report direct access from the hotel through to the car park and the Ferrera gardens. Two things to specify when booking: <strong>ask for a room in the modern wing</strong>, because the old palace rooms are inconsistent and one guest found theirs dated with a leaking shower — and <strong>ask whether an event is booked</strong>. It hosts weddings, and one guest lost a night to music running until five. A Thursday in October is low risk, but it is a thirty-second question the night before a flight.</div>
+  </div>
+</article>
+
+<!-- DAY 13 -->
+<article class="day">
+  <div class="day-head"><span class="daynum">Day 13</span><span class="daydate">Fri 2 Oct</span></div>
+  <div class="day-title"><h3>Avilés → Asturias Airport → home</h3></div>
+  <div class="log">
+    <div><span>Drive</span><b>20 min</b></div>
+    <div><span>Flight</span><b>11:00 · be there 09:00</b></div>
+    <div><span>Sleep</span><b class="none">—</b></div>
+    <div><span>Book</span><b class="none">Nothing</b></div>
+  </div>
+  <div class="day-body">
+<p>Asturias Airport sits at Santiago del Monte, twenty minutes west of Avilés. This is the whole reason the last base moved: from Oviedo you would be leaving at eight and taking breakfast at quarter past seven, which most Spanish hotels will not serve.</p>
+    <ul>
+      <li><strong>08:00</strong> — breakfast, at a normal hour.</li>
+      <li><strong>08:30</strong> — leave, refuelling on the way out of town.</li>
+      <li><strong>09:00</strong> — airport. Rental drop-off, then bag drop.</li>
+      <li><strong>11:00</strong> — wheels up.</li>
+    </ul>
+    <div class="callout warn"><b>The one-way return</b>You collected the car at Bilbao and you are returning it at Asturias. Confirm the drop-off fee and the return location with the rental company before you travel rather than discovering it at the desk with a flight to catch. Fill the tank before you reach the airport perimeter; airport-adjacent fuel is both scarcer and dearer.</div>
+  </div>
+</article>
+</section>
+
+
+<section id="spare">
+<h2>If you want more</h2>
+<p class="lede">Held in reserve rather than scheduled. Nothing here is essential, and most of it is 20–40 minutes from a bed you have already paid for. Use it when a walk gets rained off or a day ends early.</p>
+
+<div class="tablewrap">
+<table>
+<thead><tr><th>From</th><th>Option</th><th>Why</th></tr></thead>
+<tbody>
+<tr><td class="n">Llanes</td><td><strong>Sierra del Sueve</strong></td><td>A short ridge drive to the Mirador del Fito, and the last free-living herd of <em>asturcones</em> — the small native mountain pony. Sea on one side, Picos on the other.</td></tr>
+<tr><td class="n">Llanes</td><td><strong>Ribadesella</strong></td><td>An estuary town with a good seafront and the best fish lunch on this stretch of coast. Tito Bustillo's cave art is here if you decide one cave wasn't enough.</td></tr>
+<tr><td class="n">Llanes</td><td><strong>Cangas de Onís</strong></td><td>On your way back from Covadonga anyway. The hump-backed bridge is Roman only in reputation, but the Sunday market and the cheese stalls are real.</td></tr>
+<tr><td class="n">Cosgaya</td><td><strong>Orujo in Potes</strong></td><td>Liébana distils the local pomace brandy and several small producers in Potes will show you how. A drinks chapter that costs you fifteen minutes of driving.</td></tr>
+<tr><td class="n">Cosgaya</td><td><strong>Bejes</strong></td><td>A tiny village up a side valley making Picón Bejes-Tresviso — the blue cheese people who find Cabrales too tame go looking for. Steep road, almost no visitors.</td></tr>
+<tr><td class="n">Cosgaya</td><td><strong>Mirador de Santa Catalina</strong></td><td>Ten minutes above Potes. Worth it at sunset if a walk got cut short.</td></tr>
+<tr><td class="n">León</td><td><strong>Valporquero · Valdevimbre</strong></td><td>The two Saturday options, written up on Day 7. Cave to the north, underground bodegas to the south.</td></tr>
+<tr><td class="n">Orellán</td><td><strong>Ponferrada castle</strong></td><td>Templar, enormous, and directly on your route both in and out. Half an hour from the hotel, an hour to see.</td></tr>
+<tr><td class="n">Orellán</td><td><strong>Moncloa de San Lázaro</strong></td><td>At Cacabelos, if the Canedo lunch doesn't appeal — a large, comfortable Camino hotel with a serious kitchen, open every day, and ten minutes from Villafranca.</td></tr>
+<tr><td class="n">Orellán</td><td><strong>Lago de Carucedo</strong></td><td>The lake below the workings, formed when Roman spoil dammed the valley. Ten minutes, flat walking, and quiet at either end of the day.</td></tr>
+<tr><td class="n">Llanuces</td><td><strong>Bandujo</strong></td><td>A walled medieval hamlet with a defensive tower and a Romanesque church, essentially unvisited. Fifteen minutes away.</td></tr>
+<tr><td class="n">Llanuces</td><td><strong>Cueva Huerta · Teverga</strong></td><td>A large river cave visited with a guide, and completely indifferent to weather. The obvious swap if Las Xanas is washed out.</td></tr>
+<tr><td class="n">Llanuces</td><td><strong>Parque de la Prehistoria</strong></td><td>At Teverga: full-scale reconstructions of the painted caves you can't get into, including Chauvet and Altamira. Better than it sounds.</td></tr>
+<tr><td class="n">Avilés</td><td><strong>Centro Niemeyer</strong></td><td>Across the estuary from the old town, ten minutes on foot. Worth seeing lit after dark even if you don't go inside.</td></tr>
+<tr><td class="n">Avilés</td><td><strong>Calle Galiana</strong></td><td>The arcaded medieval street running down through the old quarter — where to eat, and the best of the town in one walk.</td></tr>
+<tr><td class="n">Avilés</td><td><strong>Cabo Peñas</strong></td><td>The northernmost point of Asturias — lighthouse, 100 m cliffs, a short clifftop path. Half an hour north, and the one thing you could still fit if Las Xanas gets rained off.</td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<!-- BOOKING BOARD -->
+<section id="board">
+<h2>What actually needs booking</h2>
+<p class="lede">You wanted to improvise dinners, and at four of six bases you can. Two won't allow it. Everything below is either time-limited, capacity-limited, or has no walk-up alternative.</p>
+
+<div class="board">
+  <div class="board-row">
+    <div class="board-when">This week</div>
+    <div class="board-what"><ul>
+      <li><strong>Solo Palacio</strong> — two nights, plus Solo Bistró for both. Eleven apartments; it sells out first.</li>
+      <li><strong>Occidental León Alfonso V</strong> — two nights, asking for a refurbished room in the booking notes. Parking is not reservable, so don't plan around it.</li>
+      <li>Montemar (Llanes), Hotel del Oso (Cosgaya), <strong>Palacio de Avilés</strong> (one night — request the modern wing, and ask whether an event is booked).</li>
+      <li><strong>O Palleiro do Pe do Forno</strong>, Orellán — two nights. Small family place with rooms above a restaurant; ring rather than book through a portal, and confirm dinner on both nights while you have them on the phone.</li>
+      <li>Confirm the <strong>one-way car hire</strong> fee, Bilbao to Asturias.</li>
+    </ul></div>
+  </div>
+  <div class="board-row">
+    <div class="board-when">2–3 weeks out</div>
+    <div class="board-what"><ul>
+      <li><strong>Fuente Dé cable car</strong> — timed ticket online, earliest morning slot.</li>
+      <li><strong>El Soplao</strong> — timed guided tour. Open daily in September.</li>
+      <li><strong>Valporquero</strong>, if you want the León Saturday to include it — only 30 tickets per departure are sold online.</li>
+      <li>Dinner at Don Paco, Llanes, for the arrival night only.</li>
+    </ul></div>
+  </div>
+  <div class="board-row">
+    <div class="board-when">Final week</div>
+    <div class="board-what"><ul>
+      <li><strong>Covadonga shuttle bus</strong> via ALSA — online tickets take priority over car-park sales.</li>
+      <li><strong>E-bikes at Entrago</strong> — booked by WhatsApp; payment on site is cash.</li>
+      <li>Re-check which <strong>Las Médulas</strong> trails are open.</li>
+    </ul></div>
+  </div>
+  <div class="board-row">
+    <div class="board-when">Improvise</div>
+    <div class="board-what"><ul>
+      <li>All dinners in Llanes (after night one), León, Astorga and Oviedo. León in particular rewards wandering — the free tapa system means you should not be reserving anything.</li>
+    </ul></div>
+  </div>
+</div>
+</section>
+
+<!-- NOTES -->
+<section id="notes">
+<h2>Before you go</h2>
+<div class="pair">
+  <div class="note-card">
+    <h4>It will rain</h4>
+    <p>Late September on the Cantabrian coast runs 18–21 °C and wet; the mountains are cooler and wetter. Assume two of your five walking days are compromised. The three Potes days are fully interchangeable — use the clearest for Fuente Dé, the next for the Cares.</p>
+  </div>
+  <div class="note-card">
+    <h4>The driving, honestly</h4>
+    <p>Roughly 1,300 km, and the hairpin passes are gone. One mountain road remains — San Glorio on Day 6, broad and well-graded. The longest continuous stint anywhere in the twelve days is about two hours, on Day 10. Everything else is under 90 minutes. Budget 20% more than the satnav suggests on the N-roads and don't drive the Hermida gorge after dark.</p>
+  </div>
+  <div class="note-card">
+    <h4>What you gave up</h4>
+    <p>The guided bear observation. Late September sits past the best window and one session was roughly a coin flip. Dropping it removed a two-hour backtrack and paid for Solo Palacio. Somiedo itself then went with the hairpin roads on Day 9, so the western mountains are off this trip altogether — the trade you made for two hours less driving and a much better bed.</p>
+  </div>
+  <div class="note-card">
+    <h4>Pack swimwear anyway</h4>
+    <p>Not a beach trip, but the Cantabrian sea peaks in late September at around 19–20 °C — warmer than July, because the water lags the air. Two afternoons in Llanes have room for it and Gijón does at the end. Keep a towel somewhere reachable rather than at the bottom of a case.</p>
+  </div>
+  <div class="note-card">
+    <h4>Where the slack is</h4>
+    <p>Two blocks are deliberately loose: the León Saturday, and the three Cosgaya days, which are fully interchangeable. The Bierzo day flexes too — Las Médulas on foot, or Peñalba, or neither. If weather wrecks the Cares or Fuente Dé, that is where the slack lives. Everything after Day 10 is pinned by a check-in time, a museum's afternoon hours, or a flight.</p>
+  </div>
+  <div class="note-card">
+    <h4>Carry cash</h4>
+    <p>The bike rental takes cash on site. So do several of the mountain village restaurants, the Cabrales cheese caves, and the Covadonga car parks. €150 in small notes will cover the trip.</p>
+  </div>
+</div>
+</section>
+
+</main>
+
+<footer><div class="inner">
+  <h3>One last thing</h3>
+  <p>Everything time-sensitive here — access regulations, cable car operations, cave calendars, trail closures at Las Médulas — should be confirmed once now and again in the last week before you fly. The Covadonga regulation in particular runs to 18 October, so it applies to you and there is no version of that day where you drive up yourself.</p>
+  <p class="fine">Revised working version · six bases · twelve nights · August 2026</p>
+</div></footer>
+
+</body></html>
