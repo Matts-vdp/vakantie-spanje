@@ -78,10 +78,33 @@ td strong{font-weight:650}
 .log b.none{color:#9aa49e}
 .log b.book{color:var(--rust)}
 .day-body{padding:20px 24px 24px}
-.day-body p{margin:0 0 .85em}
-.day-body p:last-child{margin-bottom:0}
-.day-body ul{margin:.2em 0 1em;padding-left:1.1em}
-.day-body li{margin-bottom:.3em}
+.quick-plan{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:24px;align-items:start}
+.quick-plan h4{margin:0 0 13px;font-family:var(--mono);font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--moss);font-weight:600}
+.timeline{list-style:none;margin:0;padding:0;counter-reset:steps}
+.timeline li{position:relative;margin:0;padding:0 0 17px 30px;counter-increment:steps}
+.timeline li:last-child{padding-bottom:0}
+.timeline li::before{content:counter(steps);position:absolute;left:0;top:.08em;width:19px;height:19px;border-radius:50%;background:var(--moss);color:#fff;font-family:var(--mono);font-size:.62rem;line-height:19px;text-align:center}
+.timeline li::after{content:"";position:absolute;left:9px;top:21px;bottom:0;border-left:1px solid #b9c6bd}
+.timeline li:last-child::after{display:none}
+.timeline li.dinner::before{content:"";background:var(--gold);box-shadow:inset 0 0 0 5px #f7f4ed;border:2px solid var(--gold)}
+.timeline li.dinner strong{color:#75581f}
+.timeline strong{display:block;font-size:.94rem;line-height:1.35;margin-bottom:2px}
+.timeline p{margin:0;color:#46534c;font-size:.91rem;line-height:1.48}
+.plan-side{display:grid;gap:10px}
+.plan-card{padding:12px 14px;border:1px solid var(--line);border-radius:3px;background:#f7f4ed;font-size:.87rem;line-height:1.45}
+.plan-card b{display:block;margin-bottom:3px;font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--water)}
+.plan-card.choice{background:#faf4e6;border-color:#e1d3ad}
+.plan-card.choice b{color:#8a6a29}
+.plan-card.important{background:#f9eee9;border-color:#e5c4b7}
+.plan-card.important b{color:var(--rust)}
+.day-details{margin-top:20px;border-top:1px solid var(--line);padding-top:14px}
+.day-details summary{cursor:pointer;color:var(--water);font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;list-style-position:outside;margin-left:16px}
+.day-details summary:hover{color:var(--rust)}
+.day-notes{padding-top:16px}
+.day-notes p{margin:0 0 .85em}
+.day-notes p:last-child{margin-bottom:0}
+.day-notes ul{margin:.2em 0 1em;padding-left:1.1em}
+.day-notes li{margin-bottom:.3em}
 
 /* ---------- callouts ---------- */
 .callout{border-left:3px solid var(--water);background:#eef4f6;padding:13px 16px;margin:16px 0;font-size:.93rem;border-radius:0 3px 3px 0}
@@ -117,6 +140,7 @@ footer p{max-width:60ch;font-size:.93rem}
   .log{grid-template-columns:1fr 1fr}
   .log div:nth-child(2){border-right:0}
   .log div:nth-child(1),.log div:nth-child(2){border-bottom:1px solid var(--line)}
+  .quick-plan{grid-template-columns:1fr;gap:20px}
   .pair{grid-template-columns:1fr}
   .board-row{grid-template-columns:1fr}
   .board-when{border-right:0;border-bottom:1px solid var(--line)}
@@ -128,6 +152,7 @@ footer p{max-width:60ch;font-size:.93rem}
   .hero{background:#fff;color:#000}
   .hero h1,.hero p,.statline b{color:#000}
   .day{break-inside:avoid;page-break-inside:avoid}
+  .day-details[open] .day-notes{display:block}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
@@ -205,7 +230,6 @@ The Cares Gorge is walked from Poncebos rather than Caín, saving about 80 minut
 </tbody>
 </table>
 </div>
-<p class="fine">Breakfast times shown are for the days of your stay. O Palleiro serves a daily continental breakfast but publishes no fixed service window, so arrange the time directly with the host.</p>
 </section>
 
 <section id="days">
@@ -219,20 +243,35 @@ The Cares Gorge is walked from Poncebos rather than Caín, saving about 80 minut
     <div><span>Drive</span><b>2h15 · 200 km</b></div>
     <div><span>Walk</span><b>Clifftop, 40 min</b></div>
     <div><span>Sleep</span><b>Montemar, Llanes</b></div>
-    <div><span>Book</span><b class="none">Nothing</b></div>
+    <div><span>Flight</span><b>09:20 Brussels → 11:15 Bilbao</b></div>
   </div>
   <div class="day-body">
-    <p>Collect the car and take the A-8 west. If you land before midday, break the drive at Comillas for Gaudí's <em>El Capricho</em> — a sunflower-tiled folly built when he was thirty — or at San Vicente de la Barquera for the harbour and castle.</p>
+    <div class="quick-plan">
+      <div><h4>Today's plan</h4><ol class="timeline">
+        <li><strong>09:20 · Fly from Brussels</strong><p>Arrive at Bilbao Airport at 11:15.</p></li>
+        <li><strong>Collect the car and drive west</strong><p>Take the A-8 from Bilbao Airport towards Llanes.</p></li>
+        <li><strong>Optional arrival stop</strong><p>If you land before midday, choose El Capricho in Comillas or the harbour at San Vicente de la Barquera.</p></li>
+        <li><strong>Check in, then walk Llanes</strong><p>Follow the Paseo de San Pedro to the Cubos de la Memoria in the last hour of light.</p></li>
+        <li><strong>Finish at Playa de Toró</strong><p>The cove is ten minutes from the hotel and swimmable if time and weather allow.</p></li>
+        <li class="dinner"><strong>Dinner — Don Paco, Llanes</strong><p>Cross the road to the sister hotel and eat in its old convent dining room. Reserve this arrival-night table in advance.</p></li>
+      </ol></div>
+      <aside class="plan-side">
+        <div class="plan-card choice"><b>Choose one</b>Comillas for Gaudí, or San Vicente for the harbour and castle. Skip both after a later flight.</div>
+      </aside>
+    </div>
+    <details class="day-details"><summary>Details, options &amp; background</summary><div class="day-notes">
+    <p>Your flight leaves Brussels at 09:20 and arrives at Bilbao Airport at 11:15. Collect the car and take the A-8 west. If everything runs to time, break the drive at Comillas for Gaudí's <em>El Capricho</em> — a sunflower-tiled folly built when he was thirty — or at San Vicente de la Barquera for the harbour and castle.</p>
     <p>Walk the <strong>Paseo de San Pedro</strong> in the last hour of light — a clifftop green running above the town, and the quickest way to understand where you are. On the harbour breakwater are the <strong>Cubos de la Memoria</strong>, concrete blocks painted by the Basque artist Agustín Ibarrola: an accidental landmark that has become the town's signature.</p>
     <p>The path passes above <strong>Playa de Toró</strong>, a small cove studded with limestone stacks left standing by the sea. Ten minutes from the hotel, and swimmable if the drive has left you wanting it.</p>
     <div class="callout local"><b>Dinner</b>Montemar has no restaurant of its own. Cross the road to Don Paco, the sister hotel, and eat in the old convent dining hall.</div>
+    </div></details>
   </div>
 </article>
 
 <!-- DAY 2 -->
 <article class="day">
   <div class="day-head"><span class="daynum">Day 2</span><span class="daydate">Mon 21 Sep</span></div>
-  <div class="day-title"><h3>Llanes — Lagos de Covadonga</h3></div>
+  <div class="day-title"><h3>Llanes · Lagos de Covadonga</h3></div>
   <div class="log">
     <div><span>Drive</span><b>1h return + bus</b></div>
     <div><span>Walk</span><b>3h · moderate</b></div>
@@ -240,18 +279,33 @@ The Cares Gorge is walked from Poncebos rather than Caín, saving about 80 minut
     <div><span>Book</span><b class="book">Bus tickets</b></div>
   </div>
   <div class="day-body">
+    <div class="quick-plan">
+      <div><h4>Today's plan</h4><ol class="timeline">
+        <li><strong>Park below Covadonga</strong><p>Drive to Cangas de Onís or El Repelao and take the booked shuttle bus.</p></li>
+        <li><strong>Walk the Buferrera circuit</strong><p>Allow about three hours for both lakes, the old mine workings and Mirador del Príncipe.</p></li>
+        <li><strong>Visit the sanctuary</strong><p>See the basilica and Santa Cueva after returning from the lakes.</p></li>
+        <li><strong>Keep the afternoon loose</strong><p>Stop at Playa de Gulpiyuri, then choose Torimbia or Ballota if you want beach time.</p></li>
+        <li class="dinner"><strong>Dinner — choose in Llanes</strong><p>Keep the evening flexible and pick somewhere in town after returning from the lakes or beach.</p></li>
+      </ol></div>
+      <aside class="plan-side">
+        <div class="plan-card important"><b>Must know</b>The lakes road is closed to private cars. Book ALSA tickets and aim for one of the first buses from around 08:30.</div>
+        <div class="plan-card choice"><b>Afternoon choice</b>Gulpiyuri is the quick stop; Torimbia and Ballota are the longer beach options.</div>
+      </aside>
+    </div>
+    <details class="day-details"><summary>Details, options &amp; background</summary><div class="day-notes">
     <div class="callout warn"><b>The lakes road is closed to private cars on your date</b>The access regulation runs from 1 June to 18 October 2026, around the clock. Park at Cangas de Onís or El Repelao (€2 for the day), then take the shuttle bus — €9 per adult, valid all day. Book through ALSA online: digital tickets take priority over those bought at the car parks.</div>
     <p>Go early. The first buses run from around 8:30 and cloud typically builds over the lakes by late morning. Access to the <strong>Sanctuary of Covadonga</strong> itself is unrestricted year-round and can be done in your own car — the basilica, and the Santa Cueva set into the cliff face with its spring.</p>
     <p>At the top, the <strong>Buferrera circular</strong> takes in both lakes, the abandoned manganese and iron workings, and the Mirador del Príncipe — roughly 6 km on good paths with steady undulation, about 3 hours at a photographing pace. On the way down, stop at the Mirador de la Reina for the view back over the Sierra del Sueve to the sea.</p>
     <p><strong>You'll be back down by about three</strong>, with the afternoon loose. <strong>Playa de Gulpiyuri</strong> is worth twenty minutes on the way — a stretch of sand a hundred metres inland, fed through a sinkhole and rising and falling with the tide.</p>
     <div class="callout local"><b>If you want the water</b>This is the one afternoon with room for it. <strong>Torimbia</strong>, fifteen minutes west, is a shell of sand with nothing built behind it and a ten-minute walk down from the car park — it is also partly nudist, so go knowing that. <strong>Ballota</strong> is the tamer version, with a sea stack offshore and a road right down to it.</div>
+    </div></details>
   </div>
 </article>
 
 <!-- DAY 3 -->
 <article class="day">
   <div class="day-head"><span class="daynum">Day 3</span><span class="daydate">Tue 22 Sep</span></div>
-  <div class="day-title"><h3>Llanes → Bufones de Pría → El Soplao → Cosgaya / Potes</h3></div>
+  <div class="day-title"><h3>Llanes → El Soplao → Cosgaya / Potes</h3></div>
   <div class="log">
     <div><span>Drive</span><b>2h30 with stops</b></div>
     <div><span>Walk</span><b>1h30 + cave</b></div>
@@ -259,19 +313,34 @@ The Cares Gorge is walked from Poncebos rather than Caín, saving about 80 minut
     <div><span>Book</span><b class="book">El Soplao ticket</b></div>
   </div>
   <div class="day-body">
+    <div class="quick-plan">
+      <div><h4>Today's plan</h4><ol class="timeline">
+        <li><strong>Walk at Bufones de Pría</strong><p>Allow 1h30 for the approach and clifftop blowholes; skip this for a lighter start.</p></li>
+        <li><strong>Take the timed El Soplao tour</strong><p>Plan around the cave's midday closure between 14:00 and 15:00.</p></li>
+        <li><strong>Drive the Hermida Gorge</strong><p>Follow the N-621 and stop at Santa María de Lebeña if time allows.</p></li>
+        <li><strong>Continue to Cosgaya / Potes</strong><p>Check in at Hotel del Oso before dinner.</p></li>
+        <li class="dinner"><strong>Dinner — at Hotel del Oso</strong><p>The hotel restaurant opens at 20:30, so there is no need to look elsewhere after the transfer.</p></li>
+      </ol></div>
+      <aside class="plan-side">
+        <div class="plan-card important"><b>Action at check-in</b>Ask for a packed breakfast for the following early start.</div>
+        <div class="plan-card choice"><b>Lighter version</b>Skip Bufones, have coffee in Llanes and begin with El Soplao around midday.</div>
+      </aside>
+    </div>
+    <details class="day-details"><summary>Details, options &amp; background</summary><div class="day-notes">
     <p><strong>Morning — Bufones de Pría.</strong> Twenty minutes west of Llanes, a cliff meadow riddled with blowholes: sea caves that vent vertically through the limestone. With swell they roar and spout; on a flat day they merely breathe. Either way the clifftop walk is the best hour of coast on this trip. Allow 1h30 with the approach.</p>
     <p><strong>Midday — El Soplao.</strong> Directly on your route east, a former lead and zinc mine that opened into a cave system famous for its eccentrics: helictites that grow sideways and upward, against gravity. Visited by guided tour on timed tickets.</p>
     <div class="callout"><b>El Soplao is open on your Tuesday</b>Through September it runs every day, 10:00–14:00 and 15:00–18:00; the Monday closures only begin in October. Tito Bustillo at Ribadesella is the one with restricted early-week days — and it sits 30 minutes in the wrong direction. One cave is enough.</div>
     <div class="callout local"><b>If you want a lighter day</b>Cut the Bufones. You'll have had the clifftop path and the coves around Llanes by now, and dropping them turns this into a civilised late start: coffee in Llanes, El Soplao at midday, the gorge in the afternoon.</div>
     <p><strong>Afternoon — Desfiladero de la Hermida.</strong> The N-621 threads 20 km of limestone gorge, at points barely wider than the river and the road together. Stop at <strong>Santa María de Lebeña</strong>, a small 10th-century Mozarabic church standing alone beneath vertical rock — horseshoe arches, and a doorway with pre-Christian carving reused in the fabric.</p>
     <div class="callout warn"><b>Dinner timing at Hotel del Oso</b>The restaurant opens at 20:30 and breakfast doesn't start until 08:30. Fine tonight; a problem for the two early starts that follow. Ask at check-in whether they can do a packed breakfast for Thursday.</div>
+    </div></details>
   </div>
 </article>
 
 <!-- DAY 4 -->
 <article class="day">
   <div class="day-head"><span class="daynum">Day 4</span><span class="daydate">Wed 23 Sep</span></div>
-  <div class="day-title"><h3>Cosgaya / Potes — Fuente Dé and the Áliva crossing</h3></div>
+  <div class="day-title"><h3>Cosgaya / Potes · Fuente Dé and Áliva</h3></div>
   <div class="log">
     <div><span>Drive</span><b>20 min each way</b></div>
     <div><span>Walk</span><b>4h · mostly descent</b></div>
@@ -279,16 +348,31 @@ The Cares Gorge is walked from Poncebos rather than Caín, saving about 80 minut
     <div><span>Book</span><b class="book">Cable car, timed</b></div>
   </div>
   <div class="day-body">
+    <div class="quick-plan">
+      <div><h4>Today's plan</h4><ol class="timeline">
+        <li><strong>Take the earliest cable car</strong><p>Ride to 1,823 m while the morning is most likely to be clear.</p></li>
+        <li><strong>Cross the Puertos de Áliva</strong><p>Walk past the Chalet Real and descend the old mining track.</p></li>
+        <li><strong>Finish in Espinama</strong><p>The 13 km route takes about four hours and is almost entirely downhill.</p></li>
+        <li><strong>Return to Hotel del Oso</strong><p>Arrange a taxi, or position the car in Espinama before riding up.</p></li>
+        <li class="dinner"><strong>Dinner — at Hotel del Oso</strong><p>Eat at the hotel restaurant from 20:30 after the walk.</p></li>
+      </ol></div>
+      <aside class="plan-side">
+        <div class="plan-card important"><b>Weather decides</b>Use the clearest of the Cosgaya / Potes days for this walk.</div>
+        <div class="plan-card choice"><b>If the top is cloudy</b>Walk 90 minutes to Horcadina de Covarrobres and back, descend by cable car, then swap days.</div>
+      </aside>
+    </div>
+    <details class="day-details"><summary>Details, options &amp; background</summary><div class="day-notes">
     <p>The cable car climbs 750 vertical metres in under four minutes and puts you on the rim at 1,823 m, staring into a limestone amphitheatre. Take the earliest slot you can — this is the single most weather-dependent hour of the trip, and mornings are clearer.</p>
     <p><strong>The walk:</strong> from the top station, cross the <strong>Puertos de Áliva</strong> — high summer pasture, still grazed — past the Chalet Real, a hunting lodge built for Alfonso XIII, and descend the old mining track to <strong>Espinama</strong>. Around 13 km, four hours, almost entirely downhill, with the Picos walls beside you the whole way. Espinama sits 4 km from your hotel; take a taxi back or leave the car there and ride up.</p>
     <div class="callout"><b>If the top is in cloud</b>Don't burn the ticket. Stay high, walk to the Horcadina de Covarrobres viewpoint and back — about 90 minutes — and come down by cable car. Then swap this day with Thursday and try again.</div>
+    </div></details>
   </div>
 </article>
 
 <!-- DAY 5 -->
 <article class="day">
   <div class="day-head"><span class="daynum">Day 5</span><span class="daydate">Thu 24 Sep</span></div>
-  <div class="day-title"><h3>Cosgaya / Potes — Cares Gorge, from Poncebos</h3></div>
+  <div class="day-title"><h3>Cosgaya / Potes · Cares Gorge from Poncebos</h3></div>
   <div class="log">
     <div><span>Drive</span><b>1h20 each way</b></div>
     <div><span>Walk</span><b>4h · 12 km return</b></div>
@@ -296,17 +380,32 @@ The Cares Gorge is walked from Poncebos rather than Caín, saving about 80 minut
     <div><span>Book</span><b class="none">Nothing</b></div>
   </div>
   <div class="day-body">
+    <div class="quick-plan">
+      <div><h4>Today's plan</h4><ol class="timeline">
+        <li><strong>Leave early for Poncebos</strong><p>Allow about 1h20 each way from Cosgaya / Potes.</p></li>
+        <li><strong>Walk into the Cares Gorge</strong><p>Climb hard for the first 30 minutes, then follow the level canyon path.</p></li>
+        <li><strong>Turn around after two hours</strong><p>Treat the turnaround as a rule; the return takes the same amount of time.</p></li>
+        <li><strong>Stop in Arenas de Cabrales</strong><p>Visit a cheese cave on the return drive and buy cheese as your final stop.</p></li>
+        <li class="dinner"><strong>Dinner — at Hotel del Oso</strong><p>Return to the hotel for dinner from 20:30; keep the evening simple after the gorge walk.</p></li>
+      </ol></div>
+      <aside class="plan-side">
+        <div class="plan-card important"><b>Trail safety</b>Carry 1.5 litres of water each. There is little shade, loose ground and no fence in places.</div>
+        <div class="plan-card"><b>Pace</b>The plan is a 12 km return walk, not the full gorge crossing.</div>
+      </aside>
+    </div>
+    <details class="day-details"><summary>Details, options &amp; background</summary><div class="day-notes">
     <p>The signature walk of the Picos, and the reason to leave early. The path was cut in the 1940s to service a hydroelectric channel and runs for 12 km through a canyon 1,500 m deep, carved 200 m above the river with tunnels and overhangs.</p>
     <p>From Poncebos the first 30 minutes climb hard out of the valley; after that the path levels and the gorge closes in around you. <strong>Turn back at the two-hour mark wherever you are.</strong> Treat that as a rule rather than a target — the return leg is the same length and the light goes early in the canyon.</p>
     <div class="callout warn"><b>No water, no shade, no fence</b>Carry 1.5 litres each. The drop is unguarded in places and the surface is loose in others; it is not exposed climbing, but it is not a promenade. Goats dislodge stones from above.</div>
     <p><strong>On the way home:</strong> Arenas de Cabrales, where the cheese caves are open to visitors. Cabrales is ripened in natural limestone caves in the mountainside — cold, wet, and thick with the smell of it. Buy a wedge; it travels badly in a warm car, so make it the last stop.</p>
+    </div></details>
   </div>
 </article>
 
 <!-- DAY 6 -->
 <article class="day">
   <div class="day-head"><span class="daynum">Day 6</span><span class="daydate">Fri 25 Sep</span></div>
-  <div class="day-title"><h3>Cosgaya / Potes → Liébana → San Glorio → León</h3></div>
+  <div class="day-title"><h3>Cosgaya / Potes → León via San Glorio</h3></div>
   <div class="log">
     <div><span>Drive</span><b>3h with stops</b></div>
     <div><span>Walk</span><b>1h · village level</b></div>
@@ -314,6 +413,20 @@ The Cares Gorge is walked from Poncebos rather than Caín, saving about 80 minut
     <div><span>Book</span><b class="book">Refurbished room</b></div>
   </div>
   <div class="day-body">
+    <div class="quick-plan">
+      <div><h4>Today's plan</h4><ol class="timeline">
+        <li><strong>Visit Mogrovejo and Santo Toribio</strong><p>Start with the stone village, then the Liébana monastery.</p></li>
+        <li><strong>Cross Puerto de San Glorio</strong><p>Walk fifteen minutes to Mirador de Llesba for the southern Picos view.</p></li>
+        <li><strong>Pause at Riaño</strong><p>Break the drive at the reservoir and replacement village.</p></li>
+        <li><strong>Check in and walk into León</strong><p>Ask for parking guidance, then settle into the compact historic centre.</p></li>
+        <li class="dinner"><strong>Dinner — tapas in Barrio Húmedo, León</strong><p>Order small, have one drink and its free tapa, then move to the next bar. You will not need a separate dinner reservation.</p></li>
+      </ol></div>
+      <aside class="plan-side">
+        <div class="plan-card important"><b>At the hotel</b>Request a refurbished room when booking. Ask reception about the garage before looking for parking.</div>
+        <div class="plan-card"><b>Road note</b>San Glorio is the trip's only remaining pass, but it is a broad, well-graded N-road.</div>
+      </aside>
+    </div>
+    <details class="day-details"><summary>Details, options &amp; background</summary><div class="day-notes">
     <p><strong>Morning.</strong> <strong>Mogrovejo</strong> is a stone village of towers and slate roofs directly beneath the Picos, small enough to walk in twenty minutes and worth every one. Then <strong>Santo Toribio de Liébana</strong>, a monastery holding what is claimed to be the largest surviving fragment of the True Cross — one of a handful of sites in Christendom granted a perpetual jubilee year.</p>
     <p><strong>The drive south</strong> is the point of the day. The N-621 climbs the <strong>Puerto de San Glorio</strong> to 1,609 m; a short track from the pass reaches the <strong>Mirador de Llesba</strong> and its stone bear, with the whole southern wall of the Picos laid out. Fifteen minutes' walk from the car, and arguably the best view of the trip.</p>
     <div class="callout"><b>This is the only pass left on the route</b>And it is not the twisty kind. San Glorio is a broad, well-graded N-road built for lorries, with a viewpoint at the top. If the Hermida gorge on Day 3 was fine, this is easier.</div>
@@ -321,13 +434,14 @@ The Cares Gorge is walked from Poncebos rather than Caín, saving about 80 minut
     <p>Alfonso V sits on Padre Isla by Plaza de Santo Domingo, on a main avenue <em>outside</em> the traffic-restricted old town — so you drive straight to the door rather than threading a medieval street grid at the end of a long day. Cathedral 200 m, Barrio Húmedo seven minutes on foot.</p>
     <div class="callout local"><b>Evening in the Barrio Húmedo</b>León is one of the last Spanish cities where a free tapa still comes with every drink, and it isn't token. Order small, drink slowly, move on after one round. Plaza San Martín and the streets off Calle Ancha. You will not need dinner.</div>
     <div class="callout warn"><b>Two things at check-in</b><strong>Parking:</strong> the hotel's underground garage is in the building directly opposite, and it cannot be reserved — it's first come, and it's tight for anything larger than a compact. The doorman will sort you out; if it's full, there's a public underground garage across the road at a similar rate. Ask at reception before you go looking.<br><br><strong>Rooms:</strong> the 1923 building was fully remodelled in 2018 and the renovated rooms are excellent — spacious, soundproofed, air-conditioned. Some unrenovated stock survives and it is noticeably weaker, so ask for a refurbished room when you book rather than on arrival.</div>
+    </div></details>
   </div>
 </article>
 
 <!-- DAY 7 -->
 <article class="day">
   <div class="day-head"><span class="daynum">Day 7</span><span class="daydate">Sat 26 Sep</span></div>
-  <div class="day-title"><h3>León — Your own way</h3></div>
+  <div class="day-title"><h3>León · Choose your day</h3></div>
   <div class="log">
     <div><span>Drive</span><b class="none">Your choice</b></div>
     <div><span>Walk</span><b>City walking</b></div>
@@ -335,6 +449,19 @@ The Cares Gorge is walked from Poncebos rather than Caín, saving about 80 minut
     <div><span>Book</span><b class="book">Only if Valporquero</b></div>
   </div>
   <div class="day-body">
+    <div class="quick-plan">
+      <div><h4>Today's plan</h4><ol class="timeline">
+        <li><strong>Choose the morning over breakfast</strong><p>Drive north to Valporquero, south to Valdevimbre, or keep the whole day in León.</p></li>
+        <li><strong>Return for late light at the cathedral</strong><p>The stained glass is at its best in the final hour of daylight.</p></li>
+        <li><strong>Continue through central León</strong><p>Add Casa Botines and the Panteón Real at San Isidoro.</p></li>
+        <li class="dinner"><strong>Dinner — Barrio Húmedo or LAV, León</strong><p>Improvise with another tapas crawl, or reserve LAV if you would prefer one seated dinner overlooking Plaza de Santo Domingo.</p></li>
+      </ol></div>
+      <aside class="plan-side">
+        <div class="plan-card choice"><b>Three versions</b>Valporquero cave, Valdevimbre wine cellars, or a completely car-free city day.</div>
+        <div class="plan-card important"><b>Book only if</b>Valporquero has limited timed departures. Reserve in advance if that is your choice.</div>
+      </aside>
+    </div>
+    <details class="day-details"><summary>Details, options &amp; background</summary><div class="day-notes">
     <p>Astorga has moved to Day 10, where it breaks the long drive. That leaves this day genuinely open — decide over breakfast, based on weather and on how much you feel like being in a car.</p>
     <ul>
       <li><strong>Cueva de Valporquero · 45 min north.</strong> The better of the two caves on this route. The long tour covers seven chambers over 90–100 minutes, with departures at 11:30, 13:00 and 16:30; open every day until 30 September, so your Saturday qualifies. Only 30 tickets go online per departure and 30 at the desk — if you want this, book it in advance rather than deciding at breakfast.</li>
@@ -343,13 +470,14 @@ The Cares Gorge is walked from Poncebos rather than Caín, saving about 80 minut
     </ul>
     <p><strong>Whatever you do, be back for the last hour of daylight.</strong> The cathedral holds roughly 1,800 m² of stained glass, an extraordinary proportion of wall given over to window, and it only really works when the sun is low. Then <strong>Casa Botines</strong> (Gaudí) and the <strong>Panteón Real</strong> at San Isidoro, whose painted Romanesque vaults have survived nine centuries with their colour intact.</p>
     <div class="callout local"><b>Second night in the Barrio Húmedo</b>Saturday is when it actually fills up. Same rule as Friday: order small, one drink per bar, let the free tapa decide where you stay.<br><br>If you'd rather sit down properly for one of the two nights, <strong>LAV</strong> is on the hotel's first floor overlooking Plaza de Santo Domingo and carries a Michelin guide mention — about the only reservation worth making in a city built for improvising.</div>
+    </div></details>
   </div>
 </article>
 
 <!-- DAY 8 -->
 <article class="day">
   <div class="day-head"><span class="daynum">Day 8</span><span class="daydate">Sun 27 Sep</span></div>
-  <div class="day-title"><h3>León → Las Médulas → Orellán</h3></div>
+  <div class="day-title"><h3>León → Orellán / Las Médulas</h3></div>
   <div class="log">
     <div><span>Drive</span><b>2h15 total</b></div>
     <div><span>Walk</span><b>2h · easy</b></div>
@@ -357,18 +485,33 @@ The Cares Gorge is walked from Poncebos rather than Caín, saving about 80 minut
     <div><span>Book</span><b class="book">Dinner, both nights</b></div>
   </div>
   <div class="day-body">
+    <div class="quick-plan">
+      <div><h4>Today's plan</h4><ol class="timeline">
+        <li><strong>Leave León mid-morning</strong><p>Drive west towards Orellán / Las Médulas without trying to fill the morning.</p></li>
+        <li><strong>Check current trail access</strong><p>Confirm what is open before planning tomorrow's longer walk.</p></li>
+        <li><strong>Walk to Mirador de Orellán</strong><p>Use the late-afternoon light for the view over the red pinnacles.</p></li>
+        <li><strong>Return to Orellán</strong><p>Tonight is reconnaissance; the full walk is tomorrow.</p></li>
+        <li class="dinner"><strong>Dinner — at O Palleiro, Orellán</strong><p>Eat at the hotel, which cooks from old local recipes. Ring ahead and confirm dinner for both nights.</p></li>
+      </ol></div>
+      <aside class="plan-side">
+        <div class="plan-card important"><b>Check one week before</b>Trail closures can change because of post-fire erosion and rockfall risk.</div>
+        <div class="plan-card"><b>Keep it light</b>Do not try to see the whole site today; the second night creates time for that tomorrow.</div>
+      </aside>
+    </div>
+    <details class="day-details"><summary>Details, options &amp; background</summary><div class="day-notes">
     <p>Leave León mid-morning. Today is the view from above; tomorrow you walk into it. Treat this as reconnaissance and don't try to see everything before dinner.</p>
     <p><strong>Las Médulas</strong> is what remains after Roman engineers dismantled a mountain range for its gold. The technique — <em>ruina montium</em> — meant driving tunnel networks into the rock, then releasing aqueduct water into them until the hydraulic pressure brought the whole hillside down. Pliny the Elder saw it and wrote that the engineers themselves were frightened by what they had made. What is left is a landscape of red pinnacles.</p>
     <div class="callout warn"><b>The fire, honestly</b>August 2025 burned the chestnut groves that frame the site, and around 40% of them are rated poorly for medium-term recovery. But the CSIC assessment found fewer than 20% of individual chestnuts badly damaged, described the heritage damage as isolated and reversible, and named soil erosion as the main problem; the report sent to UNESCO in April 2026 says the same. Orellán reopened within two months of the fire. The pinnacles are geology and were never at risk.<br><br>The live issue is <strong>trail closures from rockfall risk</strong> where erosion has destabilised slopes. Which paths are open changes — ring the Casa del Parque the week before you travel. Go to the <strong>Mirador de Orellán</strong> for the late-afternoon light regardless; that is when the rock turns properly red.</div>
     <p>You are sleeping in <strong>Orellán</strong> — the village the viewpoint belongs to. That is the whole point of this base: you walk up for the evening light rather than driving to it, and again at dawn tomorrow if the sky looks worth it.</p>
     <div class="callout local"><b>Dinner at the hotel</b>O Palleiro cooks from old local recipes, some of them reconstructed Roman, and it is the only kitchen you need on either night. It is a small family place, so ring ahead and confirm dinner for both nights rather than trusting posted hours — Sunday evening in rural Bierzo is not a night to improvise.</div>
+    </div></details>
   </div>
 </article>
 
 <!-- DAY 9 -->
 <article class="day">
   <div class="day-head"><span class="daynum">Day 9</span><span class="daydate">Mon 28 Sep</span></div>
-  <div class="day-title"><h3>Orellán, Las Médulas — El Bierzo, unhurried</h3></div>
+  <div class="day-title"><h3>Orellán / Las Médulas · El Bierzo</h3></div>
   <div class="log">
     <div><span>Drive</span><b>Short hops only</b></div>
     <div><span>Walk</span><b>3h · easy</b></div>
@@ -376,19 +519,34 @@ The Cares Gorge is walked from Poncebos rather than Caín, saving about 80 minut
     <div><span>Book</span><b class="none">Nothing</b></div>
   </div>
   <div class="day-body">
+    <div class="quick-plan">
+      <div><h4>Today's plan</h4><ol class="timeline">
+        <li><strong>Walk into Las Médulas</strong><p>Ask at the visitor centre which circuit is open, then allow two to three easy hours.</p></li>
+        <li><strong>Drive north for a late lunch</strong><p>Visit Palacio de Canedo for its winery, restaurant and bodega shop.</p></li>
+        <li><strong>Continue to Villafranca del Bierzo</strong><p>Walk through the Camino town before returning south.</p></li>
+        <li><strong>Return to Orellán for sunset</strong><p>Add Ponferrada castle only if the day is running comfortably.</p></li>
+        <li class="dinner"><strong>Dinner — at O Palleiro, Orellán</strong><p>Return to the hotel for the second planned dinner rather than trying to improvise in rural Bierzo.</p></li>
+      </ol></div>
+      <aside class="plan-side">
+        <div class="plan-card choice"><b>Major alternative</b>Choose Peñalba de Santiago instead of the full Las Médulas walk; the narrow road takes about an hour each way.</div>
+        <div class="plan-card"><b>Optional extra</b>Ponferrada's Templar castle takes about an hour and sits on the same road.</div>
+      </aside>
+    </div>
+    <details class="day-details"><summary>Details, options &amp; background</summary><div class="day-notes">
     <p>This is the day the second night was bought for. Yesterday you looked down into Las Médulas from Orellán; today you walk into it, and you start from the door.</p>
     <p><strong>Morning — Las Médulas on foot.</strong> Ten minutes down from Orellán. Start at the visitor centre in the village and ask which routes are currently open before you set off; erosion after the fire has closed paths at various points and the picture changes. The classic circuit runs out among the pinnacles and back through what remains of the chestnut groves, two to three hours at an easy pace. Being inside the collapsed workings, rather than looking down at them, is a completely different experience — the scale of what the Romans took apart only registers from the floor of it.</p>
     <div class="callout local"><b>Peñalba de Santiago</b>If you'd rather go up than around: the Valle del Silencio climbs south from Ponferrada to a village of slate roofs at the head of a mountain valley, built around a 10th-century Mozarabic church with a horseshoe-arched double doorway. One of the more extraordinary things in this corner of Spain, and almost nobody goes. The road up is narrow and slow — about an hour each way — so it's this <em>or</em> the full Las Médulas walk, not both.</div>
     <p><strong>Afternoon — the loop north for the wine.</strong> Forty-five minutes up to <strong>Palacio de Canedo</strong>, a restored mansion running as a working winery with a restaurant and a bodega shop. Late lunch there, then fifteen minutes on to <strong>Villafranca del Bierzo</strong>, a Camino town whose Puerta del Perdón granted pilgrims too ill to continue the same indulgence as reaching Santiago. Back to Orellán for sunset. About an hour and forty of driving spread across the whole afternoon.</p>
     <p><strong>Ponferrada's</strong> Templar castle sits on the same road and takes an hour, if you want a third stop.</p>
     <div class="callout"><b>Mencía and Godello</b>Mencía is the red — thin-skinned, high-altitude, closer to the Loire than to Rioja in build. Godello is the white, and the more surprising of the two. Neither travels much beyond Spain, which is the point of drinking them here. Buy at Canedo rather than promising yourself you'll find it at home.</div>
+    </div></details>
   </div>
 </article>
 
 <!-- DAY 10 -->
 <article class="day">
   <div class="day-head"><span class="daynum">Day 10</span><span class="daydate">Tue 29 Sep</span></div>
-  <div class="day-title"><h3>Orellán, Las Médulas → Astorga → Llanuces, Quirós</h3></div>
+  <div class="day-title"><h3>Orellán / Las Médulas → Astorga → Llanuces / Quirós</h3></div>
   <div class="log">
     <div><span>Drive</span><b>3h15 · max 2h at once</b></div>
     <div><span>Walk</span><b>Astorga on foot</b></div>
@@ -396,6 +554,20 @@ The Cares Gorge is walked from Poncebos rather than Caín, saving about 80 minut
     <div><span>Book</span><b class="book">Bistró, 2 nights</b></div>
   </div>
   <div class="day-body">
+    <div class="quick-plan">
+      <div><h4>Today's plan</h4><ol class="timeline">
+        <li><strong>08:30 · Leave Orellán</strong><p>Drive via Ponferrada to Astorga.</p></li>
+        <li><strong>10:00–15:00 · Explore Astorga</strong><p>See the Gaudí palace and cathedral, then allow a long lunch.</p></li>
+        <li><strong>15:00 · Continue north</strong><p>Take the A-6 and AP-66; Santa Cristina de Lena is an optional ten-minute stop.</p></li>
+        <li><strong>17:00 · Arrive in Llanuces / Quirós</strong><p>Check in at Solo Palacio before the late-arrival window begins.</p></li>
+        <li class="dinner"><strong>Dinner — at Solo Bistró, Llanuces</strong><p>Llanuces has no other restaurant, so reserve a table for both nights when booking the hotel.</p></li>
+      </ol></div>
+      <aside class="plan-side">
+        <div class="plan-card important"><b>Route instruction</b>Stay on the motorway to Trubia. Do not take the Lena exit or Cobertoria shortcut.</div>
+        <div class="plan-card important"><b>Arrival</b>Arrivals after 19:00 carry a fee. Llanuces has no other restaurant, so reserve Solo Bistró.</div>
+      </aside>
+    </div>
+    <details class="day-details"><summary>Details, options &amp; background</summary><div class="day-notes">
     <p>The longest transfer of the trip, deliberately broken in the middle by somewhere worth stopping rather than a service station. All motorway, no passes.</p>
     <ul>
       <li><strong>08:30</strong> — leave Orellán.</li>
@@ -409,13 +581,14 @@ The Cares Gorge is walked from Poncebos rather than Caín, saving about 80 minut
     <div class="callout local"><b>A ten-minute stop on the A-66</b>At Pola de Lena, just off the motorway on the last leg north, <strong>Santa Cristina de Lena</strong> stands alone on a hillside — a small 9th-century church belonging to the same UNESCO listing as the Oviedo monuments you see on Day 12. Free, geographically speaking, and it breaks the final hour.</div>
     <div class="callout warn"><b>One turning to avoid</b>Coming north on the A-66, do <em>not</em> take the Lena exit for the Cobertoria shortcut — that is precisely the hairpin road you have removed from this trip. Stay on the motorway as far as Trubia and come up the Quirós valley at river level. Twenty minutes longer, and flat.</div>
     <div class="callout warn"><b>Arrival window</b>Check-in from 15:00; arrivals after 19:00 carry a fee. Llanuces has a population in the teens and no restaurant of any kind, so reserve the Solo Bistró for both nights when you book the room.</div>
+    </div></details>
   </div>
 </article>
 
 <!-- DAY 11 -->
 <article class="day">
   <div class="day-head"><span class="daynum">Day 11</span><span class="daydate">Wed 30 Sep</span></div>
-  <div class="day-title"><h3>Llanuces, Quirós — Senda del Oso by e-bike</h3></div>
+  <div class="day-title"><h3>Llanuces / Quirós · Senda del Oso by e-bike</h3></div>
   <div class="log">
     <div><span>Drive</span><b>35 min to Entrago</b></div>
     <div><span>Ride</span><b>3h · 18–28 km</b></div>
@@ -423,6 +596,20 @@ The Cares Gorge is walked from Poncebos rather than Caín, saving about 80 minut
     <div><span>Book</span><b class="book">Bikes, by WhatsApp</b></div>
   </div>
   <div class="day-body">
+    <div class="quick-plan">
+      <div><h4>Today's plan</h4><ol class="timeline">
+        <li><strong>Drive to Entrago</strong><p>The bike rental is about 35 minutes from Llanuces / Quirós.</p></li>
+        <li><strong>Ride north on the Senda del Oso</strong><p>Choose the 18 km easy descent or the 28 km version via Valdemurio reservoir.</p></li>
+        <li><strong>Take the operator's return shuttle</strong><p>The rental company brings you back to the car at the end.</p></li>
+        <li><strong>Choose the afternoon</strong><p>Drive to Puertos de Marabio, or use the pool, sauna and outdoor jacuzzi.</p></li>
+        <li class="dinner"><strong>Dinner — at Solo Bistró, Llanuces</strong><p>Return to the hotel for dinner after the ride or spa afternoon. Reserve both nights when booking the stay.</p></li>
+      </ol></div>
+      <aside class="plan-side">
+        <div class="plan-card important"><b>Before today</b>Reserve the e-bikes by WhatsApp and carry cash for payment on site.</div>
+        <div class="plan-card choice"><b>Two ride lengths</b>18 km takes about two hours; 28 km with the reservoir spur takes about 3h30.</div>
+      </aside>
+    </div>
+    <details class="day-details"><summary>Details, options &amp; background</summary><div class="day-notes">
     <p>The trail follows a dismantled mining railway through the Trubia gorges — tunnels, river, and limestone walls closing overhead at Peñas Juntas. Rent at <strong>Entrago</strong> and ride north; the whole thing runs downhill in that direction and the operator drives you back to your car at the end.</p>
     <ul>
       <li><strong>18 km · about 2h</strong> — Entrago to Tuñón, almost entirely descending.</li>
@@ -431,13 +618,14 @@ The Cares Gorge is walked from Poncebos rather than Caín, saving about 80 minut
     <p>At <strong>Proaza</strong> the trail passes a large fenced valley holding a rescued Cantabrian brown bear. It is an enclosure and makes no pretence otherwise — but it is the only bear you will see on this trip, and the valley it lives in is large enough that finding it takes a few minutes of looking.</p>
     <div class="callout local"><b>Afternoon option: Puertos de Marabio</b>The road up leaves from Entrago — the same turning as the bike rental. It climbs to a plateau of high karst pasture, a declared natural monument, with a waymarked circular route of low difficulty and little climbing. <em>Brañas</em> and herders' cabins, cattle and loose <em>asturcón</em> ponies, blind valleys and sinkholes, and small lagoons pooling on the limestone. Very close to what Somiedo would have given you, and no pass to reach it. The access lane is narrow, though short — worth knowing.</div>
     <div class="callout"><b>Or don't</b>Infinity pool, sauna, outdoor jacuzzi. This is your only unhurried afternoon in twelve days. Marabio keeps until the next wet morning.</div>
+    </div></details>
   </div>
 </article>
 
 <!-- DAY 12 -->
 <article class="day">
   <div class="day-head"><span class="daynum">Day 12</span><span class="daydate">Thu 1 Oct</span></div>
-  <div class="day-title"><h3>Llanuces, Quirós → Las Xanas → Oviedo → Avilés</h3></div>
+  <div class="day-title"><h3>Llanuces / Quirós → Oviedo → Avilés</h3></div>
   <div class="log">
     <div><span>Drive</span><b>1h40 · all forward</b></div>
     <div><span>Walk</span><b>3h30 + city</b></div>
@@ -445,6 +633,20 @@ The Cares Gorge is walked from Poncebos rather than Caín, saving about 80 minut
     <div><span>Book</span><b class="book">Modern-wing room</b></div>
   </div>
   <div class="day-body">
+    <div class="quick-plan">
+      <div><h4>Today's plan</h4><ol class="timeline">
+        <li><strong>Check out and walk Las Xanas</strong><p>Drive twenty minutes to Villanueva; allow about 3h30 including lunch at Pedroveya.</p></li>
+        <li><strong>Stop above Oviedo</strong><p>Visit Santa María del Naranco and San Miguel de Lillo before entering the city.</p></li>
+        <li><strong>Spend the afternoon in Oviedo</strong><p>See the cathedral and Cámara Santa, Plaza del Fontán and Calle Gascona.</p></li>
+        <li><strong>Continue to Avilés</strong><p>Walk the old quarter and cross to the Centro Niemeyer after dark if energy allows.</p></li>
+        <li class="dinner"><strong>Dinner — choose around Calle Galiana, Avilés</strong><p>Pick somewhere under the arcades after checking in. Keep this flexible around the Oviedo timing and the optional Niemeyer walk.</p></li>
+      </ol></div>
+      <aside class="plan-side">
+        <div class="plan-card important"><b>Timed item</b>Check the Cámara Santa's afternoon hours before leaving Llanuces / Quirós.</div>
+        <div class="plan-card choice"><b>If it rains</b>Replace Las Xanas with Cueva Huerta or Bandujo, both on the same road.</div>
+      </aside>
+    </div>
+    <details class="day-details"><summary>Details, options &amp; background</summary><div class="day-notes">
     <p>Check out and drive twenty minutes to Villanueva. This walk sits directly on the road from Quirós to Oviedo, which is the whole reason the schedule works — you are not doubling back on anything today.</p>
     <p>The <strong>Desfiladero de las Xanas</strong> is a path barely a metre wide, chiselled into the wall of a limestone cleft in the 1920s to connect a village to its valley. It climbs about 2.5 km to the meadows at Pedroveya with the rock closing to a few metres overhead. It takes its name from the <em>xanas</em>, the water spirits of Asturian folklore, who are said to live in exactly this sort of place and to be less benign than they look.</p>
     <p>Walk up, eat at Pedroveya, walk back down: about 3h30. It is the best short walk in central Asturias.</p>
@@ -456,6 +658,7 @@ The Cares Gorge is walked from Poncebos rather than Caín, saving about 80 minut
     <div class="callout local"><b>Calle Gascona before you go</b>The cider street, and its bars open from lunchtime — so you get your <em>culín</em> in daylight instead of at midnight. Asturian <em>sidra natural</em> is unfiltered and still, and is poured <em>escanciada</em> from arm's length above the glass to aerate it on impact. Two fingers deep, drunk in one go before it flattens; the last drop goes on the floor to rinse the glass. Let the waiter pour — everyone tries it themselves once and everyone wears it. Whoever is driving to Avilés sits this one out.</div>
     <p><strong>Thirty minutes on to Avilés.</strong> A working estuary town rather than a cathedral city, and the only place on this route that isn't limestone and Romanesque. <strong>Calle Galiana</strong> is an arcaded medieval street running down to the old quarter, and the streets around Plaza de España are compact and almost entirely untouristed. Across the water sits the <strong>Centro Niemeyer</strong> — Oscar Niemeyer's only European cultural complex, white curves dropped into a post-industrial estuary. Lit up after dark it is worth the ten-minute walk even if you don't go in.</p>
     <div class="callout"><b>At the hotel</b>Palacio de Avilés is a 17th-century palace on Plaza de España with a modern wing attached, and guests report direct access from the hotel through to the car park and the Ferrera gardens. Two things to specify when booking: <strong>ask for a room in the modern wing</strong>, because the old palace rooms are inconsistent and one guest found theirs dated with a leaking shower — and <strong>ask whether an event is booked</strong>. It hosts weddings, and one guest lost a night to music running until five. A Thursday in October is low risk, but it is a thirty-second question the night before a flight.</div>
+    </div></details>
   </div>
 </article>
 
@@ -465,19 +668,34 @@ The Cares Gorge is walked from Poncebos rather than Caín, saving about 80 minut
   <div class="day-title"><h3>Avilés → Asturias Airport → home</h3></div>
   <div class="log">
     <div><span>Drive</span><b>20 min</b></div>
-    <div><span>Flight</span><b>11:00 · be there 09:00</b></div>
+    <div><span>Flight</span><b>11:00 Asturias → 13:05 Brussels</b></div>
     <div><span>Sleep</span><b class="none">—</b></div>
     <div><span>Book</span><b class="none">Nothing</b></div>
   </div>
   <div class="day-body">
+    <div class="quick-plan">
+      <div><h4>Today's plan</h4><ol class="timeline">
+        <li><strong>08:00 · Breakfast in Avilés</strong><p>Eat at the hotel at a normal hour.</p></li>
+        <li><strong>08:30 · Leave for the airport</strong><p>Refuel on the way out of town.</p></li>
+        <li><strong>09:00 · Arrive at Asturias Airport</strong><p>Return the rental car, then check in and drop bags.</p></li>
+        <li><strong>11:00 · Fly to Brussels</strong><p>Arrive in Brussels at 13:05.</p></li>
+      </ol></div>
+      <aside class="plan-side">
+        <div class="plan-card important"><b>Before the trip</b>Confirm the Bilbao-to-Asturias one-way fee and the exact rental return location.</div>
+        <div class="plan-card"><b>Fuel</b>Fill the tank before reaching the airport perimeter.</div>
+      </aside>
+    </div>
+    <details class="day-details"><summary>Details, options &amp; background</summary><div class="day-notes">
 <p>Asturias Airport sits at Santiago del Monte, twenty minutes west of Avilés. This is the whole reason the last base moved: from Oviedo you would be leaving at eight and taking breakfast at quarter past seven, which most Spanish hotels will not serve.</p>
     <ul>
       <li><strong>08:00</strong> — breakfast, at a normal hour.</li>
       <li><strong>08:30</strong> — leave, refuelling on the way out of town.</li>
       <li><strong>09:00</strong> — airport. Rental drop-off, then bag drop.</li>
-      <li><strong>11:00</strong> — wheels up.</li>
+      <li><strong>11:00</strong> — depart Asturias Airport.</li>
+      <li><strong>13:05</strong> — arrive in Brussels.</li>
     </ul>
     <div class="callout warn"><b>The one-way return</b>You collected the car at Bilbao and you are returning it at Asturias. Confirm the drop-off fee and the return location with the rental company before you travel rather than discovering it at the desk with a flight to catch. Fill the tank before you reach the airport perimeter; airport-adjacent fuel is both scarcer and dearer.</div>
+    </div></details>
   </div>
 </article>
 </section>
