@@ -87,7 +87,7 @@ $('#hotels tbody tr').each((i, el) => {
   entities.push(hotel)
   const [checkInDate, checkOutDate] = dateRanges[i]
   stays.push({ id: `stay-${i + 1}`, hotelId: id, checkInDate, checkOutDate,
-    booking: { required: true, status: 'unknown', notes: 'Listed in the planning source; booking confirmation has not been supplied.' },
+    booking: { required: true, status: 'booked', notes: 'Reservation confirmed by the traveller.' },
   })
 })
 if (stays.length !== 6) throw new Error('Expected six hotel rows. Review the source conversion.')
@@ -139,6 +139,9 @@ $('.day').each((i, el) => {
       item.booking = { required: true, status: 'unknown', notes: 'Reserve this table; no confirmation provided.' }
     }
     if (number === 10 && row.hasClass('dinner')) item.entityIds.push('restaurant-casa-laureano')
+    if (['day-1-item-1', 'day-1-item-2', 'day-13-item-3', 'day-13-item-4'].includes(item.id)) {
+      item.booking = { required: true, status: 'booked', notes: /Fly/.test(item.title) ? 'Flight confirmed by the traveller.' : 'Rental car confirmed by the traveller.' }
+    }
     if (narrativePlaces[item.id]) item.entityIds = unique([...item.entityIds, ...narrativePlaces[item.id]])
     if (['day-12-item-2', 'day-12-item-3'].includes(item.id)) item.choiceGroup = 'Day 12 morning: Las Xanas or Naranco'
     return item
@@ -171,8 +174,9 @@ $('#board .board-row').each((_, el) => {
     const description = content($(el))
     const title = text($(el), 'strong') || description.split(' — ')[0]
     const matching = entities.filter((entity) => description.toLowerCase().includes(entity.name.toLowerCase()))
+    const hotelAction = matching.some((entity) => entity.type === 'hotel')
     actions.push({ id: `action-${actions.length + 1}`, title, description, timing,
-      entityIds: matching.map((e) => e.id), dayIds: [], status: 'pending',
+      entityIds: matching.map((e) => e.id), dayIds: [], status: hotelAction || /one-way car hire/i.test(title) ? 'done' : 'pending',
       kind: /re-check|recheck/i.test(description) ? 'access' : /confirm/i.test(description) ? 'confirmation' : 'booking',
     })
   })
@@ -188,7 +192,7 @@ const trip = {
   entities, stays, days, actions, practicalNotes, documentLinks: [],
   source: { file: 'vacation-plan.html', sha256: createHash('sha256').update(source).digest('hex'), notes: [
     'Converted from the working plan. Source facts and opening hours are not newly verified.',
-    'All reservations start unknown; a suggested booking time is not a confirmed booking.',
+    'Hotel stays, both flights and the rental car are confirmed from traveller feedback. Other reservations remain unknown until supplied.',
     'Dates are 20 September–2 October 2026, Europe/Madrid. Seed timestamp denotes the source revision month, not a user save.',
     'Mutually exclusive choices remain optional itinerary entries; no automatic selection was made.',
     'Booking-board timing remains relative (This week / Final week); exact due dates need confirmation.',

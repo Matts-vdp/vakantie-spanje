@@ -1,5 +1,9 @@
 import { expect, test } from '@playwright/test'
 
+async function openDayNote(page: import('@playwright/test').Page) {
+  await page.getByRole('button', { name: /(?:Add|Edit) day note/ }).click()
+}
+
 test.beforeEach(async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-09-14T12:00:00Z'))
 })
@@ -17,11 +21,12 @@ test('browse the complete source data and persist a note across an offline reope
   await expect.poll(() => page.evaluate(() => Boolean(navigator.serviceWorker.controller))).toBe(true)
   const dismiss = page.getByRole('button', { name: 'Dismiss' })
   if (await dismiss.isVisible()) await dismiss.click()
+  await openDayNote(page)
   await page.getByLabel('Day note', { exact: true }).fill('Pack the blue raincoat. Café at 08:00.')
   await page.getByRole('button', { name: 'Save note' }).click()
   await expect(page.getByRole('status')).toContainText('Note saved')
   await page.reload()
-  await expect(page.getByLabel('Day note', { exact: true })).toHaveValue('Pack the blue raincoat. Café at 08:00.')
+  await expect(page.getByText('Pack the blue raincoat. Café at 08:00.', { exact: true })).toBeVisible()
   await page.getByRole('link', { name: 'Trip', exact: true }).click()
   await expect(page.locator('.trip-row')).toHaveCount(13)
   await page.getByRole('link', { name: 'Explore', exact: true }).click()
@@ -34,12 +39,13 @@ test('browse the complete source data and persist a note across an offline reope
   await page.reload()
   await expect(page.getByRole('heading', { name: 'Hotel El Jisu' })).toBeVisible()
   await page.getByRole('link', { name: 'Today', exact: true }).click()
-  await expect(page.getByLabel('Day note', { exact: true })).toHaveValue('Pack the blue raincoat. Café at 08:00.')
+  await expect(page.getByText('Pack the blue raincoat. Café at 08:00.', { exact: true })).toBeVisible()
+  await openDayNote(page)
   await page.getByLabel('Day note', { exact: true }).fill('Saved while offline')
   await page.getByRole('button', { name: 'Save note' }).click()
   await expect(page.getByRole('status')).toContainText('Note saved')
   await page.reload()
-  await expect(page.getByLabel('Day note', { exact: true })).toHaveValue('Saved while offline')
+  await expect(page.getByText('Saved while offline', { exact: true })).toBeVisible()
   await page.screenshot({ path: 'test-results/foundation-mobile.png', fullPage: true })
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true)
   expect(errors).toEqual([])
@@ -47,6 +53,7 @@ test('browse the complete source data and persist a note across an offline reope
 
 test('protect a draft and export the current complete trip', async ({ page }) => {
   await page.goto('/')
+  await openDayNote(page)
   await page.getByLabel('Day note', { exact: true }).fill('Do not lose this draft')
   page.once('dialog', (dialog) => dialog.dismiss())
   await page.getByRole('link', { name: 'Trip', exact: true }).click()
@@ -55,6 +62,7 @@ test('protect a draft and export the current complete trip', async ({ page }) =>
   await page.getByRole('button', { name: 'Save note' }).click()
   await expect(page.getByRole('status')).toContainText('Note saved')
   await page.getByRole('link', { name: 'More', exact: true }).click()
+  await page.getByText('Trip data', { exact: true }).click()
   const download = page.waitForEvent('download')
   await page.getByRole('button', { name: 'Export trip data' }).click()
   const file = await download
@@ -71,6 +79,7 @@ test('browser Back also preserves unsaved day notes when navigation is cancelled
   await page.goto('/')
   await page.getByRole('link', { name: 'Trip', exact: true }).click()
   await page.locator('.trip-row').nth(2).click()
+  await openDayNote(page)
   await page.getByLabel('Day note', { exact: true }).fill('Keep this day-three draft')
   page.once('dialog', (dialog) => dialog.dismiss())
   await page.goBack()

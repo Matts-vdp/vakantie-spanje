@@ -27,6 +27,8 @@ Scheduling a hotel initially assigns one night (not the final departure day). Da
 
 ## Phase 3 — user refinement
 
+- Refined Today with the mockup-style date strip, a title-only day heading, itinerary-first ordering, compact edit icons, activity bottom sheets, and a day-note control beside “The day ahead”. Hotel stays, flights, and rental car are confirmed in the seed from traveller feedback; existing device data is never overwritten by this update.
+- Adopted the mockup’s strongest utility patterns without its lower-contrast dark palette: a sticky screen header, grouped timeline and Trip rows, semantic status pills, honest “Flex” timing, primary-only navigation in itinerary rows, compact hotel disclosure, visible near-term attention rows, filter chips, scan-friendly Explore cards, and activity bottom sheets from both Today and Explore.
 - Gather traveller feedback on the complete initial application.
 - Verify installation, Maps handoff, physical-phone file sharing and offline reopening on actual iOS/Android devices.
 - Traveller confirmation of bookings, remaining source ambiguities and destination links not provided by the source.

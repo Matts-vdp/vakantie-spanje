@@ -3991,8 +3991,8 @@
       "checkOutDate": "2026-09-22",
       "booking": {
         "required": true,
-        "status": "unknown",
-        "notes": "Listed in the planning source; booking confirmation has not been supplied."
+        "status": "booked",
+        "notes": "Reservation confirmed by the traveller."
       }
     },
     {
@@ -4002,8 +4002,8 @@
       "checkOutDate": "2026-09-25",
       "booking": {
         "required": true,
-        "status": "unknown",
-        "notes": "Listed in the planning source; booking confirmation has not been supplied."
+        "status": "booked",
+        "notes": "Reservation confirmed by the traveller."
       }
     },
     {
@@ -4013,8 +4013,8 @@
       "checkOutDate": "2026-09-27",
       "booking": {
         "required": true,
-        "status": "unknown",
-        "notes": "Listed in the planning source; booking confirmation has not been supplied."
+        "status": "booked",
+        "notes": "Reservation confirmed by the traveller."
       }
     },
     {
@@ -4024,8 +4024,8 @@
       "checkOutDate": "2026-09-29",
       "booking": {
         "required": true,
-        "status": "unknown",
-        "notes": "Listed in the planning source; booking confirmation has not been supplied."
+        "status": "booked",
+        "notes": "Reservation confirmed by the traveller."
       }
     },
     {
@@ -4035,8 +4035,8 @@
       "checkOutDate": "2026-10-01",
       "booking": {
         "required": true,
-        "status": "unknown",
-        "notes": "Listed in the planning source; booking confirmation has not been supplied."
+        "status": "booked",
+        "notes": "Reservation confirmed by the traveller."
       }
     },
     {
@@ -4046,8 +4046,8 @@
       "checkOutDate": "2026-10-02",
       "booking": {
         "required": true,
-        "status": "unknown",
-        "notes": "Listed in the planning source; booking confirmation has not been supplied."
+        "status": "booked",
+        "notes": "Reservation confirmed by the traveller."
       }
     }
   ],
@@ -4084,7 +4084,12 @@
           "optional": false,
           "status": "planned",
           "notes": "",
-          "time": "09:20"
+          "time": "09:20",
+          "booking": {
+            "required": true,
+            "status": "booked",
+            "notes": "Flight confirmed by the traveller."
+          }
         },
         {
           "id": "day-1-item-2",
@@ -4093,7 +4098,12 @@
           "entityIds": [],
           "optional": false,
           "status": "planned",
-          "notes": ""
+          "notes": "",
+          "booking": {
+            "required": true,
+            "status": "booked",
+            "notes": "Rental car confirmed by the traveller."
+          }
         },
         {
           "id": "day-1-item-3",
@@ -5361,7 +5371,12 @@
           "optional": false,
           "status": "planned",
           "notes": "",
-          "time": "09:00"
+          "time": "09:00",
+          "booking": {
+            "required": true,
+            "status": "booked",
+            "notes": "Rental car confirmed by the traveller."
+          }
         },
         {
           "id": "day-13-item-4",
@@ -5371,7 +5386,12 @@
           "optional": false,
           "status": "planned",
           "notes": "",
-          "time": "11:00"
+          "time": "11:00",
+          "booking": {
+            "required": true,
+            "status": "booked",
+            "notes": "Flight confirmed by the traveller."
+          }
         }
       ],
       "notices": [
@@ -5404,7 +5424,7 @@
         "hotel-la-posta"
       ],
       "dayIds": [],
-      "status": "pending",
+      "status": "done",
       "kind": "confirmation"
     },
     {
@@ -5416,7 +5436,7 @@
         "hotel-mypalace"
       ],
       "dayIds": [],
-      "status": "pending",
+      "status": "done",
       "kind": "confirmation"
     },
     {
@@ -5428,7 +5448,7 @@
         "hotel-palacio-aviles"
       ],
       "dayIds": [],
-      "status": "pending",
+      "status": "done",
       "kind": "booking"
     },
     {
@@ -5440,7 +5460,7 @@
         "hotel-el-jisu"
       ],
       "dayIds": [],
-      "status": "pending",
+      "status": "done",
       "kind": "booking"
     },
     {
@@ -5452,7 +5472,7 @@
         "hotel-o-palleiro"
       ],
       "dayIds": [],
-      "status": "pending",
+      "status": "done",
       "kind": "confirmation"
     },
     {
@@ -5462,7 +5482,7 @@
       "timing": "This week",
       "entityIds": [],
       "dayIds": [],
-      "status": "pending",
+      "status": "done",
       "kind": "confirmation"
     },
     {
@@ -5630,7 +5650,7 @@
     "sha256": "e3a36c72a0526e70c22bd4c2c082e942672772d98a2a088c2ea9d6062a3cfe31",
     "notes": [
       "Converted from the working plan. Source facts and opening hours are not newly verified.",
-      "All reservations start unknown; a suggested booking time is not a confirmed booking.",
+      "Hotel stays, both flights and the rental car are confirmed from traveller feedback. Other reservations remain unknown until supplied.",
       "Dates are 20 September–2 October 2026, Europe/Madrid. Seed timestamp denotes the source revision month, not a user save.",
       "Mutually exclusive choices remain optional itinerary entries; no automatic selection was made.",
       "Booking-board timing remains relative (This week / Final week); exact due dates need confirmation.",

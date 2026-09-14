@@ -3,7 +3,7 @@ import seed from './data/initial-trip.json'
 import { parseTrip, type Entity, type Trip } from './domain/trip'
 import { activeDay, formatDate } from './domain/dates'
 import { tripStore } from './storage/trip-store'
-import { DayView, PlaceActions, BookingDetails } from './components/DayView'
+import { ActivitySheet, DayView, PlaceActions, BookingDetails } from './components/DayView'
 import { Icon, type IconName } from './components/Icon'
 import { PwaStatus } from './components/PwaStatus'
 import { Editor } from './components/Editor'
@@ -39,16 +39,23 @@ function Explore({ trip }: { trip: Trip }) {
   const [type, setType] = useState('')
   const [region, setRegion] = useState('')
   const [planned, setPlanned] = useState('')
+  const [detail, setDetail] = useState<Extract<Entity, { type: 'activity' }>>()
   const plannedIds = new Set([...trip.days.flatMap(d => d.items.filter(i => i.status !== 'skipped').flatMap(i => i.entityIds)), ...trip.stays.filter(s => trip.days.some(d => d.stayId === s.id)).map(s => s.hotelId)])
   const normalize = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
   const results = trip.entities.filter(e => (!type || e.type === type) && (!region || e.region === region) && (!planned || plannedIds.has(e.id) === (planned === 'planned'))).filter((e) => normalize([e.name, e.region, e.type, e.description, e.notes, ...e.tags].join(' ')).includes(normalize(search)))
   return <>
     <header className="page-heading"><p className="eyebrow">Keep your options open</p><h1>Explore</h1><p className="lede">The places you planned. And the ones you might.</p></header>
-    <label className="search-label" htmlFor="search">Find a place, region or activity</label>
-    <input id="search" type="search" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Try Potes, a cave, or a rainy day…" />
-    <div className="filters"><label>Type<select aria-label="Type" value={type} onChange={e => setType(e.target.value)}><option value="">All types</option>{[...new Set(trip.entities.map(e => e.type))].map(t => <option key={t}>{t}</option>)}</select></label><label>Region<select aria-label="Region" value={region} onChange={e => setRegion(e.target.value)}><option value="">All regions</option>{[...new Set(trip.entities.map(e => e.region))].filter(Boolean).sort().map(r => <option key={r}>{r}</option>)}</select></label><label>Plan<select aria-label="Plan" value={planned} onChange={e => setPlanned(e.target.value)}><option value="">All places</option><option value="planned">Planned</option><option value="alternative">Alternatives</option></select></label></div><a className="button" href="#/new">Add a place or note</a><p className="small muted" role="status">{results.length} places & notes</p>
-    <div className="browse-list">{results.map((entity) => <article key={entity.id}><a className="browse-title" href={`#/place/${entity.id}`}><div><span className="eyebrow">{entity.region} · {entity.type}</span><h2>{entity.name}</h2></div><Icon name="arrow" /></a>{entity.description && <p>{entity.description}</p>}<PlaceActions entity={entity} /></article>)}</div>
-    {!results.length && <p>No places found. Try another name or region.</p>}
+    <div className="search-wrap"><Icon name="search" size={19} /><label className="sr-only" htmlFor="search">Find a place, region or activity</label><input id="search" type="search" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search places, regions, or activities" /></div>
+    <div className="filter-chips" aria-label="Type filters">{['', ...new Set(trip.entities.map(e => e.type))].map(value => <button key={value || 'all'} className="filter-chip" aria-pressed={type === value} onClick={() => setType(value)}>{value || 'All'}</button>)}</div>
+    <div className="filter-selects"><label>Region<select aria-label="Region" value={region} onChange={e => setRegion(e.target.value)}><option value="">All regions</option>{[...new Set(trip.entities.map(e => e.region))].filter(Boolean).sort().map(r => <option key={r}>{r}</option>)}</select></label><label>Plan<select aria-label="Plan" value={planned} onChange={e => setPlanned(e.target.value)}><option value="">All places</option><option value="planned">Planned</option><option value="alternative">Alternatives</option></select></label></div>
+    <div className="browse-toolbar"><p className="small muted" role="status">{results.length} places & notes</p><a className="text-button" href="#/new">+ Add a place</a></div>
+    <div className="activity-grid">{results.map((entity) => {
+      const meta = entity.type === 'activity' ? [entity.activity.duration, entity.activity.effort] : entity.type === 'hotel' ? [entity.hotel.checkIn && `Check-in ${entity.hotel.checkIn}`] : entity.facts.slice(0, 2).map(fact => fact.value)
+      const content = <><div className="activity-top"><div><h2>{entity.name}</h2><span>{entity.region} · {entity.type}</span></div><Icon name="chevron" size={18} /></div>{entity.description && <p>{entity.description}</p>}<div className="meta-line">{meta.filter(Boolean).map(value => <span className="status-badge neutral" key={value}>{value}</span>)}</div></>
+      return <article className="activity-card" key={entity.id}>{entity.type === 'activity' ? <button className="activity-card-button" onClick={() => setDetail(entity)}>{content}</button> : <a className="activity-card-button" href={`#/place/${entity.id}`}>{content}</a>}</article>
+    })}</div>
+    {!results.length && <div className="empty-state"><Icon name="search" />No places match that search.</div>}
+    <ActivitySheet entity={detail} onClose={() => setDetail(undefined)} />
   </>
 }
 
@@ -99,9 +106,11 @@ export function App() {
   if (!trip) return <main className="loading" role="status"><img src="./icon.svg" width="48" height="48" alt="" /><h1>Opening your trip…</h1><p>Getting your itinerary from this device.</p></main>
   const current = activeDay(trip, now)
   const [section, id] = route.split('/')
-  const selectedDay = section === 'day' ? trip.days.find((d) => d.id === id) : current.day
+  const selectedDay = section === 'day' || (section === 'today' && id) ? trip.days.find((d) => d.id === id) : current.day
   const selectedEntity = section === 'place' ? trip.entities.find((e) => e.id === id) : undefined
   const tab = section === 'day' ? 'trip' : section === 'place' ? 'explore' : section
+  const editing = ['new', 'entity', 'item', 'stay', 'schedule', 'documents', 'action'].includes(section)
+  const screenTitle = editing ? 'Edit trip' : section === 'day' ? 'Trip' : section === 'place' ? 'Explore' : tabs.find(item => item.id === tab)?.label ?? 'Green Spain'
   async function saveTrip(next: Trip, replace = false) {
     if (!trip || writing.current) throw new Error('A save is already in progress. Try again shortly.')
     writing.current = true; setSaving(true)
@@ -113,14 +122,14 @@ export function App() {
     const next = { ...trip, days: trip.days.map((day) => day.id === selectedDay.id ? { ...day, notes: value } : day) }
     await saveTrip(next)
   }
-  const notFound = !['today', 'day', 'trip', 'explore', 'more', 'place', 'new', 'entity', 'item', 'stay', 'schedule', 'documents', 'action'].includes(section) || (section === 'day' && !selectedDay) || (section === 'place' && !selectedEntity)
+  const notFound = !['today', 'day', 'trip', 'explore', 'more', 'place', 'new', 'entity', 'item', 'stay', 'schedule', 'documents', 'action'].includes(section) || (['day', 'today'].includes(section) && !selectedDay) || (section === 'place' && !selectedEntity)
   return <div className="app">
     <a className="skip-link" href="#main" onClick={(event) => { event.preventDefault(); document.getElementById('main')?.focus() }}>Skip to content</a>
-    <header className="app-header"><a className="brand" href="#/today"><img src="./icon.svg" width="34" height="34" alt="" /><span>Green Spain<small>20 Sep — 2 Oct 2026</small></span></a><span className="device-status"><span className={`status-dot ${online ? '' : 'offline'}`} />{online ? 'On this device' : 'Offline'}</span></header>
+    <header className="app-header"><a className="brand" href="#/today"><img src="./icon.svg" width="32" height="32" alt="" /><span>{screenTitle}<small>Green Spain · 20 Sep — 2 Oct</small></span></a><span className="device-status"><span className={`status-dot ${online ? '' : 'offline'}`} />{online ? 'On this device' : 'Offline ready'}</span></header>
     <main id="main" className="main" tabIndex={-1}>
       {notFound ? <><h1>That page isn’t here</h1><a className="action" href="#/today">Return to your itinerary</a></> : null}
-      {!notFound && (section === 'today' || section === 'day') && selectedDay && <DayView key={selectedDay.id} trip={trip} day={selectedDay} context={section === 'today' ? current.phase === 'before' ? 'Your trip starts soon · Preview' : current.phase === 'after' ? 'Trip complete · Last day' : 'Today' : undefined} onSaveNote={saveNote} onDirty={guardDirty} onSaveTrip={saveTrip} />}
-      {section === 'trip' && <><header className="page-heading"><p className="eyebrow">13 days · 12 nights · 6 bases</p><h1>The whole trip</h1><p className="lede">From the coast to the mountains. One day at a time.</p></header><div className="trip-list">{trip.days.map((day, index) => <a className="trip-row" key={day.id} href={`#/day/${day.id}`}><span className="day-number">{String(index + 1).padStart(2, '0')}</span><div><span className="eyebrow">{formatDate(day.date)}{day.date === current.today ? ' · Today' : ''}</span><h2>{day.title}</h2><p>{day.summary}</p></div><Icon name="arrow" /></a>)}</div></>}
+      {!notFound && (section === 'today' || section === 'day') && selectedDay && <DayView key={selectedDay.id} trip={trip} day={selectedDay} todayMode={section === 'today'} onSaveNote={saveNote} onDirty={guardDirty} onSaveTrip={saveTrip} />}
+      {section === 'trip' && <><header className="page-heading"><p className="eyebrow">20 September — 2 October</p><h1>The whole trip</h1><p className="lede">13 days · 12 nights · 6 bases</p></header><div className="trip-list">{trip.days.map((day, index) => <a className={`trip-row ${day.date === current.today ? 'current' : ''}`} key={day.id} href={`#/day/${day.id}`}><span className="day-number">Day<b>{index + 1}</b></span><div><h2>{day.title}</h2><p>{formatDate(day.date)}</p><div className="meta-line">{day.facts.filter(fact => !['Sleep', 'Book'].includes(fact.label)).slice(0, 2).map(fact => <span className="status-badge neutral" key={fact.label}>{fact.label}: {fact.value}</span>)}</div></div><Icon name="chevron" size={18} /></a>)}</div></>}
       {section === 'explore' && <Explore trip={trip} />}
       {section === 'place' && selectedEntity && <PlaceDetail entity={selectedEntity} trip={trip} />}
       {section === 'more' && <><header className="page-heading"><h1>More</h1></header><MoreTools trip={trip} onReplace={next => saveTrip(next, true)} onDirty={guardDirty} /></>}

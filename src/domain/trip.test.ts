@@ -13,7 +13,8 @@ describe('source dataset and portable schema', () => {
     expect(trip.days.filter((d) => d.stayId === 'stay-2')).toHaveLength(3)
     expect(trip.days[12].stayId).toBeUndefined()
     expect(trip.days[1].items[1].entityIds).toContain('opt-covadonga')
-    expect(trip.stays.every((s) => s.booking.status === 'unknown')).toBe(true)
+    expect(trip.stays.every((s) => s.booking.status === 'booked')).toBe(true)
+    expect(['day-1-item-1', 'day-1-item-2', 'day-13-item-3', 'day-13-item-4'].every((id) => trip.days.flatMap((day) => day.items).find((item) => item.id === id)?.booking?.status === 'booked')).toBe(true)
   })
   it('round-trips edits and user-created entities in a single JSON document', () => {
     const trip = parseTrip(seed)

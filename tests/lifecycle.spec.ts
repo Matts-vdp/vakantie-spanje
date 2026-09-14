@@ -41,7 +41,7 @@ test('real phase-1 to phase-2 worker upgrade under a static subdirectory preserv
     await expect(page.getByRole('button', { name: 'Update app', exact: true })).toBeEnabled()
     await page.getByRole('button', { name: 'Update app', exact: true }).click()
     await expect(page.getByRole('link', { name: 'Add a place or note', exact: true })).toBeVisible()
-    await expect(page.getByLabel('Day note', { exact: true })).toHaveValue('Draft while update waits')
+    await expect(page.getByText('Draft while update waits', { exact: true })).toBeVisible()
     await page.getByRole('link', { name: 'Add a place or note', exact: true }).click()
     await page.getByLabel('Name', { exact: true }).fill('Phase 2 offline addition')
     nextWorker = true
@@ -52,7 +52,7 @@ test('real phase-1 to phase-2 worker upgrade under a static subdirectory preserv
     await expect(page.locator('.timeline')).toContainText('Phase 2 offline addition')
     await page.reload()
     await expect(page.locator('.timeline')).toContainText('Phase 2 offline addition')
-    await expect(page.getByLabel('Day note', { exact: true })).toHaveValue('Draft while update waits')
+    await expect(page.getByText('Draft while update waits', { exact: true })).toBeVisible()
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
     await page.screenshot({ path: 'test-results/phase2-upgraded-subdirectory.png', fullPage: true })
   } finally { await new Promise<void>((resolve, reject) => server.close(e => e ? reject(e) : resolve())) }

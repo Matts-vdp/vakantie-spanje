@@ -15,16 +15,16 @@ describe('phase 2 canonical trip operations', () => {
     moved.days[4].items[0].booking!.status = 'pending'
     expect(actionDone(moved, moved.actions[7])).toBe(false)
   })
-  it('keeps multi-booking and operational confirmations honest', () => {
+  it('keeps multi-booking resolution honest and resolves confirmed hotel actions', () => {
     const trip = parseTrip(seed)
     trip.days[7].items[1].booking = { ...emptyBooking(), status: 'booked' }
     expect(actionDone(trip, trip.actions[9])).toBe(false)
     trip.days[7].items[2].booking = { ...emptyBooking(), status: 'not-needed' }
     expect(actionDone(trip, trip.actions[9])).toBe(true)
-    trip.stays[1].booking.status = 'booked'
-    expect(actionDone(trip, trip.actions[3])).toBe(false)
-    trip.actions[3].status = 'done'
+    trip.actions[3].status = 'pending'
     expect(actionDone(trip, trip.actions[3])).toBe(true)
+    trip.stays[1].booking.status = 'pending'
+    expect(actionDone(trip, trip.actions[3])).toBe(false)
   })
   it('protects shared places and deletes only unused traveller-created entities', () => {
     let trip = parseTrip(seed)
