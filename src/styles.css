@@ -716,3 +716,30 @@ textarea {
     scroll-behavior:auto!important
   }
 }
+.field { display:block; margin:16px 0; font-size:.88rem; font-weight:550 }
+.field input,.field select,.filters select { width:100%; min-width:0; min-height:44px; font:inherit; font-size:16px; padding:10px; margin-top:6px; border:1px solid #bac7b7; border-radius:6px; background:white; color:inherit }
+.field input[type=file] { max-width:100% }
+select { font:inherit; max-width:100% }
+.editor { max-width:640px; margin-top:24px }
+.editor fieldset { border:0; padding:0; min-width:0 }
+.editor fieldset fieldset { border-top:1px solid var(--line); margin-top:24px; padding-top:12px }
+.editor legend { font-weight:650; padding:0 12px 0 0 }
+.editor-footer { display:flex; gap:12px; flex-wrap:wrap; padding:24px 0 }
+.check-field { display:flex; gap:10px; align-items:center; min-height:44px }
+.check-field input { width:22px; height:22px }
+.filters { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:16px 0 }
+.filters label { min-width:0; font-size:.8rem }
+.booking-row { border-bottom:1px solid var(--line); padding:16px 0 }
+.booking-row p { font-size:.85rem; color:var(--muted) }
+.import-preview { padding:18px; background:var(--soft); margin:18px 0 }
+.import-preview .actions { margin-top:18px }
+.main>.actions { margin-bottom:24px }
+.main>.tool-section { margin-top:24px }
+.danger { color:#983727 }
+input:focus-visible,select:focus-visible { outline:3px solid #b98138; outline-offset:3px }
+.field select[multiple] { min-height:150px }
+.editor p,.booking-row,.detail-facts dd,.import-preview { overflow-wrap:anywhere }
+.attention-summary { border-top:1px solid var(--line); margin:10px 0; padding:0 0 10px }
+.attention-summary summary { cursor:pointer; font-weight:600; min-height:44px; padding:12px 0; font-size:.86rem }
+.attention-summary + .day-layout { margin-top:24px }
+.editor details>summary { min-height:44px; padding:12px 0; cursor:pointer; font-weight:600 }

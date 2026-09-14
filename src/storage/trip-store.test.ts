@@ -1,5 +1,5 @@
 import 'fake-indexeddb/auto'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { createTripStore, StaleTripError } from './trip-store'
 import { parseTrip } from '../domain/trip'
 import seed from '../data/initial-trip.json'
@@ -60,5 +60,31 @@ describe('native IndexedDB trip storage', () => {
       }
     })
     await expect(store.loadOrInitialize(parseTrip(seed))).rejects.toThrow()
+  })
+})
+
+
+describe('transaction failure and restore integrity', () => {
+  it('rejects aborted writes and preserves current state and backup atomically', async () => {
+    const store = setup()
+    const initial = await store.loadOrInitialize(parseTrip(seed))
+    const imported = parseTrip(seed); imported.days[0].notes = 'Imported'
+    const current = await store.replace(imported, initial.revision)
+    const originalPut = IDBObjectStore.prototype.put
+    const spy = vi.spyOn(IDBObjectStore.prototype, 'put').mockImplementation(function (this: IDBObjectStore, value, key) {
+      const request = originalPut.call(this, value, key)
+      this.transaction.abort()
+      return request
+    })
+    try {
+      const next = structuredClone(current); next.days[0].notes = 'Must not commit'
+      await expect(store.save(next, current.revision)).rejects.toThrow()
+      await expect(store.replace(next, current.revision)).rejects.toThrow()
+      expect(await store.read()).toEqual(current)
+      expect(await store.readBackup()).toEqual(initial)
+    } finally { spy.mockRestore() }
+    const restored = await store.replace((await store.readBackup())!, current.revision)
+    expect(restored.days[0].notes).toBe(initial.days[0].notes)
+    expect(await store.readBackup()).toEqual(current)
   })
 })

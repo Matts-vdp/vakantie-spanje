@@ -1,46 +1,59 @@
-# Foundation architecture
+# Application architecture
 
-## Application
+## Canonical data and storage
 
-A Vite-built React SPA with hash navigation. Hash routes work on a generic static file server and at a subdirectory without rewrite rules. Today and historical/future days use the same `DayView`. Styling uses system fonts and local SVG/PNG icons, with no runtime font or imagery dependency.
+A React/TypeScript/Vite SPA uses hash routes and native IndexedDB directly. React renders one canonical trip; `src/storage/trip-store.ts` owns durable reads, commit-aware writes and atomic replacement. Runtime dependencies remain React, React DOM and Zod. There is no backend, storage wrapper, synchronization or base/override merge.
 
-React owns the current in-memory view of the canonical trip. `src/storage/trip-store.ts` owns durable reads/writes. A component reports success only after the storage transaction commits; failed saves leave the draft in the form. There is no base/override merge system.
+The database version remains 1, with a `trip` store and `current` / `before-import` keys. Seed initialization happens only in an empty store and is atomic even with concurrent first loads. Connections close after transactions and on version change. Saves compare the persisted revision inside the same write transaction, then resolve only on commit. A stale or aborted save cannot overwrite data and leaves the form draft visible.
 
-Runtime dependencies are React, React DOM and Zod. Zod supplies runtime boundary validation and inferred TypeScript types. IndexedDB is accessed directly; there is no storage wrapper library. Cheerio is used only by the source converter; Vitest, fake-indexeddb and Playwright are development-only.
+## Portable schema v2 and v1 migration
 
-## Version 1 dataset
+`src/domain/trip.ts` validates all storage, seed, save and JSON boundaries. It checks dates, times, unique IDs, entity/day/stay/visit references, overnight consistency and HTTP(S) URLs. V2 adds optional `booking.bookingUrl`, itinerary `choiceGroup`, and action `itemIds` / `stayIds`. Existing document URLs and all previous fields retain their meaning.
 
-`schemaVersion` versions the portable JSON format, independently from IndexedDB's database version. The current database has one object store, `trip`, with keys `current` and (after an import) `before-import`.
+`parseTrip` recognizes schema v1, copies its top-level record with version 2, then validates it with the complete current schema. It does not modify the input, read a new seed, add new source entities, or overwrite traveller fields. Migration is in memory on read; the next committed save or replacement persists v2. Validation failure leaves the original record untouched. Other versions are rejected. Database versioning and portable format versioning are independent.
 
-- Entities are a discriminated union: hotel, activity, restaurant, note and transport. Common metadata and links remain shared; type-specific fields have their own sections.
-- Days own ordered itinerary items. An item can reference several entities because the planning source contains choices and multi-place stops. Explicit times are optional; suggested times in prose remain planning context.
-- Stays reference hotel entities and check-in/check-out dates. Checkout is exclusive: the last morning has no overnight stay. Operational reservations belong to scheduled items or stays, not to reusable place descriptions.
-- `booking.required = null` means unspecified. `status = unknown` distinguishes missing booking evidence from known pending or confirmed bookings.
-- Actions separately represent booking, access, confirmation and decision work. The source's relative timing is retained until real deadlines are chosen.
-- Notes, source provenance, links and the complete library travel in one JSON export. Internal document links start empty.
+Version 2 is deliberate even though the new fields are optional: the old version-1 validator would silently strip unknown fields. Old builds now refuse a v2 record/export instead of accepting a lossy downgrade. Sharing from an old phone to an updated phone is supported; update the receiving app before importing a v2 export. There is no automatic downgrade.
 
-`parseTrip` validates the seed, storage reads and imported files, including unique IDs, references, chronological dates, compatible versions and HTTP(S) links. Unsupported or damaged stored data produces a recoverable error screen; it is never silently reset.
+## Ownership and editing
 
-## Storage and concurrency
+Entities are reusable typed hotel/activity/restaurant/note/transport records. Venue information belongs to the entity, reservations to a visit or stay. Days own ordered visits; visits may reference multiple places. Visit titles remain independently editable labels, while linked names and venue details use shared entities. Stays reference one hotel and use an exclusive checkout date.
 
-Initialization checks and writes in one read-write transaction so simultaneous first loads cannot overwrite each other. Database connections close after each transaction and on `versionchange`. A blocked upgrade tells users to close other tabs.
+`domain/operations.ts` contains scheduling, moving, safe entity deletion, exclusive-choice selection and action derivation. `components/Editor.tsx` holds a separate whole-trip draft while editing a place, visit, stay, action or document shortcuts. Required fields are minimal; type-specific details stay typed. Creating a hotel with a day creates a one-night stay; subsequent date changes reassign nights only at save time. Existing reservations are retained when a different hotel is assigned. Explicit remove-stay controls clear day/action references without deleting the venue. Source entities cannot be deleted; user-created entities can only be deleted once unused. Visit removal retains shared entities and removes explicit action references.
 
-Saving checks the persisted revision inside the same transaction before writing the complete next snapshot. A stale tab receives an error and retains its unsaved form text. `revision` is local concurrency metadata; import increments the receiving device's revision rather than trusting the sender's revision.
+App-level refs guard internal/hash/Back navigation immediately and prevent navigation during writes. Dirty forms prompt before leaving, unload warns, and the calendar does not advance while dirty or writing. State updates only after a successful transaction. Service-worker updates are disabled for all dirty forms, import previews and in-flight writes. Form failure messages retain the draft for correction or copying before a reload.
 
-The `replace` primitive validates before opening a write transaction, then backs up current state and replaces it atomically. Its caller must provide explicit replacement confirmation; that UI is phase 2. Only one pre-import backup is retained. Browser storage is not a guaranteed backup: clearing site data and browser eviction remain possible.
+## Actions, booking state and calendar
 
-## Dates
+Today uses Europe/Madrid and a minute clock. Before departure it previews the first day; after return it shows the final day. Contextual actions use the selected day plus two following days. Explicit deadlines at or before the window end also appear when a target is still ahead; an unassigned action appears on the first-day preview. More always shows all actions. Relative source labels (This week, 2–3 weeks out, Final week) are preserved without invented absolute dates. The traveller may set a real deadline in Review action.
 
-Trip dates are ISO calendar dates and use `Europe/Madrid` for Today. Before departure, Today explicitly previews day 1; after the trip it shows the last day with a trip-complete label. The clock refreshes once per minute. Tests fix the clock to avoid date-dependent failures. User-entered booked times will use local wall-clock time in the trip timezone.
+For the original `green-spain-2026` trip, stable source IDs derive action relationships even in old saved files. This is a view relationship, not a seed merge. Explicit `itemIds` / `stayIds` override these defaults. Moving a linked visit moves the contextual reminder with it. Removed targets are not resurrected.
 
-## PWA and updates
+| Source actions | Operational targets |
+| --- | --- |
+| 1 / 2 / 5 | La Posta / MyPalace / O Palleiro stays and extra confirmations |
+| 3 | Montemar and Palacio de Avilés stays, plus room/event requests |
+| 4 | El Jisu stay, plus the packed-breakfast request |
+| 6 | Arrival and departure days; car hire confirmation |
+| 7 / 8 / 9 | Fuente Dé / El Soplao / day-7 optional morning visit |
+| 10 | Both the Canedo tour and restaurant visits |
+| 11 / 12 / 13 | Don Paco / Covadonga access bus / Cares access bus |
+| 14 | Senda del Oso bicycle and return-shuttle visits |
+| 15 / 16 | Cabrales cheese cave / Las Médulas access review |
 
-`vite-plugin-pwa` generates the manifest and service worker. Only locally built app assets are precached; the seed is bundled in JavaScript. External websites, Maps and Drive are never cached by the app. Current trip state stays in IndexedDB, independently of app-shell caches.
+Booking-only actions are resolved only when every linked booking is confirmed (`booked`) or not needed. They reopen if a booking becomes pending. They do not offer a contradictory manual Done toggle. Access/confirmation actions, and the mixed hotel tasks 3/4, retain a separate Done/check state. A confirmed room is not evidence of a packed breakfast, dinner, parking or event confirmation. Source compound wording remains visible for review. Optional bookings can be explicitly marked not needed. Skipping a visit alone never cancels a reservation.
 
-New workers wait for a user-triggered update. The update action is disabled while a note is dirty. No application startup, seed regeneration or service-worker activation resets traveller data. New schema versions must add and test an explicit migration before shipping.
+Source Day 12 morning visits share an exclusive group, also derived for v1 files that lack the field. Selecting one marks it planned and other group members skipped, leaving all library alternatives available. No initial choice is inferred. Other multi-place rows retain the source's ambiguity and can be edited through visit associations/status.
 
-Tests exercise production offline reloads. Physical phone installation, cross-phone file transfer, platform-specific navigation handoff and a real old-build/new-build update cycle remain explicit later checks.
+## Import and backup
 
-## Build and portability
+More accepts a JSON file up to 5 MB, validates it, and shows name, dates, record counts and timestamp. Selection does not write data. Explicit replacement warns that the entire receiving trip is replaced; a current-data export is offered alongside confirmation. The existing `replace` transaction stores current data as backup and writes the replacement together, using the receiving device's revision. A stale confirmation or malformed/incompatible file leaves both current and backup untouched.
 
-The production output is `dist/`. Original planning HTML/Markdown, tests, source-only conversion tools and personal documents are not copied there. Dependencies are pinned in package.json and package-lock.json. CI can build/test from a Linux checkout without a home PC. Hosting, GitHub connection and deployment configuration remain rollout work.
+Review pre-import backup validates and previews the single stored backup and allows downloading it. Restore uses the same confirmed replacement transaction, so current and backup swap. A cancelled preview performs no write. All screens receive the new canonical state after commit. Clearing browser storage can still remove both records: exported files remain the independent backup.
+
+## Source and offline boundaries
+
+The build-time converter processes the planning HTML only for empty-device seed data. Twelve explicit narrative destinations now reuse existing source entities/links; uncertain trail turns, parking/shuttle pickup points, airport terminals and restaurant URLs are left unset. The source audit documents this. Neither the original HTML nor specification is copied into the production output.
+
+The PWA precaches local app assets and the bundled seed. IndexedDB is independent of app-shell caches. No service-worker activation, seed regeneration or application startup resets local edits. Maps, websites, booking links and restricted Drive links are external and not cached or embedded. The app contains no private documents or supplied private URLs.
+
+Production uses relative asset URLs and hash routes; a generic static server can serve a subdirectory. The browser lifecycle test builds actual phase 1 commit `b19af3327af667c9a959e7da17e429bf0c584325` into an ignored dependency-cache fixture, installs it under `/travel/`, then serves the current build and verifies update/offline persistence. CI fetches history for that fixture. Node 24 and the committed lockfile remain the expected environment. Rollout is separate.

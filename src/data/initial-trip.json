@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "id": "green-spain-2026",
   "name": "Green Spain",
   "timezone": "Europe/Madrid",
@@ -4328,7 +4328,9 @@
           "id": "day-3-item-5",
           "title": "Continue to Camaleño",
           "description": "Aim to check in at Hotel El Jisu around 16:30–17:00, leaving a quiet evening before the hiking days.",
-          "entityIds": [],
+          "entityIds": [
+            "hotel-el-jisu"
+          ],
           "optional": false,
           "status": "planned",
           "notes": ""
@@ -4337,7 +4339,9 @@
           "id": "day-3-item-6",
           "title": "Dinner — at Hotel El Jisu",
           "description": "The hotel restaurant serves dinner from 20:30 to 22:00, so there is no need to look elsewhere after the transfer.",
-          "entityIds": [],
+          "entityIds": [
+            "hotel-el-jisu"
+          ],
           "optional": false,
           "status": "planned",
           "notes": ""
@@ -4414,7 +4418,9 @@
           "id": "day-4-item-3",
           "title": "Return to Fuente Dé on foot",
           "description": "The official circuit is 14.5 km, about 4h15, with 974 m of sustained descent.",
-          "entityIds": [],
+          "entityIds": [
+            "opt-fuente-de"
+          ],
           "optional": false,
           "status": "planned",
           "notes": ""
@@ -4423,7 +4429,9 @@
           "id": "day-4-item-4",
           "title": "Return to Hotel El Jisu",
           "description": "Your car is waiting at Fuente Dé; no taxi or second-car positioning is needed.",
-          "entityIds": [],
+          "entityIds": [
+            "hotel-el-jisu"
+          ],
           "optional": false,
           "status": "planned",
           "notes": ""
@@ -4432,7 +4440,9 @@
           "id": "day-4-item-5",
           "title": "Dinner — at Hotel El Jisu",
           "description": "Eat at the hotel restaurant between 20:30 and 22:00 after the walk.",
-          "entityIds": [],
+          "entityIds": [
+            "hotel-el-jisu"
+          ],
           "optional": false,
           "status": "planned",
           "notes": ""
@@ -4526,7 +4536,9 @@
           "id": "day-5-item-5",
           "title": "Dinner — at Hotel El Jisu",
           "description": "Return to the hotel for dinner between 20:30 and 22:00; keep the evening simple after the gorge walk.",
-          "entityIds": [],
+          "entityIds": [
+            "hotel-el-jisu"
+          ],
           "optional": false,
           "status": "planned",
           "notes": ""
@@ -4800,7 +4812,9 @@
           "id": "day-8-item-3",
           "title": "Lunch at Palacio de Canedo",
           "description": "Reserve the restaurant together with the tour, leaving a short gap between them.",
-          "entityIds": [],
+          "entityIds": [
+            "opt-canedo"
+          ],
           "optional": false,
           "status": "planned",
           "notes": "",
@@ -4811,7 +4825,9 @@
           "id": "day-8-item-4",
           "title": "Continue to Orellán",
           "description": "Allow about 45 minutes, check in and confirm current trail access for tomorrow.",
-          "entityIds": [],
+          "entityIds": [
+            "hotel-o-palleiro"
+          ],
           "optional": false,
           "status": "planned",
           "notes": "",
@@ -4832,7 +4848,9 @@
           "id": "day-8-item-6",
           "title": "Dinner — at O Palleiro, Orellán",
           "description": "Eat at the hotel, which cooks from old local recipes. Ring ahead and confirm dinner for both nights.",
-          "entityIds": [],
+          "entityIds": [
+            "hotel-o-palleiro"
+          ],
           "optional": false,
           "status": "planned",
           "notes": ""
@@ -4926,7 +4944,9 @@
           "id": "day-9-item-4",
           "title": "Return to Orellán for sunset",
           "description": "Ponferrada Castle is closed today; visit it on Sunday's transfer or leave it out.",
-          "entityIds": [],
+          "entityIds": [
+            "opt-orellan-viewpoint"
+          ],
           "optional": false,
           "status": "planned",
           "notes": ""
@@ -4935,7 +4955,9 @@
           "id": "day-9-item-5",
           "title": "Dinner — at O Palleiro, Orellán",
           "description": "Return to the hotel for the second planned dinner rather than trying to improvise in rural Bierzo.",
-          "entityIds": [],
+          "entityIds": [
+            "hotel-o-palleiro"
+          ],
           "optional": false,
           "status": "planned",
           "notes": ""
@@ -5027,7 +5049,9 @@
           "id": "day-10-item-4",
           "title": "Arrive in San Martín de Teverga",
           "description": "The later time applies if you visit Santa Cristina; La Posta accepts arrivals until 21:00.",
-          "entityIds": [],
+          "entityIds": [
+            "hotel-la-posta"
+          ],
           "optional": false,
           "status": "planned",
           "notes": "",
@@ -5207,7 +5231,8 @@
           ],
           "optional": true,
           "status": "planned",
-          "notes": ""
+          "notes": "",
+          "choiceGroup": "Day 12 morning: Las Xanas or Naranco"
         },
         {
           "id": "day-12-item-3",
@@ -5218,7 +5243,8 @@
           ],
           "optional": true,
           "status": "planned",
-          "notes": ""
+          "notes": "",
+          "choiceGroup": "Day 12 morning: Las Xanas or Naranco"
         },
         {
           "id": "day-12-item-4",
@@ -5610,7 +5636,8 @@
       "Booking-board timing remains relative (This week / Final week); exact due dates need confirmation.",
       "Day 9 mentions Ponferrada; the library says it is closed Monday. This conflict is preserved for review.",
       "Day 12 requires choosing Las Xanas or Naranco. They do not fit together.",
-      "No private document URLs, reservation names, references or sensitive documents were supplied."
+      "No private document URLs, reservation names, references or sensitive documents were supplied.",
+      "Phase 2 maps 12 narrative destination rows to existing source places; no new location or opening claims are inferred. Day 12 morning entries share an editable exclusive choice group."
     ]
   }
 }

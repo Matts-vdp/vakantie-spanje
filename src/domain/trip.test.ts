@@ -22,7 +22,7 @@ describe('source dataset and portable schema', () => {
     expect(parseTrip(JSON.parse(serializeTrip(trip)))).toEqual(trip)
   })
   it('rejects incompatible schemas, malformed dates, duplicate IDs and broken references', () => {
-    expect(() => parseTrip({ ...seed, schemaVersion: 2 })).toThrow()
+    expect(() => parseTrip({ ...seed, schemaVersion: 99 })).toThrow()
     expect(() => parseTrip({ ...seed, timezone: 'Never/Here' })).toThrow()
     const broken = structuredClone(seed)
     broken.days[0].date = '2026-02-31'
@@ -37,6 +37,20 @@ describe('source dataset and portable schema', () => {
   it('rejects script links before importing or persisting', () => {
     const trip = parseTrip(seed); trip.entities[0].navigationUrl = 'javascript:alert(1)'
     expect(() => parseTrip(trip)).toThrow()
+  })
+  it('migrates v1 without mutating it or merging seed updates, and validates migrated data', () => {
+    const legacy = { ...structuredClone(seed), schemaVersion: 1 }
+    legacy.days[0].notes = 'Keep traveller edits'
+    legacy.entities[0].name = 'Edited place name'
+    legacy.actions[0].status = 'done'
+    const migrated = parseTrip(legacy)
+    expect(migrated.schemaVersion).toBe(2)
+    expect(migrated.days[0].notes).toBe('Keep traveller edits')
+    expect(migrated.entities[0].name).toBe('Edited place name')
+    expect(migrated.actions[0].status).toBe('done')
+    expect(legacy.schemaVersion).toBe(1)
+    legacy.days[0].items[0].entityIds = ['missing']
+    expect(() => parseTrip(legacy)).toThrow('Missing entity')
   })
 })
 

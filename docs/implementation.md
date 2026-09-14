@@ -1,39 +1,36 @@
 # Implementation status
 
-## Phase 1 — foundation
-
-- [x] React/TypeScript/Vite and modest pinned dependencies.
-- [x] Mobile navigation and reusable day view with a utility visual style.
-- [x] Typed entities, days, stays, bookings, actions, schema versioning and validation.
-- [x] Complete source conversion with audit, stable IDs and drift check.
-- [x] Native IndexedDB, seed-once initialization, commit-aware saves and stale-tab rejection.
-- [x] Editable day note demonstrating persistence, including offline.
-- [x] Single-file export, plus tested validation/backup/replacement storage primitives.
-- [x] PWA icons/manifest, precached app shell and explicit update prompt.
-- [x] README, agent instructions, architecture and CI validation.
-
 ## Phase 2 — complete initial application
 
-Give the agent this whole phase as one coherent assignment. It should work through implementation, validation and fixes without requiring approval of each screen.
+Implemented locally on 14 September 2026. Phase 4 rollout remains out of scope.
 
-- Full add/edit/delete forms for activities, hotels, restaurants and notes; edit times, status, links and day associations.
-- Booking state/time editing on scheduled visits and stays, with consistent propagation to every view.
-- Import preview and replacement confirmation, downloadable backup and restore UI using the existing atomic storage primitives.
-- Contextual near-term actions on Today; resolve/check actions and show booking overview under More.
-- Drive document shortcuts (traveller-provided links only).
-- Improve destination mapping for narrative-only timeline stops; do not invent location links or bookings.
-- First-class handling of mutually exclusive choices (especially day 12), reordering and optional/skipped/done states.
-- A few useful Explore filters and associated days on details.
-- Address accessibility and mobile interaction gaps found in real use.
-- Test real old-build/new-build service-worker updates without losing edits and at a subdirectory base path.
+- Add and edit activities, hotels, restaurants and notes. Name and an optional day are the only initial decisions; extra venue and booking fields use progressive disclosure. All typed venue fields and links remain reusable.
+- Edit visit titles, times, notes, place associations, day, optional flag and planned/done/skipped status. Move a visit between days or reorder it with earlier/later controls. Remove a visit without deleting its library places. Delete only unused traveller-created entities.
+- Schedule library places from their details. Scheduling a hotel creates an overnight stay; edit its date range, hotel and reservation separately. Day assignments apply only on save, so intermediate date input cannot change other nights.
+- Visit and stay bookings have unknown/pending/confirmed/not-needed/needs-check/cancelled states, booked date/time, arrival-before time, reservation name/reference, booking/document links and notes. The portable value `booked` displays as Confirmed.
+- Today and all other days share hotel information, important times, document/navigation actions, tomorrow preview, and compact expandable near-term action/booking summaries.
+- More contains a functional action review and complete booking overview. Booking-only actions derive resolution from their linked visits/stays. Additional hotel requests, access checks and shuttle arrangements remain explicitly reviewable.
+- Explore has accent-insensitive search and type, region and planned/alternative filters. Place details show associated days, visits and stay reservations.
+- Day 12's Las Xanas/Naranco entries form an exclusive group. Choosing either skips the other without deleting its library entry. Groups are editable; other source alternatives can be chosen by editing visit places/status.
+- Traveller-entered Drive/document shortcuts and booking links store URLs only, with an empty state when none have been supplied.
+- JSON import has file validation, summary, explicit whole-trip replacement, a current-data export, and pre-import backup download/restore. Restore swaps current and backup atomically. No merging.
+- Native IndexedDB remains the durable store. Writes resolve after commit, stale tabs are rejected, and failed saves retain form drafts. Navigation, browser Back, unload, the Today date rollover and service-worker updates respect unsaved forms/in-flight writes.
+- Portable schema v2 explicitly migrates v1 in memory without seed merging. V2 exports prevent old builds from silently dropping new fields. Unsupported versions fail safely. The next successful save persists the migrated state.
+- The source converter adds 12 narrative-to-existing-place associations and explicit Day 12 choice groups. Original planning HTML/specification are unchanged. Existing device data is not enriched with these seed changes.
+- Full validation, offline browser journeys, cross-context transfer, an actual phase-1-to-phase-2 service-worker upgrade and static `/travel/` hosting have been exercised. See `verification.md`.
 
-## Phase 3 — refinement
+## Material assumptions
 
-- Batch user feedback into short implementation loops.
-- Verify install, navigation handoff, offline reopen and export/import on the actual travellers' phones.
-- Resolve source-data ambiguities against traveller decisions and current operator information.
-- Complete every acceptance criterion in the specification.
+The near-term window is the selected day plus two following calendar days, in the trip timezone. Explicit overdue action deadlines are surfaced if their target is still ahead. Source relative timing labels remain relative: no exact deadline is invented. Unassigned actions appear on the first-day preview and in More. Source action mappings and booking/confirmation distinctions are documented in `architecture.md`.
+
+Scheduling a hotel initially assigns one night (not the final departure day). Dates can then be extended in Edit stay. Reassigning a night does not cancel or delete the previous reservation; old stays remain in the booking overview until the traveller removes them. Skipping a visit does not cancel a real reservation; use its booking status explicitly.
+
+## Phase 3 — user refinement
+
+- Gather traveller feedback on the complete initial application.
+- Verify installation, Maps handoff, physical-phone file sharing and offline reopening on actual iOS/Android devices.
+- Traveller confirmation of bookings, remaining source ambiguities and destination links not provided by the source.
 
 ## Phase 4 — rollout
 
-Out of scope. No deployment, hosting choice, access policy or domain setup has been performed.
+Not performed. No hosting provider, deployment, account system, backend or synchronization has been added.

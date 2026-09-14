@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#06191f">
+  <meta name="description" content="Interactive mockup for a mobile-first Green Spain travel companion.">
+  <title>Green Spain — Trip Companion</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23092f39'/%3E%3Cpath d='M5 23 12 10l4 7 3-5 8 11H5Z' fill='%2367d6b5'/%3E%3Cpath d='M6 25h20' stroke='%23fff' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+  <style>
+    :root{
+      color-scheme:dark;
+      --ink:#edf8f6;--muted:#9db3b5;--faint:#718b8e;--paper:#071b21;--surface:#0d2930;
+      --line:#20434b;--deep:#06191f;--deep-2:#82dec5;--teal:#67d6b5;--mint:#123e3b;
+      --mint-ink:#91e8cf;--amber:#f2a94b;--amber-bg:#3b2c18;--red:#ff8d82;--red-bg:#3c2324;
+      --blue-bg:#182f43;--blue:#9dc9f0;--shadow:0 24px 70px rgba(0,0,0,.42);
+      --radius:18px;--tap:46px;
+    }
+    *{box-sizing:border-box}
+    html{background:#041116;color:var(--ink);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:16px}
+    body{margin:0;min-height:100vh;background:
+      radial-gradient(circle at 15% -10%,rgba(31,121,111,.24),transparent 28rem),
+      linear-gradient(145deg,#071a20,#031014);line-height:1.45}
+    button,input,select,textarea{font:inherit;color:inherit}
+    button,a{touch-action:manipulation}
+    button{border:0;cursor:pointer}
+    a{color:inherit}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    .icon{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+    .app{width:min(100%,1180px);min-height:100vh;margin:0 auto;background:var(--paper);position:relative;display:grid;grid-template-columns:1fr;box-shadow:var(--shadow)}
+    .rail{display:none;background:#041419;color:var(--ink);padding:32px 24px;min-height:100vh;position:sticky;top:0;border-right:1px solid #17373e}
+    .brand{display:flex;align-items:center;gap:12px;margin-bottom:36px}
+    .brandmark{width:42px;height:42px;border-radius:13px;background:var(--teal);color:#05231f;display:grid;place-items:center}
+    .brandmark .icon{width:24px;height:24px;stroke-width:2.2}
+    .brand strong{display:block;font-size:1rem}.brand span{display:block;font-size:.78rem;color:#86a7aa;margin-top:2px}
+    .rail-nav{display:grid;gap:8px}.rail-nav button{display:flex;align-items:center;gap:13px;padding:13px 14px;border-radius:12px;background:transparent;color:#8da8aa;text-align:left;font-weight:650}
+    .rail-nav button.active{background:#103b42;color:var(--ink)}.rail-nav button:hover{background:#0d3037;color:var(--ink)}
+    .rail-foot{position:absolute;bottom:28px;left:24px;right:24px;padding-top:20px;border-top:1px solid #17373e;color:#799a9d;font-size:.82rem}
+    .main{min-width:0;padding-bottom:88px}
+    .topbar{height:60px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;background:rgba(7,27,33,.94);backdrop-filter:blur(14px);position:sticky;top:0;z-index:20;border-bottom:1px solid rgba(32,67,75,.9)}
+    .topbar h1{font-size:1.05rem;margin:0;letter-spacing:-.015em}.topbar .trip-mini{font-size:.74rem;color:var(--muted);display:block;font-weight:500;margin-top:1px}
+    .status{display:flex;align-items:center;gap:7px;font-size:.78rem;font-weight:700;color:var(--mint-ink);background:var(--mint);padding:7px 10px;border-radius:999px}
+    .status::before{content:"";width:7px;height:7px;background:#55d6b1;border-radius:50%;box-shadow:0 0 0 3px rgba(103,214,181,.12)}
+    .view{display:none;padding:0 16px 30px}.view.active{display:block}
+    .page-head{padding:22px 2px 16px}.eyebrow{margin:0 0 5px;color:var(--teal);text-transform:uppercase;letter-spacing:.12em;font-weight:800;font-size:.73rem}
+    .page-head h2{font-size:1.7rem;line-height:1.14;letter-spacing:-.035em;margin:0;max-width:760px}.page-head .sub{color:var(--muted);margin:8px 0 0;font-size:.94rem}
+    .date-strip{display:flex;gap:8px;overflow:auto;padding:0 0 16px;scrollbar-width:none}.date-strip.today-strip{padding-top:14px}.date-strip::-webkit-scrollbar{display:none}
+    .date-pill{min-width:64px;padding:9px 8px 8px;border:1px solid var(--line);border-radius:12px;background:var(--surface);text-align:center;color:var(--muted)}
+    .date-pill span{display:block;font-size:.7rem;text-transform:uppercase;letter-spacing:.08em}.date-pill b{display:block;font-size:1rem;color:var(--ink);margin-top:1px}
+    .date-pill.active{background:var(--teal);border-color:var(--teal);color:#16423b}.date-pill.active b{color:#05231f}
+    .compact-day-head{padding:0 2px 12px}.compact-day-head .eyebrow{margin-bottom:4px}.compact-day-head h2{font-size:1.35rem;line-height:1.18;letter-spacing:-.025em;margin:0;max-width:760px}.compact-day-head .metrics{margin-top:9px}
+    .section{margin:10px 0 24px}.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 2px 10px}
+    .section-head h3{font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;margin:0;color:var(--muted)}.section-head button{background:transparent;color:var(--teal);font-weight:750;font-size:.84rem;padding:7px 0}
+    .timeline{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+    .timeline-row{display:grid;grid-template-columns:54px 18px minmax(0,1fr);gap:9px;padding:15px 15px 14px 11px;position:relative;cursor:pointer;outline:none;transition:background .15s ease}
+    .timeline-row+.timeline-row{border-top:1px solid var(--line)}
+    .timeline-row:hover{background:#12323a}.timeline-row:focus-visible{background:#12323a;box-shadow:inset 0 0 0 2px var(--teal)}
+    .time{font-variant-numeric:tabular-nums;color:var(--deep-2);font-weight:780;font-size:.86rem;padding-top:2px}.time.flex{color:var(--faint);font-size:.76rem;text-transform:uppercase;letter-spacing:.04em}
+    .track{display:flex;justify-content:center;position:relative}.track::before{content:"";position:absolute;top:13px;bottom:-28px;width:2px;background:#28545a}.timeline-row:last-child .track::before{display:none}
+    .dot{width:11px;height:11px;border:2px solid var(--teal);border-radius:50%;background:var(--surface);z-index:1;margin-top:5px}.dot.now{background:var(--teal);box-shadow:0 0 0 4px var(--mint)}.dot.food{border-color:var(--amber)}
+    .item-title{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}.item-title strong{font-size:1rem;letter-spacing:-.012em}
+    .item-body p{margin:4px 0 0;color:var(--muted);font-size:.88rem}.meta-line{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:9px}
+    .badge{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:4px 8px;background:#18363d;color:#adc2c4;font-size:.72rem;font-weight:750;white-space:nowrap}
+    .badge.booked{background:var(--mint);color:var(--mint-ink)}.badge.pending{background:var(--amber-bg);color:#ffc56f}.badge.optional{background:var(--blue-bg);color:var(--blue)}.badge.alert{background:var(--red-bg);color:var(--red)}
+    .row-actions{display:flex;gap:8px;margin-top:11px}.action{min-height:38px;padding:8px 11px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;gap:7px;text-decoration:none;background:#183a42;color:#d7e9e7;font-size:.82rem;font-weight:760}
+    .action.primary{background:var(--teal);color:#06241f}.action .icon{width:16px;height:16px}.chev{color:#789497;background:transparent;padding:2px;margin:-2px -6px 0 0}.chev .icon{width:18px}
+    .hotel-card{background:linear-gradient(145deg,#10343b,#0b242b);color:var(--ink);border:1px solid #28525a;border-radius:var(--radius);padding:18px;position:relative;overflow:hidden}
+    .hotel-card::after{content:"";position:absolute;width:190px;height:190px;border:36px solid rgba(103,214,181,.08);border-radius:50%;right:-96px;top:-102px}
+    .hotel-card .kicker{color:#93d7c4;text-transform:uppercase;letter-spacing:.11em;font-size:.7rem;font-weight:800}.hotel-card h4{font-size:1.22rem;margin:5px 0 2px}.hotel-card p{color:#c1d7d8;margin:0;font-size:.88rem}
+    .hotel-facts{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:16px 0}.hotel-facts div{border-left:2px solid #3d7075;padding-left:9px}.hotel-facts span{display:block;color:#9fc4c6;font-size:.7rem;text-transform:uppercase}.hotel-facts b{font-size:.85rem}
+    .hotel-card .row-actions{position:relative;z-index:1}.hotel-card .action{background:var(--teal);color:#06241f}.hotel-card .action.secondary{background:#1a4850;color:var(--ink)}
+    .attention-list{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}.attention{padding:14px 15px;display:flex;gap:12px;align-items:flex-start}.attention+.attention{border-top:1px solid var(--line)}
+    .attention-icon{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:var(--amber-bg);color:#ffc56f;flex:0 0 auto}.attention-icon.red{background:var(--red-bg);color:var(--red)}.attention-icon .icon{width:18px}
+    .attention b{display:block;font-size:.91rem}.attention p{font-size:.8rem;color:var(--muted);margin:2px 0 0}.attention .badge{margin-left:auto}
+    .tomorrow{width:100%;background:linear-gradient(135deg,#103a3d,#0d292f);border:1px solid #28535a;border-radius:var(--radius);padding:16px;text-align:left;display:flex;justify-content:space-between;align-items:center;gap:12px}
+    .tomorrow span{display:block;color:var(--teal);font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;font-weight:800}.tomorrow b{display:block;margin-top:3px;font-size:1rem}.tomorrow small{color:var(--muted);display:block;margin-top:4px;font-size:.8rem}.tomorrow .icon{color:var(--teal)}
+    .metrics{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}.metric{background:#143139;padding:6px 9px;border-radius:8px;font-size:.75rem;color:#a9c0c2;font-weight:700}
+    .day-list{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}.day-row{width:100%;background:var(--surface);text-align:left;padding:15px;display:grid;grid-template-columns:48px minmax(0,1fr) 22px;gap:12px;align-items:start}
+    .day-row+.day-row{border-top:1px solid var(--line)}.day-no{font-size:.7rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:750}.day-no b{display:block;font-size:1.2rem;color:var(--ink);letter-spacing:-.03em;margin-top:1px}
+    .day-row h4{font-size:.97rem;margin:0;letter-spacing:-.01em}.day-row p{font-size:.79rem;color:var(--muted);margin:4px 0 0}.day-row .icon{width:17px;color:#9aa9a6;margin-top:3px}
+    .day-row:hover{background:#12323a}.day-row.today{background:#103835}.day-row.today .day-no{color:var(--teal)}
+    .search-wrap{position:relative;margin-bottom:12px}.search-wrap .icon{position:absolute;left:14px;top:13px;color:var(--muted)}.search{width:100%;height:48px;border-radius:13px;border:1px solid var(--line);background:var(--surface);padding:0 14px 0 43px;outline:none}.search:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(103,214,181,.12)}
+    .filters{display:flex;gap:8px;overflow:auto;padding-bottom:13px;scrollbar-width:none}.filter{white-space:nowrap;padding:8px 11px;border:1px solid var(--line);background:var(--surface);border-radius:999px;font-size:.78rem;font-weight:700;color:var(--muted)}.filter.active{background:var(--teal);color:#06241f;border-color:var(--teal)}
+    .result-count{font-size:.78rem;color:var(--muted);margin:0 2px 9px}.activity-grid{display:grid;gap:10px}.activity-card{background:var(--surface);border:1px solid var(--line);border-radius:15px;padding:15px;text-align:left;width:100%}
+    .activity-card:hover{border-color:#3f7374;background:#113139}.activity-top{display:flex;justify-content:space-between;gap:12px}.activity-card h4{font-size:1rem;margin:0;letter-spacing:-.012em}.activity-card .region{font-size:.75rem;color:var(--teal);font-weight:750;margin:2px 0 0}.activity-card .desc{color:var(--muted);font-size:.83rem;margin:9px 0 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.activity-card .icon{color:#789497;width:18px}
+    .more-section{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;margin-bottom:14px}.more-section h3{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0;padding:14px 15px 8px}
+    .menu-row{width:100%;min-height:55px;padding:12px 15px;background:var(--surface);display:flex;align-items:center;gap:12px;text-align:left}.menu-row:hover{background:#113139}.menu-row+.menu-row{border-top:1px solid var(--line)}.menu-icon{width:34px;height:34px;border-radius:10px;background:#173a41;color:var(--teal);display:grid;place-items:center}.menu-icon .icon{width:18px}.menu-row b{display:block;font-size:.9rem}.menu-row small{display:block;color:var(--muted);font-size:.75rem;margin-top:2px}.menu-row>.icon{margin-left:auto;color:#789497;width:17px}
+    .booking-progress{padding:6px 15px 15px}.progress-label{display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted);margin-bottom:7px}.progress-label b{color:var(--ink)}.progress{height:8px;background:#18343b;border-radius:999px;overflow:hidden}.progress span{display:block;height:100%;width:38%;background:var(--teal);border-radius:inherit}
+    .bottom-nav{position:fixed;bottom:0;left:0;right:0;height:74px;padding:7px max(10px,env(safe-area-inset-right)) max(7px,env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));background:rgba(6,25,31,.96);backdrop-filter:blur(15px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);z-index:30}
+    .bottom-nav button{background:transparent;color:#718b8e;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:.69rem;font-weight:700}.bottom-nav button.active{color:var(--teal)}.bottom-nav .icon{width:22px;height:22px}
+    .fab{position:fixed;right:16px;bottom:90px;width:52px;height:52px;background:var(--amber);color:#3d290b;border-radius:16px;display:grid;place-items:center;box-shadow:0 12px 28px rgba(164,91,13,.28);z-index:25}.fab .icon{width:24px;height:24px;stroke-width:2.3}
+    .modal-backdrop{position:fixed;inset:0;background:rgba(0,8,11,.75);display:none;align-items:flex-end;z-index:100;padding:0}.modal-backdrop.open{display:flex}.sheet{width:100%;max-height:90vh;overflow:auto;background:var(--paper);border:1px solid var(--line);border-radius:24px 24px 0 0;box-shadow:0 -20px 60px rgba(0,0,0,.5);animation:rise .22s ease-out}.sheet-handle{width:38px;height:4px;border-radius:99px;background:#47656a;margin:10px auto 2px}.sheet-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:14px 18px 12px;position:sticky;top:0;background:rgba(7,27,33,.96);backdrop-filter:blur(10px);z-index:2}.sheet-head h2{font-size:1.35rem;margin:0;letter-spacing:-.025em}.sheet-head p{font-size:.8rem;color:var(--teal);font-weight:720;margin:3px 0 0}.close{width:40px;height:40px;border-radius:12px;background:#16343b;display:grid;place-items:center}.close .icon{width:20px}.sheet-body{padding:0 18px 26px}.detail-lede{font-size:.94rem;color:var(--muted);margin:0 0 15px}.detail-actions{display:grid;grid-template-columns:2fr 1fr;gap:9px;margin-bottom:18px}.detail-actions .action{height:46px}.facts{display:grid;grid-template-columns:repeat(2,1fr);background:var(--surface);border:1px solid var(--line);border-radius:15px;overflow:hidden;margin-bottom:17px}.fact{padding:12px}.fact:nth-child(odd){border-right:1px solid var(--line)}.fact:nth-child(n+3){border-top:1px solid var(--line)}.fact span{display:block;color:var(--muted);font-size:.7rem;text-transform:uppercase;letter-spacing:.06em}.fact b{font-size:.87rem}.detail-note{padding:14px;border-left:3px solid var(--amber);background:var(--amber-bg);border-radius:0 12px 12px 0;font-size:.84rem;color:#ffd18d;margin-bottom:15px}
+    .form-grid{display:grid;gap:13px}.field label{display:block;font-size:.78rem;font-weight:760;margin:0 0 5px;color:#b6c9c9}.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);background:var(--surface);border-radius:11px;padding:11px 12px;outline:none}.field textarea{min-height:92px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(103,214,181,.1)}
+    .form-actions{display:grid;grid-template-columns:1fr 2fr;gap:9px;margin-top:18px}.btn{min-height:47px;border-radius:12px;font-weight:780;background:#17353c}.btn.primary{background:var(--teal);color:#06241f}.btn.danger{color:var(--red);background:var(--red-bg)}
+    .toast{position:fixed;left:50%;bottom:92px;transform:translate(-50%,20px);background:#17454c;color:var(--ink);padding:11px 15px;border:1px solid #2b5e63;border-radius:11px;font-size:.84rem;font-weight:700;opacity:0;pointer-events:none;transition:.2s;z-index:200;white-space:nowrap}.toast.show{opacity:1;transform:translate(-50%,0)}
+    .empty{padding:30px;text-align:center;color:var(--muted);background:var(--surface);border:1px dashed #34585f;border-radius:15px}.empty .icon{width:30px;height:30px;margin-bottom:8px;color:#789497}
+    @keyframes rise{from{transform:translateY(24px);opacity:.5}to{transform:none;opacity:1}}
+    @media(min-width:760px){
+      .app{grid-template-columns:230px minmax(0,1fr)}.rail{display:block}.main{padding-bottom:30px}.topbar{padding:0 30px}.view{padding:0 30px 38px}.bottom-nav{display:none}.fab{position:absolute;right:30px;bottom:32px}.page-head{padding-top:28px}.page-head h2{font-size:2rem}.activity-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.modal-backdrop{align-items:center;justify-content:center;padding:30px}.sheet{max-width:560px;border-radius:24px;max-height:min(820px,90vh)}
+    }
+    @media(min-width:1050px){.view{padding-left:44px;padding-right:44px}.dashboard{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(290px,.8fr);gap:22px;align-items:start}.side-stack{position:sticky;top:82px}.activity-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}.sheet{animation:none}}
+  </style>
+</head>
+<body>
+  <svg class="sr-only" aria-hidden="true">
+    <symbol id="i-mountain" viewBox="0 0 24 24"><path d="m3 19 6-11 4 7 2-4 6 8H3Z"/><path d="m7.7 10.4 1.4 1.8 1.4-1.1"/></symbol>
+    <symbol id="i-today" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/><path d="m9 16 2 2 4-5"/></symbol>
+    <symbol id="i-trip" viewBox="0 0 24 24"><path d="M3 6.5 9 3l6 3.5L21 3v14.5L15 21l-6-3.5L3 21V6.5Z"/><path d="M9 3v14.5M15 6.5V21"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></symbol>
+    <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></symbol>
+    <symbol id="i-nav" viewBox="0 0 24 24"><path d="m21 3-7.5 18-3.4-7.1L3 10.5 21 3Z"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M7 3H4.5A1.5 1.5 0 0 0 3 4.5 16.5 16.5 0 0 0 19.5 21a1.5 1.5 0 0 0 1.5-1.5V17l-4-1-1.2 2c-3.7-1.5-6.1-3.9-7.6-7.6l2-1.2L9 5l-2-2Z"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.3 4.2 2.4 18a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 4.2a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/></symbol>
+    <symbol id="i-weather" viewBox="0 0 24 24"><path d="M17.5 19H6a4 4 0 1 1 1.1-7.8A5.5 5.5 0 0 1 17.6 10 4.5 4.5 0 0 1 17.5 19Z"/><path d="m8 22 1-2m4 2 1-2m4 2 1-2"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 21h16"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4m-5 5 5-5 5 5M4 21h16"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5v-16Z"/><path d="M4 21.5A2.5 2.5 0 0 1 6.5 19H20"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M6 2h8l4 4v16H6V2Z"/><path d="M14 2v5h5"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24"><path d="m4 20 4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20Z"/><path d="m13.8 7.8 3 3"/></symbol>
+  </svg>
+
+  <div class="app">
+    <aside class="rail">
+      <div class="brand"><div class="brandmark"><svg class="icon"><use href="#i-mountain"/></svg></div><div><strong>Green Spain</strong><span>20 Sep — 2 Oct 2026</span></div></div>
+      <nav class="rail-nav" aria-label="Main navigation">
+        <button class="nav-btn active" data-view="today"><svg class="icon"><use href="#i-today"/></svg>Today</button>
+        <button class="nav-btn" data-view="trip"><svg class="icon"><use href="#i-trip"/></svg>Trip</button>
+        <button class="nav-btn" data-view="explore"><svg class="icon"><use href="#i-search"/></svg>Explore</button>
+        <button class="nav-btn" data-view="more"><svg class="icon"><use href="#i-more"/></svg>More</button>
+      </nav>
+      <div class="rail-foot">12 nights · 6 bases<br>Bilbao to Asturias</div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar"><div><h1 id="top-title">Today</h1><span class="trip-mini">Green Spain · Day <span id="top-day">3</span> of 13</span></div><div class="status">Available offline</div></header>
+
+      <section class="view active" id="view-today">
+        <div id="today-content"></div>
+      </section>
+
+      <section class="view" id="view-trip">
+        <div class="page-head"><p class="eyebrow">20 September — 2 October</p><h2>The whole trip</h2><p class="sub">13 days · 12 nights · roughly 1,300 km</p></div>
+        <div class="day-list" id="day-list"></div>
+      </section>
+
+      <section class="view" id="view-explore">
+        <div class="page-head"><p class="eyebrow">Alternatives &amp; lookup</p><h2>Explore</h2><p class="sub">Everything useful stays here—even when it is not in the current plan.</p></div>
+        <div class="search-wrap"><svg class="icon"><use href="#i-search"/></svg><label class="sr-only" for="activity-search">Search activities</label><input class="search" id="activity-search" type="search" placeholder="Search places, regions, or activities"></div>
+        <div class="filters" id="filters" aria-label="Activity filters"></div>
+        <p class="result-count" id="result-count"></p>
+        <div class="activity-grid" id="activity-grid"></div>
+      </section>
+
+      <section class="view" id="view-more">
+        <div class="page-head"><p class="eyebrow">Trip tools</p><h2>More</h2><p class="sub">Bookings, documents, and your portable trip data.</p></div>
+        <div class="more-section"><h3>Bookings overview</h3><div class="booking-progress"><div class="progress-label"><span>Confirmed</span><b id="progress-text">5 of 13</b></div><div class="progress"><span id="progress-bar"></span></div></div><button class="menu-row" data-action="show-bookings"><span class="menu-icon"><svg class="icon"><use href="#i-book"/></svg></span><span><b>Review booking checklist</b><small>Booked, pending, and needs checking</small></span><svg class="icon"><use href="#i-chevron"/></svg></button></div>
+        <div class="more-section"><h3>Documents</h3><button class="menu-row" data-action="documents"><span class="menu-icon"><svg class="icon"><use href="#i-file"/></svg></span><span><b>Shared trip folder</b><small>Open confirmations and tickets in Google Drive</small></span><svg class="icon"><use href="#i-chevron"/></svg></button></div>
+        <div class="more-section"><h3>Trip data</h3><button class="menu-row" data-action="export"><span class="menu-icon"><svg class="icon"><use href="#i-download"/></svg></span><span><b>Export trip data</b><small>Download one JSON file with your latest edits</small></span><svg class="icon"><use href="#i-chevron"/></svg></button><button class="menu-row" data-action="import"><span class="menu-icon"><svg class="icon"><use href="#i-upload"/></svg></span><span><b>Import trip data</b><small>Replace this device after confirmation</small></span><svg class="icon"><use href="#i-chevron"/></svg></button><input type="file" id="import-file" accept="application/json" hidden></div>
+        <div class="more-section"><h3>Practical</h3><button class="menu-row" data-action="practical"><span class="menu-icon"><svg class="icon"><use href="#i-info"/></svg></span><span><b>Travel notes</b><small>Weather, driving, cash, and emergency info</small></span><svg class="icon"><use href="#i-chevron"/></svg></button></div>
+      </section>
+
+      <button class="fab" id="add-button" aria-label="Add trip item"><svg class="icon"><use href="#i-plus"/></svg></button>
+
+      <nav class="bottom-nav" aria-label="Main navigation">
+        <button class="nav-btn active" data-view="today"><svg class="icon"><use href="#i-today"/></svg>Today</button>
+        <button class="nav-btn" data-view="trip"><svg class="icon"><use href="#i-trip"/></svg>Trip</button>
+        <button class="nav-btn" data-view="explore"><svg class="icon"><use href="#i-search"/></svg>Explore</button>
+        <button class="nav-btn" data-view="more"><svg class="icon"><use href="#i-more"/></svg>More</button>
+      </nav>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="modal" role="presentation"><section class="sheet" role="dialog" aria-modal="true" aria-labelledby="modal-title"><div class="sheet-handle"></div><header class="sheet-head"><div><h2 id="modal-title"></h2><p id="modal-kicker"></p></div><button class="close" aria-label="Close dialog"><svg class="icon"><use href="#i-x"/></svg></button></header><div class="sheet-body" id="modal-body"></div></section></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+  (() => {
+    const maps = q => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
+    const hotels = {
+      montemar:{name:'Hotel Montemar Llanes',city:'Llanes',checkin:'16:00–22:00',checkout:'08:00–12:00',breakfast:'08:00–11:00',parking:'Confirm with hotel',phone:'',maps:maps('Hotel Montemar Llanes'),notes:'Montemar has no restaurant. Don Paco, its sister hotel, is across the road.'},
+      jisu:{name:'Hotel El Jisu',city:'Camaleño',checkin:'15:00–23:30',checkout:'08:00–12:00',breakfast:'08:30–10:30',parking:'Free on site',phone:'+34942733038',maps:maps('Hotel El Jisu Camaleño'),notes:'Dinner 20:30–22:00. Request a packed breakfast for the early Cares day.'},
+      mypalace:{name:'Hotel MyPalace León',city:'León',checkin:'14:00–00:00',checkout:'07:00–12:00',breakfast:'08:00–11:00',parking:'Reserve garage · €20/day',phone:'',maps:maps('Hotel MyPalace León Calle San Francisco 13'),notes:'Ask for a refurbished room. The garage uses a vehicle lift; request guidance before arrival.'},
+      palleiro:{name:'O Palleiro do Pe do Forno',city:'Orellán',checkin:'16:00–23:30',checkout:'By 12:00',breakfast:'Arrange with host',parking:'Confirm with host',phone:'',maps:maps('O Palleiro do Pe do Forno Orellán'),notes:'Small family property. Ring ahead and confirm dinner for both nights.'},
+      posta:{name:'La Posta del Camín Real',city:'San Martín de Teverga',checkin:'16:00–21:00',checkout:'09:00–12:00',breakfast:'Confirm rate & time',parking:'Nearby',phone:'',maps:maps('La Posta del Camin Real Teverga'),notes:'Tell the hotel your arrival time in advance. Village restaurants are walkable.'},
+      aviles:{name:'Palacio de Avilés',city:'Avilés',checkin:'From 15:00',checkout:'By 12:00',breakfast:'07:00–10:30',parking:'Ask about direct access',phone:'',maps:maps('Palacio de Avilés Affiliated by Meliá'),notes:'Request a modern-wing room and ask whether an event is booked.'}
+    };
+
+    const days = [
+      {n:1,date:'Sun 20 Sep',short:'20',title:'Bilbao Airport → Llanes',summary:'Arrival, coastal drive, and an evening walk',drive:'2h15 · 200 km',activity:'40 min walk',hotel:'montemar',items:[['09:20','Fly from Brussels','Arrive at Bilbao Airport at 11:15.','booked'],['12:00','Collect car & drive west','Take the A-8 toward Llanes.','navigate','Bilbao Airport'],['Flex','Optional arrival stop','Choose El Capricho in Comillas or San Vicente harbour if the flight is on time.','optional'],['17:00','Check in & walk Llanes','Paseo de San Pedro, Cubos de la Memoria, then Playa de Toró.','navigate','Paseo de San Pedro Llanes'],['20:30','Dinner at Don Paco','Arrival-night table; reserve in advance.','pending']]},
+      {n:2,date:'Mon 21 Sep',short:'21',title:'Llanes · Lagos de Covadonga',summary:'Lakes circuit, sanctuary, optional coast',drive:'1h30 + bus',activity:'3h · moderate',hotel:'montemar',items:[['08:00','Covadonga shuttle','Park below the lakes and use the timed bus.','pending'],['09:30','Buferrera circuit','Six kilometres linking the lakes, old mines, and Mirador del Príncipe.','navigate','Lagos de Covadonga'],['13:00','Covadonga sanctuary','Visit the basilica and Holy Cave after returning.','navigate','Santuario de Covadonga'],['Flex','Bufones or Gulpiyuri','Choose one only if time, tide, and swell are favourable.','optional'],['Evening','Dinner in Llanes','Keep the evening flexible.','optional']]},
+      {n:3,date:'Tue 22 Sep',short:'22',title:'Llanes → El Soplao → Potes',summary:'Timed cave tour, Hermida Gorge, and Lebeña',drive:'2h30–3h',activity:'6–7h day',hotel:'jisu',items:[['08:10','Leave Llanes','Drive directly east toward El Soplao.','navigate','Cueva El Soplao'],['10:00','El Soplao cave','Arrive 30 minutes early for the timed guided visit.','pending','Cueva El Soplao'],['12:15','Santa María de Lebeña','Visit before the usual 13:30 midday closure.','navigate','Santa Maria de Lebena'],['13:30','Lunch & stroll in Potes','Keep Santo Toribio optional if the day is running late.','navigate','Potes Cantabria'],['16:45','Check in at Hotel El Jisu','Confirm breakfasts and request a packed one for Cares.','navigate','Hotel El Jisu Camaleño'],['20:30','Dinner at the hotel','Restaurant service runs until 22:00.','booked']]},
+      {n:4,date:'Wed 23 Sep',short:'23',title:'Fuente Dé and Áliva',summary:'Cable car to 1,823 m and the high-pasture circuit',drive:'20 min each way',activity:'4h15 · 14.5 km',hotel:'jisu',items:[['08:30','Fuente Dé cable car','Take the first available slot while the top is clearest.','pending','Teleferico de Fuente De'],['09:00','Cross Puertos de Áliva','Follow the current signed route past Chalet Real.','navigate','Puertos de Aliva'],['13:15','Return to Fuente Dé on foot','Sustained 974 m descent; car waits at the base.','navigate','Fuente De'],['20:30','Dinner at Hotel El Jisu','Keep the evening easy after the walk.','booked']]},
+      {n:5,date:'Thu 24 Sep',short:'24',title:'Cares Gorge from Poncebos',summary:'Twelve-kilometre return walk and Cabrales',drive:'1h20 each way',activity:'4h · 12 km',hotel:'jisu',items:[['07:15','Leave for Arenas de Cabrales','Park and take the reserved access bus.','pending','Arenas de Cabrales'],['09:15','Walk into Cares Gorge','Climb for 30 minutes, then follow the canyon path.','navigate','Ruta del Cares Poncebos'],['11:15','Turn around','Treat two hours as a firm turnaround rule.','alert'],['15:00','Cabrales cheese cave','Choose a real timed tour around the bus schedule.','pending','Fundacion Cabrales'],['20:30','Dinner at Hotel El Jisu','Simple finish after the gorge walk.','booked']]},
+      {n:6,date:'Fri 25 Sep',short:'25',title:'Potes → León via San Glorio',summary:'Mountain pass, Riaño, and Barrio Húmedo',drive:'3h · 5–6h with stops',activity:'1h village walk',hotel:'mypalace',items:[['09:00','Mogrovejo & Santo Toribio','Stone village, then the Liébana monastery.','navigate','Mogrovejo'],['11:30','Puerto de San Glorio','Take the short side road to Mirador de Llesba.','navigate','Mirador de Llesba'],['13:00','Pause at Riaño','Reservoir viewpoints and lunch.','navigate','Riaño León'],['17:00','Check in & walk León','Ask reception about the reserved garage.','navigate','Hotel MyPalace León'],['20:00','Barrio Húmedo tapas','One drink and free tapa, then move to the next bar.','navigate','Barrio Humedo Leon']]},
+      {n:7,date:'Sat 26 Sep',short:'26',title:'León · Choose your day',summary:'Cave, wine-cellar lunch, or a car-free city day',drive:'Your choice',activity:'City walking',hotel:'mypalace',items:[['Morning','Choose over breakfast','Valporquero, Valdevimbre, or stay entirely in León.','optional'],['17:30','León Cathedral','Aim for late-afternoon light before tourist entry ends.','navigate','Leon Cathedral'],['18:45','Casa Botines & San Isidoro','Add interiors as current opening times allow.','navigate','Casa Botines Leon'],['20:30','Tapas or LAV','Improvise in Barrio Húmedo or reserve one seated dinner.','optional']]},
+      {n:8,date:'Sun 27 Sep',short:'27',title:'León → Canedo → Orellán',summary:'Winery tour, reserved lunch, and late red light',drive:'2h15 total',activity:'2h · easy',hotel:'palleiro',items:[['09:30','Leave León','Allow 1½ hours to Palacio de Canedo.','navigate','Palacio de Canedo'],['11:30','Canedo winery tour','Reserve the tour; nominated driver limits or skips tasting.','pending','Palacio de Canedo'],['13:15','Lunch at Canedo','Reserve the restaurant together with the tour.','pending'],['16:30','Check in at Orellán','Confirm tomorrow’s trail access and both dinners.','navigate','O Palleiro do Pe do Forno Orellán'],['18:00','Mirador de Orellán','Walk up for the late-afternoon view.','navigate','Mirador de Orellan']]},
+      {n:9,date:'Mon 28 Sep',short:'28',title:'Las Médulas · El Bierzo',summary:'Walk inside the Roman mining landscape',drive:'Short hops',activity:'2–4h · route dependent',hotel:'palleiro',items:[['09:00','Las Médulas on foot','Check live access; choose Valiñas or the 10.5 km perimeter.','alert','Las Medulas'],['13:30','Lunch nearby','Keep timing flexible around the chosen route.','optional'],['15:30','Optional Villafranca','Visit only if the walk finishes early enough.','optional','Villafranca del Bierzo'],['18:30','Return for sunset','Ponferrada Castle is closed on Monday.','navigate','Mirador de Orellan'],['20:30','Dinner at O Palleiro','Second planned dinner at the hotel.','booked']]},
+      {n:10,date:'Tue 29 Sep',short:'29',title:'Orellán → Astorga → Teverga',summary:'Gaudí, cathedral, long lunch, then north',drive:'3h15 · max 2h at once',activity:'Astorga on foot',hotel:'posta',items:[['08:30','Leave Orellán','Drive via Ponferrada to Astorga.','navigate','Astorga'],['10:00','Gaudí Palace & cathedral','Allow two to three hours for the paired monuments.','navigate','Palacio de Gaudi Astorga'],['13:00','Long lunch','Cocido maragato is the substantial local option.','optional'],['15:00','Continue north','Stay on the motorway to Trubia; avoid the Cobertoria shortcut.','alert'],['17:30','Arrive in San Martín','Walk into the village for dinner.','navigate','La Posta del Camin Real Teverga']]},
+      {n:11,date:'Wed 30 Sep',short:'30',title:'Senda del Oso by e-bike',summary:'Converted railway, gorges, tunnels, and shuttle',drive:'5 min to Entrago',activity:'18–45 km ride',hotel:'posta',items:[['09:30','Drive to Entrago','Bike hire is about five minutes from the hotel.','navigate','Senda del Oso Entrago'],['10:00','Ride the Teverga arm','Follow the railway through Valdecerezales and Peñas Juntas.','navigate','Senda del Oso'],['Midday','Choose the distance','18–22 km standard, or add the Quirós arm for a longer ride.','optional'],['16:00','Return shuttle','Pickup point and final collection time depend on the operator.','pending'],['Evening','Dinner in San Martín','Walk from La Posta; check current opening nights.','optional']]},
+      {n:12,date:'Thu 1 Oct',short:'1',title:'Teverga → Oviedo → Avilés',summary:'Choose a gorge walk or pre-Romanesque culture',drive:'1h40 · all forward',activity:'3–5h walk or monuments',hotel:'aviles',items:[['08:30','Choose nature or culture','Las Xanas and Naranco interiors do not fit together.','alert'],['09:00','Nature: Las Xanas','Official route is 9 km and 3–5 hours before lunch.','optional','Las Xanas'],['10:30','Culture: Naranco','Visit Santa María and San Miguel before 14:30.','optional','Santa Maria del Naranco'],['16:00','Late afternoon in Oviedo','Cathedral, Cámara Santa, Fontán, or Gascona.','navigate','Oviedo Cathedral'],['19:00','Continue to Avilés','Old quarter and optional Centro Niemeyer after dark.','navigate','Palacio de Avilés']]},
+      {n:13,date:'Fri 2 Oct',short:'2',title:'Avilés → Asturias Airport → home',summary:'Breakfast, refuel, rental return, and flight',drive:'20 min',activity:'Flight at 11:00',hotel:null,items:[['08:00','Breakfast in Avilés','Eat at the hotel at a normal hour.','booked'],['08:30','Leave for the airport','Refuel before reaching the airport perimeter.','navigate','Asturias Airport'],['09:00','Return rental car','Confirm the one-way return location in advance.','alert'],['11:00','Fly to Brussels','Arrive at 13:05.','booked']]}
+    ];
+
+    const activities = [
+      {id:'covadonga',name:'Covadonga Lakes & Buferrera',region:'Llanes',type:'Walk',time:'6–8 hr',effort:'Easy · 6.2 km',booking:'Bus required',status:'pending',weather:'Clear morning',desc:'A high-mountain circuit linking two glacial lakes, old mine workings, viewpoints, and the sanctuary.',map:'Lagos de Covadonga',web:'https://www.turismoasturias.es/'},
+      {id:'llanes',name:'Llanes town circuit',region:'Llanes',type:'Town',time:'60–90 min',effort:'Easy',booking:'None',status:'none',weather:'Most conditions',desc:'Paseo de San Pedro, Cubos de la Memoria, harbour streets, and Playa de Toró from the hotel door.',map:'Paseo de San Pedro Llanes',web:'https://www.turismoasturias.es/'},
+      {id:'soplao',name:'El Soplao cave',region:'Transfer to Potes',type:'Cave',time:'Timed tour',effort:'Easy',booking:'Required',status:'pending',weather:'Rain-proof',desc:'A former zinc and lead mine opening into galleries famous for gravity-defying helictites.',map:'Cueva El Soplao',web:'https://www.elsoplao.es/es/informacion-visita/informacion'},
+      {id:'fuente',name:'Fuente Dé & Puertos de Áliva',region:'Camaleño / Potes',type:'Walk',time:'4h15 · 14.5 km',effort:'974 m descent',booking:'Cable car',status:'pending',weather:'Clear, low wind',desc:'Ride to 1,823 metres, cross high pasture, then descend on foot to Fuente Dé.',map:'Teleferico de Fuente De',web:'https://www.cantur.com/instalaciones/5-teleferico-de-fuente-de'},
+      {id:'cares',name:'Cares Gorge from Poncebos',region:'Camaleño / Potes',type:'Walk',time:'4 hr · 12 km',effort:'Moderate',booking:'Access bus',status:'pending',weather:'Dry',desc:'A return walk on the spectacular canyon path, turning back firmly after two hours.',map:'Ruta del Cares Poncebos',web:'https://www.turismoasturias.es/'},
+      {id:'potes',name:'Potes & Torre del Infantado',region:'Camaleño / Potes',type:'Town',time:'2–4 hr',effort:'Easy',booking:'None',status:'none',weather:'Flexible',desc:'A compact riverside town for a stroll, local food, and an easy fallback in mixed weather.',map:'Potes Cantabria',web:'https://turismodecantabria.com/'},
+      {id:'valporquero',name:'Cueva de Valporquero',region:'León',type:'Cave',time:'3½–4½ hr total',effort:'Moderate · steps',booking:'Limited tickets',status:'optional',weather:'Rain-proof',desc:'A substantial guided visit through seven limestone chambers, 45–50 minutes north of León.',map:'Cueva de Valporquero',web:'https://www.cuevadevalporquero.es/'},
+      {id:'cathedral',name:'León Cathedral',region:'León',type:'Culture',time:'60–75 min',effort:'Easy',booking:'Usually none',status:'none',weather:'Rain-friendly',desc:'The city’s essential interior, with around 1,800 square metres of stained glass.',map:'Leon Cathedral',web:'https://catedraldeleon.org/'},
+      {id:'canedo',name:'Palacio de Canedo winery & lunch',region:'El Bierzo',type:'Food',time:'11:30–15:15',effort:'Easy',booking:'Tour + table',status:'pending',weather:'All conditions',desc:'An organic winery, cava, restaurant, and estate; put the tour before the reserved lunch.',map:'Palacio de Canedo',web:'https://pradaatope.es/visitas-guiadas-catas'},
+      {id:'medulas',name:'Las Médulas on foot',region:'Orellán',type:'Walk',time:'1½–4½ hr',effort:'Easy–medium',booking:'Live access check',status:'check',weather:'Prefer dry',desc:'Walk inside the collapsed Roman mine landscape; route access can change after rockfall.',map:'Las Medulas Leon',web:'https://www.turismocastillayleon.com/es/naturaleza/medulas'},
+      {id:'orellan',name:'Mirador & Galería de Orellán',region:'Orellán',type:'Viewpoint',time:'1½–2 hr',effort:'Moderate',booking:'Carry cash',status:'check',weather:'Good visibility',desc:'The main panorama over the red mining pinnacles, best from the village in late light.',map:'Mirador de Orellan',web:'https://www.borrenes.org/turismo/las-medulas/mirador-y-la-galeria-de-orellan/'},
+      {id:'astorga',name:'Gaudí Palace & Astorga Cathedral',region:'Transfer to Teverga',type:'Culture',time:'2–3 hr',effort:'Easy',booking:'Online useful',status:'optional',weather:'Rain-friendly',desc:'A compact pairing of Gaudí’s neo-Gothic palace and the cathedral beside it.',map:'Palacio de Gaudi Astorga',web:'https://www.palaciodegaudi.es/visitas/informacion/'},
+      {id:'oso',name:'Senda del Oso by e-bike',region:'San Martín de Teverga',type:'Cycling',time:'18–45 km',effort:'Easy–moderate',booking:'Bike + shuttle',status:'pending',weather:'Prefer dry',desc:'A converted mining railway through gorges, tunnels, woodland, and the three-armed trail network.',map:'Senda del Oso Entrago',web:'https://www.turismoasturias.es/es/senderismo/rutas/familias/senda-del-oso-tunon-caranga'},
+      {id:'prehistoria',name:'Prehistory Park of Teverga',region:'San Martín de Teverga',type:'Museum',time:'At least 2 hr',effort:'Easy',booking:'Guided cave',status:'optional',weather:'Rain-proof',desc:'Cave-art facsimiles and outdoor enclosures make this the reliable wet-weather alternative.',map:'Parque de la Prehistoria de Teverga',web:'https://www.parquedelaprehistoria.es/es/horarios-y-tarifas'},
+      {id:'xanas',name:'Las Xanas gorge',region:'Transfer to Avilés',type:'Walk',time:'3–5 hr · 9 km',effort:'Medium',booking:'None',status:'optional',weather:'Dry conditions',desc:'A narrow path carved into a limestone gorge, aligned with the road toward Oviedo.',map:'Area Recreativa Molin de Las Xanas',web:'https://www.turismoasturias.es/es/senderismo/rutas/senderistas/ruta-de-las-xanas'},
+      {id:'naranco',name:'Santa María del Naranco & San Miguel',region:'Oviedo',type:'Culture',time:'60–75 min',effort:'Easy',booking:'Guided visit',status:'optional',weather:'Mixed',desc:'Two ninth-century buildings from the Asturian kingdom, only about 200 metres apart.',map:'Santa Maria del Naranco',web:'https://www.santamariadelnaranco.com/'},
+      {id:'aviles',name:'Avilés old quarter & Calle Galiana',region:'Avilés',type:'Town',time:'1–2 hr',effort:'Easy',booking:'None',status:'none',weather:'Good in showers',desc:'Arcaded streets, palaces, and compact squares beginning directly outside the hotel.',map:'Calle Galiana Aviles',web:'https://aviles.es/es/casco-historico'},
+      {id:'niemeyer',name:'Centro Niemeyer',region:'Avilés',type:'Culture',time:'30–45 min outside',effort:'Easy',booking:'Tour optional',status:'optional',weather:'Flexible',desc:'Oscar Niemeyer’s only work in Spain, across the estuary from the medieval centre.',map:'Centro Niemeyer Aviles',web:'https://www.centroniemeyer.es/informacion-util/horarios/'}
+    ];
+
+    const bookingItems = [
+      {name:'Hotels & arrival details',when:'This week',status:'booked'},
+      {name:'One-way car hire fee',when:'This week',status:'pending'},
+      {name:'El Soplao timed tour',when:'2–3 weeks out',status:'pending'},
+      {name:'Fuente Dé cable car',when:'2–3 weeks out',status:'pending'},
+      {name:'Palacio de Canedo tour + lunch',when:'2–3 weeks out',status:'pending'},
+      {name:'Covadonga shuttle bus',when:'Final week',status:'pending'},
+      {name:'Arenas–Poncebos access bus',when:'Final week',status:'pending'},
+      {name:'E-bikes + return shuttle',when:'Final week',status:'pending'},
+      {name:'Las Médulas access check',when:'Final week',status:'check'},
+      {name:'Don Paco arrival dinner',when:'Before arrival',status:'booked'}
+    ];
+
+    const defaults = {schemaVersion:1,selectedDay:3,notes:{},bookingStatus:{},itemEdits:{},customItems:[]};
+    let state;
+    try{state={...defaults,...JSON.parse(localStorage.getItem('green-spain-mockup')||'{}')}}catch{state={...defaults}}
+    let currentFilter='All';
+    const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+    const icon=(id,cls='')=>`<svg class="icon ${cls}"><use href="#i-${id}"/></svg>`;
+    const esc=s=>String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+    const persist=()=>localStorage.setItem('green-spain-mockup',JSON.stringify(state));
+    const effectiveStatus=(key,base)=>state.bookingStatus[key]||base;
+    const statusBadge=(status)=>({booked:'<span class="badge booked">✓ Booked</span>',pending:'<span class="badge pending">Booking needed</span>',optional:'<span class="badge optional">Optional</span>',alert:'<span class="badge alert">Important</span>',check:'<span class="badge alert">Recheck</span>'}[status]||'');
+
+    function navTo(view){
+      $$('.view').forEach(v=>v.classList.toggle('active',v.id===`view-${view}`));
+      $$('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.view===view));
+      $('#top-title').textContent={today:'Today',trip:'Trip',explore:'Explore',more:'More'}[view];
+      $('#add-button').style.display=view==='more'?'none':'grid';
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+
+    function renderToday(){
+      const d=days[state.selectedDay-1], hotel=d.hotel?hotels[d.hotel]:null, next=days[d.n]||null;
+      $('#top-day').textContent=d.n;
+      const dates=days.map(x=>`<button class="date-pill ${x.n===d.n?'active':''}" data-day="${x.n}"><span>${x.date.split(' ')[0]}</span><b>${x.short}</b></button>`).join('');
+      const sourceRows=d.items.map((values,index)=>({values,key:`d${d.n}-${index}`,index,customId:''}));
+      const customRows=state.customItems.filter(x=>x.day===d.n).map(x=>({values:[x.time||'Flex',x.name,x.note||'Added during the trip','optional'],key:`custom-${x.id}`,index:-1,customId:String(x.id)}));
+      const rows=[...sourceRows,...customRows].map((row,i)=>{
+        const edit=state.itemEdits[row.key]||{}, base=row.values;
+        const time=edit.time??base[0], name=edit.name??base[1], desc=edit.note??state.notes[row.key]??base[2], mapq=base[4];
+        const status=effectiveStatus(row.key,base[3]);
+        const mapAction=mapq?`<a class="action ${i===0?'primary':''}" href="${maps(mapq)}" target="_blank" rel="noopener">${icon('nav')}Navigate</a>`:'';
+        return `<div class="timeline-row" data-edit-item="${row.key}" data-day="${d.n}" data-index="${row.index}" data-custom-id="${row.customId}" role="button" tabindex="0" aria-label="Edit ${esc(name)}"><div class="time ${time==='Flex'||time==='Morning'||time==='Midday'||time==='Evening'?'flex':''}">${esc(time)}</div><div class="track"><span class="dot ${i===1?'now':''} ${/Dinner|Lunch/.test(name)?'food':''}"></span></div><div class="item-body"><div class="item-title"><strong>${esc(name)}</strong><span class="chev" aria-hidden="true">${icon('edit')}</span></div><p>${esc(desc)}</p><div class="meta-line">${statusBadge(status)}</div>${mapAction?`<div class="row-actions">${mapAction}</div>`:''}</div></div>`;
+      }).join('');
+      const attention=bookingItems.filter(b=>effectiveStatus(`booking-${b.name}`,b.status)!=='booked').slice(0,3).map((b,i)=>`<div class="attention"><span class="attention-icon ${i===2?'red':''}">${icon(i===2?'weather':'alert')}</span><div><b>${esc(b.name)}</b><p>${esc(b.when)} · ${b.status==='check'?'Check current access':'Still not confirmed'}</p></div>${statusBadge(b.status)}</div>`).join('');
+      const hotelHtml=hotel?`<div class="hotel-card"><span class="kicker">Tonight · ${esc(hotel.city)}</span><h4>${esc(hotel.name)}</h4><p>${esc(hotel.notes)}</p><div class="hotel-facts"><div><span>Check-in</span><b>${esc(hotel.checkin)}</b></div><div><span>Breakfast</span><b>${esc(hotel.breakfast)}</b></div></div><div class="row-actions"><a class="action" href="${hotel.maps}" target="_blank" rel="noopener">${icon('nav')}Navigate</a><button class="action secondary" data-hotel="${d.hotel}">Details</button>${hotel.phone?`<a class="action secondary" href="tel:${hotel.phone}">${icon('phone')}Call</a>`:''}</div></div>`:'';
+      $('#today-content').innerHTML=`<div class="date-strip today-strip">${dates}</div><div class="compact-day-head"><p class="eyebrow">${esc(d.date)} · Day ${d.n}</p><h2>${esc(d.title)}</h2><div class="metrics"><span class="metric">${esc(d.drive)}</span><span class="metric">${esc(d.activity)}</span></div></div><div class="dashboard"><div><section class="section"><div class="section-head"><h3>Today’s itinerary</h3><button data-action="edit-day">Edit day</button></div><div class="timeline">${rows}</div></section>${hotelHtml?`<section class="section"><div class="section-head"><h3>Tonight</h3></div>${hotelHtml}</section>`:''}</div><aside class="side-stack"><section class="section"><div class="section-head"><h3>Needs attention</h3><button data-view-jump="more">View all</button></div><div class="attention-list">${attention||'<div class="empty">Nothing urgent.</div>'}</div></section>${next?`<section class="section"><div class="section-head"><h3>Tomorrow</h3></div><button class="tomorrow" data-day="${next.n}"><div><span>${esc(next.date)} · Day ${next.n}</span><b>${esc(next.title)}</b><small>${esc(next.summary)}</small></div>${icon('chevron')}</button></section>`:''}</aside></div>`;
+    }
+
+    function renderTrip(){
+      $('#day-list').innerHTML=days.map(d=>`<button class="day-row ${d.n===state.selectedDay?'today':''}" data-open-day="${d.n}"><div class="day-no">Day<b>${d.n}</b></div><div><h4>${esc(d.title)}</h4><p>${esc(d.date)} · ${esc(d.summary)}</p><div class="metrics"><span class="metric">${esc(d.drive)}</span>${d.hotel?`<span class="metric">${esc(hotels[d.hotel].city)}</span>`:''}</div></div>${icon('chevron')}</button>`).join('');
+    }
+
+    function renderExplore(){
+      const types=['All',...new Set(activities.map(a=>a.type))];
+      $('#filters').innerHTML=types.map(t=>`<button class="filter ${t===currentFilter?'active':''}" data-filter="${esc(t)}">${esc(t)}</button>`).join('');
+      const q=$('#activity-search').value.trim().toLowerCase();
+      const list=activities.filter(a=>(currentFilter==='All'||a.type===currentFilter)&&(!q||`${a.name} ${a.region} ${a.type} ${a.desc} ${a.weather}`.toLowerCase().includes(q)));
+      $('#result-count').textContent=`${list.length} ${list.length===1?'place':'places'}`;
+      $('#activity-grid').innerHTML=list.length?list.map(a=>`<button class="activity-card" data-activity="${a.id}"><div class="activity-top"><div><h4>${esc(a.name)}</h4><p class="region">${esc(a.region)} · ${esc(a.type)}</p></div>${icon('chevron')}</div><p class="desc">${esc(a.desc)}</p><div class="meta-line"><span class="badge">${esc(a.time)}</span>${statusBadge(effectiveStatus(`activity-${a.id}`,a.status))}</div></button>`).join(''):`<div class="empty">${icon('search')}<br>No places match that search.</div>`;
+    }
+
+    function renderMore(){
+      const booked=bookingItems.filter(b=>effectiveStatus(`booking-${b.name}`,b.status)==='booked').length;
+      $('#progress-text').textContent=`${booked} of ${bookingItems.length}`;
+      $('#progress-bar').style.width=`${booked/bookingItems.length*100}%`;
+    }
+
+    function openModal(title,kicker,body){$('#modal-title').textContent=title;$('#modal-kicker').textContent=kicker||'';$('#modal-body').innerHTML=body;$('#modal').classList.add('open');document.body.style.overflow='hidden';setTimeout(()=>$('#modal .close').focus(),20)}
+    function closeModal(){$('#modal').classList.remove('open');document.body.style.overflow=''}
+    function showToast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(showToast.timer);showToast.timer=setTimeout(()=>t.classList.remove('show'),2200)}
+
+    function openActivity(id){
+      const a=activities.find(x=>x.id===id), status=effectiveStatus(`activity-${a.id}`,a.status);
+      openModal(a.name,`${a.region} · ${a.type}`,`<p class="detail-lede">${esc(a.desc)}</p><div class="detail-actions"><a class="action primary" href="${maps(a.map)}" target="_blank" rel="noopener">${icon('nav')}Navigate</a><a class="action" href="${a.web}" target="_blank" rel="noopener">${icon('globe')}Website</a></div><div class="facts"><div class="fact"><span>Time</span><b>${esc(a.time)}</b></div><div class="fact"><span>Effort</span><b>${esc(a.effort)}</b></div><div class="fact"><span>Booking</span><b>${esc(a.booking)}</b></div><div class="fact"><span>Weather</span><b>${esc(a.weather)}</b></div></div>${state.notes[`activity-${a.id}`]?`<div class="detail-note"><b>Your note</b><br>${esc(state.notes[`activity-${a.id}`])}</div>`:''}<button class="btn primary" style="width:100%" data-edit-activity="${a.id}">${icon('edit')} Edit status &amp; note</button>`);
+    }
+
+    function openHotel(id){const h=hotels[id];openModal(h.name,h.city,`<p class="detail-lede">${esc(h.notes)}</p><div class="detail-actions"><a class="action primary" href="${h.maps}" target="_blank" rel="noopener">${icon('nav')}Navigate</a>${h.phone?`<a class="action" href="tel:${h.phone}">${icon('phone')}Call</a>`:`<button class="action" data-action="website-demo">${icon('globe')}Website</button>`}</div><div class="facts"><div class="fact"><span>Check-in</span><b>${esc(h.checkin)}</b></div><div class="fact"><span>Check-out</span><b>${esc(h.checkout)}</b></div><div class="fact"><span>Breakfast</span><b>${esc(h.breakfast)}</b></div><div class="fact"><span>Parking</span><b>${esc(h.parking)}</b></div></div>${state.notes[`hotel-${id}`]?`<div class="detail-note"><b>Your note</b><br>${esc(state.notes[`hotel-${id}`])}</div>`:''}<button class="btn primary" style="width:100%" data-edit-hotel="${id}">${icon('edit')} Edit hotel note</button>`)}
+
+    function editActivity(id){const a=activities.find(x=>x.id===id), key=`activity-${id}`;openModal(`Edit ${a.name}`,'Changes save on this device',`<form id="activity-form" class="form-grid" data-key="${key}"><div class="field"><label for="activity-status">Status</label><select id="activity-status"><option value="none">No status</option><option value="booked">Booked</option><option value="pending">Booking needed</option><option value="optional">Optional</option><option value="check">Needs checking</option></select></div><div class="field"><label for="activity-note">Note</label><textarea id="activity-note" placeholder="Add a practical note…">${esc(state.notes[key]||'')}</textarea></div><button class="btn primary" type="submit">Save changes</button></form>`);$('#activity-status').value=effectiveStatus(key,a.status)}
+    function editHotel(id){const key=`hotel-${id}`,h=hotels[id];openModal(`Edit ${h.name}`,'Changes save on this device',`<form id="hotel-form" class="form-grid" data-key="${key}"><div class="field"><label for="hotel-note">Hotel note</label><textarea id="hotel-note" placeholder="Parking, arrival, room request…">${esc(state.notes[key]||h.notes)}</textarea></div><button class="btn primary" type="submit">Save note</button></form>`)}
+
+    function editItem(day,index,key,customId=''){
+      const custom=customId?state.customItems.find(x=>String(x.id)===String(customId)):null;
+      const item=custom?[custom.time||'Flex',custom.name,custom.note||'Added during the trip','optional']:days[day-1].items[index];
+      if(!item)return;
+      const edit=state.itemEdits[key]||{}, time=edit.time??item[0], name=edit.name??item[1], note=edit.note??state.notes[key]??item[2];
+      openModal(`Edit ${name}`,`Day ${day} · ${days[day-1].date}`,`<form id="item-form" class="form-grid" data-key="${key}" data-custom-id="${esc(customId)}"><div class="field"><label for="item-name">Title</label><input id="item-name" required value="${esc(name)}"></div><div class="field"><label for="item-time">Time</label><input id="item-time" value="${esc(time)}" placeholder="e.g. 10:30 or Flexible"></div><div class="field"><label for="item-status">Status</label><select id="item-status"><option value="none">No status</option><option value="booked">Booked</option><option value="pending">Booking needed</option><option value="optional">Optional</option><option value="alert">Important</option></select></div><div class="field"><label for="item-note">Details or note</label><textarea id="item-note" placeholder="Add a practical note…">${esc(note)}</textarea></div><button class="btn primary" type="submit">Save changes</button></form>`);
+      $('#item-status').value=effectiveStatus(key,item[3]);
+    }
+
+    function addItem(){openModal('Add trip item','Fast, practical changes',`<form id="add-form" class="form-grid"><div class="field"><label for="add-type">Type</label><select id="add-type"><option>Activity</option><option>Restaurant</option><option>Hotel</option><option>Note</option></select></div><div class="field"><label for="add-name">Name</label><input id="add-name" required placeholder="e.g. Dinner at Casa Laureano"></div><div class="field"><label for="add-day">Day</label><select id="add-day">${days.map(d=>`<option value="${d.n}" ${d.n===state.selectedDay?'selected':''}>Day ${d.n} · ${esc(d.date)}</option>`).join('')}</select></div><div class="field"><label for="add-time">Time (optional)</label><input id="add-time" placeholder="e.g. 20:30"></div><div class="field"><label for="add-note">Note (optional)</label><textarea id="add-note" placeholder="Reservation name, link, or reminder…"></textarea></div><button class="btn primary" type="submit">Add to trip</button></form>`)}
+
+    function showBookings(){openModal('Booking checklist','Operational items only',`<div class="attention-list">${bookingItems.map(b=>{const key=`booking-${b.name}`,st=effectiveStatus(key,b.status);return `<button class="menu-row" data-booking="${esc(b.name)}" style="width:100%"><span class="attention-icon ${st==='check'?'red':''}">${icon(st==='booked'?'today':'alert')}</span><span style="flex:1"><b>${esc(b.name)}</b><small>${esc(b.when)}</small></span>${statusBadge(st)}</button>`}).join('')}</div><p style="font-size:.78rem;color:var(--muted);margin:12px 2px">Tap an item to cycle its status.</p>`)}
+    function showPractical(){openModal('Travel notes','Quick reference',`<div class="detail-note"><b>Weather</b><br>Expect 18–21°C on the coast and cooler, wetter mountains. Keep the three Potes days interchangeable.</div><div class="attention-list"><div class="attention"><span class="attention-icon">${icon('trip')}</span><div><b>Driving</b><p>About 1,300 km. Budget 20% above satnav times on N-roads and avoid Hermida Gorge after dark.</p></div></div><div class="attention"><span class="attention-icon">${icon('info')}</span><div><b>Carry cash</b><p>Useful at rural viewpoints, small museums, and family-run properties.</p></div></div><div class="attention"><span class="attention-icon red">${icon('alert')}</span><div><b>Emergency</b><p>European emergency number: 112.</p></div></div></div>`)}
+
+    function exportData(){const blob=new Blob([JSON.stringify({...state,exportedAt:new Date().toISOString()},null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='green-spain-trip-data.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),500);showToast('Trip data exported')}
+    function importData(file){const reader=new FileReader();reader.onload=()=>{try{const data=JSON.parse(reader.result);if(data.schemaVersion!==1)throw new Error('Incompatible file');if(!confirm('Replace the current trip data on this device? This cannot be undone unless you export a backup first.'))return;state={...defaults,...data};persist();renderAll();closeModal();showToast('Trip data imported')}catch(e){alert('This does not appear to be a compatible Green Spain trip file.')}};reader.readAsText(file)}
+
+    function renderAll(){renderToday();renderTrip();renderExplore();renderMore()}
+
+    document.addEventListener('click',e=>{
+      if(e.target.closest('a[href]'))return;
+      const nav=e.target.closest('[data-view]');if(nav){navTo(nav.dataset.view);return}
+      const jump=e.target.closest('[data-view-jump]');if(jump){navTo(jump.dataset.viewJump);return}
+      const dp=e.target.closest('[data-day]');if(dp){state.selectedDay=+dp.dataset.day;persist();renderToday();renderTrip();navTo('today');return}
+      const od=e.target.closest('[data-open-day]');if(od){state.selectedDay=+od.dataset.openDay;persist();renderToday();renderTrip();navTo('today');return}
+      const ac=e.target.closest('[data-activity]');if(ac){openActivity(ac.dataset.activity);return}
+      const ht=e.target.closest('[data-hotel]');if(ht){openHotel(ht.dataset.hotel);return}
+      const ea=e.target.closest('[data-edit-activity]');if(ea){editActivity(ea.dataset.editActivity);return}
+      const eh=e.target.closest('[data-edit-hotel]');if(eh){editHotel(eh.dataset.editHotel);return}
+      const ei=e.target.closest('[data-edit-item]');if(ei){editItem(+ei.dataset.day,+ei.dataset.index,ei.dataset.editItem,ei.dataset.customId);return}
+      const fl=e.target.closest('[data-filter]');if(fl){currentFilter=fl.dataset.filter;renderExplore();return}
+      const bk=e.target.closest('[data-booking]');if(bk){const key=`booking-${bk.dataset.booking}`,cur=effectiveStatus(key,bookingItems.find(x=>x.name===bk.dataset.booking).status),cycle={pending:'booked',check:'booked',booked:'pending'};state.bookingStatus[key]=cycle[cur]||'booked';persist();showBookings();renderMore();renderToday();return}
+      const act=e.target.closest('[data-action]');if(act){({
+        'show-bookings':showBookings,'practical':showPractical,'export':exportData,'import':()=>$('#import-file').click(),
+        'documents':()=>showToast('Add your private Google Drive link in the real app'),
+        'website-demo':()=>showToast('Website link can be added during implementation'),
+        'edit-day':()=>showToast('Tap any itinerary item to edit it')
+      }[act.dataset.action]||(()=>{}))();return}
+      if(e.target.closest('#add-button')){addItem();return}
+      if(e.target.closest('.close')||e.target===$('#modal'))closeModal();
+    });
+    document.addEventListener('submit',e=>{
+      e.preventDefault();
+      if(e.target.id==='activity-form'){const key=e.target.dataset.key;state.bookingStatus[key]=$('#activity-status').value;state.notes[key]=$('#activity-note').value.trim();persist();closeModal();renderAll();showToast('Activity updated')}
+      if(e.target.id==='hotel-form'){const key=e.target.dataset.key;state.notes[key]=$('#hotel-note').value.trim();persist();closeModal();renderAll();showToast('Hotel note saved')}
+      if(e.target.id==='item-form'){const key=e.target.dataset.key;state.bookingStatus[key]=$('#item-status').value;state.itemEdits[key]={name:$('#item-name').value.trim(),time:$('#item-time').value.trim()||'Flex',note:$('#item-note').value.trim()};state.notes[key]=$('#item-note').value.trim();persist();closeModal();renderAll();showToast('Itinerary updated')}
+      if(e.target.id==='add-form'){state.customItems.push({id:Date.now(),type:$('#add-type').value,name:$('#add-name').value.trim(),day:+$('#add-day').value,time:$('#add-time').value.trim(),note:$('#add-note').value.trim()});state.selectedDay=+$('#add-day').value;persist();closeModal();renderAll();navTo('today');showToast('Item added to trip')}
+    });
+    $('#activity-search').addEventListener('input',renderExplore);
+    $('#import-file').addEventListener('change',e=>{if(e.target.files[0])importData(e.target.files[0]);e.target.value=''});
+    document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();const row=e.target.closest?.('[data-edit-item]');if(row&&(e.key==='Enter'||e.key===' ')){e.preventDefault();editItem(+row.dataset.day,+row.dataset.index,row.dataset.editItem,row.dataset.customId)}});
+
+    function registerWebMCP(){
+      const ctx=document.modelContext;if(!ctx?.registerTool)return;
+      try{
+        ctx.registerTool({name:'read_trip_day',title:'Read trip day',description:'Return the operational itinerary for one Green Spain trip day.',inputSchema:{type:'object',properties:{day:{type:'integer',minimum:1,maximum:13}},required:['day'],additionalProperties:false},annotations:{readOnlyHint:true,untrustedContentHint:false},execute({day}){const d=days[day-1];if(!d)throw new Error('Day must be between 1 and 13');return {day:d.n,date:d.date,title:d.title,items:d.items.map(x=>({time:x[0],name:x[1],detail:x[2]}))}}});
+        ctx.registerTool({name:'update_booking_status',title:'Update booking status',description:'Update the local booking state for a named checklist item.',inputSchema:{type:'object',properties:{name:{type:'string'},status:{type:'string',enum:['booked','pending','check']}},required:['name','status'],additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:false},execute({name,status}){const item=bookingItems.find(x=>x.name.toLowerCase()===name.toLowerCase());if(!item)throw new Error('Unknown booking item');state.bookingStatus[`booking-${item.name}`]=status;persist();renderAll();return {name:item.name,status}}});
+      }catch{}
+    }
+
+    renderAll();registerWebMCP();
+  })();
+  </script>
+</body>
+</html>

@@ -103,6 +103,16 @@ entities.push(
 )
 
 const entityIds = new Set(entities.map((e) => e.id))
+// Narrative destinations explicitly named in the source, reusing existing places/links.
+// Do not infer a trail turn, shuttle pickup, airport terminal or unnamed restaurant.
+const narrativePlaces = {
+  'day-3-item-5': ['hotel-el-jisu'], 'day-3-item-6': ['hotel-el-jisu'],
+  'day-4-item-3': ['opt-fuente-de'], 'day-4-item-4': ['hotel-el-jisu'], 'day-4-item-5': ['hotel-el-jisu'],
+  'day-5-item-5': ['hotel-el-jisu'], 'day-8-item-3': ['opt-canedo'],
+  'day-8-item-4': ['hotel-o-palleiro'], 'day-8-item-6': ['hotel-o-palleiro'],
+  'day-9-item-4': ['opt-orellan-viewpoint'], 'day-9-item-5': ['hotel-o-palleiro'],
+  'day-10-item-4': ['hotel-la-posta'],
+}
 const refs = (node) => unique(node.find('a.activity-ref').toArray().map((el) => $(el).attr('href').slice(1)))
 const days = []
 $('.day').each((i, el) => {
@@ -129,6 +139,8 @@ $('.day').each((i, el) => {
       item.booking = { required: true, status: 'unknown', notes: 'Reserve this table; no confirmation provided.' }
     }
     if (number === 10 && row.hasClass('dinner')) item.entityIds.push('restaurant-casa-laureano')
+    if (narrativePlaces[item.id]) item.entityIds = unique([...item.entityIds, ...narrativePlaces[item.id]])
+    if (['day-12-item-2', 'day-12-item-3'].includes(item.id)) item.choiceGroup = 'Day 12 morning: Las Xanas or Naranco'
     return item
   })
   const dayFacts = node.find('.log > div').toArray().map((el) => ({ label: text($(el), 'span'), value: text($(el), 'b') }))
@@ -171,7 +183,7 @@ $('#options .library-note, #options > .callout, #board .board-row:last-child').e
   practicalNotes.push({ title: 'Planning context', body: content($(el)) })
 })
 const trip = {
-  schemaVersion: 1, id: 'green-spain-2026', name: 'Green Spain', timezone: 'Europe/Madrid',
+  schemaVersion: 2, id: 'green-spain-2026', name: 'Green Spain', timezone: 'Europe/Madrid',
   startDate: '2026-09-20', endDate: '2026-10-02', updatedAt: '2026-08-10T00:00:00.000Z', revision: 0,
   entities, stays, days, actions, practicalNotes, documentLinks: [],
   source: { file: 'vacation-plan.html', sha256: createHash('sha256').update(source).digest('hex'), notes: [
@@ -183,6 +195,7 @@ const trip = {
     'Day 9 mentions Ponferrada; the library says it is closed Monday. This conflict is preserved for review.',
     'Day 12 requires choosing Las Xanas or Naranco. They do not fit together.',
     'No private document URLs, reservation names, references or sensitive documents were supplied.',
+    'Phase 2 maps 12 narrative destination rows to existing source places; no new location or opening claims are inferred. Day 12 morning entries share an editable exclusive choice group.',
   ] },
 }
 const output = `${JSON.stringify(trip, null, 2)}\n`

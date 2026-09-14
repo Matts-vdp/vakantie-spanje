@@ -16,6 +16,7 @@ const booking = z.object({
   reservationName: text.optional(),
   reference: text.optional(),
   documentUrl: webUrl.optional(),
+  bookingUrl: webUrl.optional(),
   notes: text,
 })
 const common = {
@@ -53,6 +54,7 @@ export const entitySchema = z.discriminatedUnion('type', [
 const itemSchema = z.object({
   id, title: z.string().min(1), description: text,
   entityIds: z.array(id),
+  choiceGroup: text.optional(),
   time: time.optional(),
   endTime: time.optional(),
   optional: z.boolean(),
@@ -76,12 +78,14 @@ const actionSchema = z.object({
   dueDate: date.optional(),
   entityIds: z.array(id),
   dayIds: z.array(id),
+  itemIds: z.array(id).optional(),
+  stayIds: z.array(id).optional(),
   status: z.enum(['pending', 'done']),
   kind: z.enum(['booking', 'access', 'confirmation', 'decision']),
 })
 
 export const tripSchema = z.object({
-  schemaVersion: z.literal(1),
+  schemaVersion: z.literal(2),
   id, name: z.string().min(1),
   timezone: z.string().refine((value) => {
     try { new Intl.DateTimeFormat('en', { timeZone: value }); return true } catch { return false }
@@ -130,6 +134,8 @@ export const tripSchema = z.object({
   trip.actions.forEach((action) => {
     checkRefs(action.entityIds)
     action.dayIds.forEach((ref) => { if (!days.has(ref)) problem(`Missing day: ${ref}`) })
+    action.itemIds?.forEach(ref => { if (!trip.days.some(d => d.items.some(i => i.id === ref))) problem(`Missing visit: ${ref}`) })
+    action.stayIds?.forEach(ref => { if (!stays.has(ref)) problem(`Missing stay: ${ref}`) })
   })
 })
 
@@ -138,8 +144,14 @@ export type Entity = z.infer<typeof entitySchema>
 export type Day = Trip['days'][number]
 export type Booking = z.infer<typeof booking>
 
-/** Boundary used by the seed, IndexedDB reads and future file imports. */
+/** V1 -> V2 is structural only: retain traveller data, never consult or merge a seed.
+ * V2 marks the new booking/choice/action fields so old apps fail safely instead of stripping them.
+ * Reading migrates in memory; the next committed save/replacement persists V2.
+ */
 export function parseTrip(value: unknown): Trip {
+  if (typeof value === 'object' && value !== null && 'schemaVersion' in value && value.schemaVersion === 1) {
+    return tripSchema.parse({ ...value, schemaVersion: 2 })
+  }
   return tripSchema.parse(value)
 }
 

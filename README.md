@@ -21,16 +21,15 @@ npm run preview
 
 The preview runs at `http://127.0.0.1:4173`. Visit it online and wait for **Ready for offline use** before disconnecting. Localhost is a secure context for service workers. An actual phone needs an HTTPS development URL for installation/offline testing; ordinary LAN HTTP is insufficient. Choose production hosting in the rollout phase.
 
-## What the foundation includes
+## Phase 2 application
 
-- The complete source dataset: 13 days, six stays, 68 library activities, one decision note, two named restaurants and six hotels.
-- Today/day browsing, Trip, searchable Explore, read-only place details, More/planning notes.
-- Editable day notes, saved in native IndexedDB and retained offline.
-- A complete JSON export; validated import/atomic replacement primitives for the next phase.
-- Install manifest, local icons, precached app shell and user-triggered updates.
-- Data/storage tests, production-browser tests, agent instructions and a portable CI workflow.
+- Complete source itinerary and reusable library, with Today, Trip, filtered Explore and place details.
+- Offline add/edit forms for places, notes, visits and stays; day associations, reordering and exclusive choices.
+- Visit/stay bookings, contextual reminders, action review and traveller-entered document shortcuts.
+- Full JSON export/import with explicit replacement, pre-import backup download and restore.
+- Native IndexedDB, stale-tab/draft protection, v1-to-v2 migration and safe app updates.
 
-This is phase 1. Full item/booking editing, the import confirmation UI, contextual action management and refinement belong to phase 2. See `docs/implementation.md` for the remaining work.
+See `docs/implementation.md` for behavior and assumptions, and `docs/verification.md` for completed checks. Rollout remains out of scope. Version-1 exports can be imported; update a receiving app before importing a version-2 export.
 
 ## Verification
 
@@ -45,7 +44,7 @@ On Windows, browser tests use installed Microsoft Edge. On Linux/macOS, install 
 npx playwright install --with-deps chromium
 ```
 
-Browser tests use isolated storage, a fixed trip preview date, a phone viewport and the production service worker. They do not access your normal browser profile. Screenshots/traces are written to ignored `test-results/`.
+Browser tests use isolated storage, explicit trip days, a phone viewport and the production service worker. The upgrade test builds phase 1 from commit b19af3327af667c9a959e7da17e429bf0c584325, so this commit must be available in local Git history. They do not access your normal browser profile. Screenshots/traces are written to ignored `test-results/`.
 
 ## Data and privacy
 

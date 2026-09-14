@@ -62,7 +62,7 @@ test('protect a draft and export the current complete trip', async ({ page }) =>
   const chunks: Buffer[] = []
   for await (const chunk of stream!) chunks.push(Buffer.from(chunk))
   const trip = JSON.parse(Buffer.concat(chunks).toString('utf8'))
-  expect(trip.schemaVersion).toBe(1)
+  expect(trip.schemaVersion).toBe(2)
   expect(trip.days).toHaveLength(13)
   expect(trip.days[0].notes).toBe('Do not lose this draft')
 })
