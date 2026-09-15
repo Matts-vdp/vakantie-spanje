@@ -27,7 +27,7 @@ The preview runs at `http://127.0.0.1:4173`. Visit it online and wait for **Read
 - Offline add/edit forms for places, notes, visits and stays; day associations, reordering and exclusive choices.
 - Visit/stay bookings, contextual reminders, action review and traveller-entered document shortcuts.
 - Full JSON export/import with explicit replacement, pre-import backup download and restore.
-- Native IndexedDB, stale-tab/draft protection, v1-to-v2 migration and safe app updates.
+- Native IndexedDB, stale-tab/draft protection, portable-data migrations and safe app updates.
 
 See `docs/implementation.md` for behavior and assumptions, and `docs/verification.md` for completed checks. Rollout remains out of scope. Version-1 exports can be imported; update a receiving app before importing a version-2 export.
 

@@ -13,6 +13,8 @@ describe('source dataset and portable schema', () => {
     expect(trip.days.filter((d) => d.stayId === 'stay-2')).toHaveLength(3)
     expect(trip.days[12].stayId).toBeUndefined()
     expect(trip.days[1].items[1].entityIds).toContain('opt-covadonga')
+    expect(trip.days.flatMap((day) => day.items).every((item) => item.kind !== 'auto')).toBe(true)
+    expect(new Set(trip.days.flatMap((day) => day.items.map((item) => item.kind)))).toEqual(new Set(['drive', 'walk', 'food', 'visit', 'stay', 'flight', 'bike', 'other']))
     expect(trip.stays.every((s) => s.booking.status === 'booked')).toBe(true)
     expect(['day-1-item-1', 'day-1-item-2', 'day-13-item-3', 'day-13-item-4'].every((id) => trip.days.flatMap((day) => day.items).find((item) => item.id === id)?.booking?.status === 'booked')).toBe(true)
   })
@@ -41,15 +43,18 @@ describe('source dataset and portable schema', () => {
   })
   it('migrates v1 without mutating it or merging seed updates, and validates migrated data', () => {
     const legacy = { ...structuredClone(seed), schemaVersion: 1 }
+    legacy.days.forEach((day) => day.items.forEach((item) => { delete (item as { kind?: string }).kind }))
     legacy.days[0].notes = 'Keep traveller edits'
     legacy.entities[0].name = 'Edited place name'
     legacy.actions[0].status = 'done'
     const migrated = parseTrip(legacy)
     expect(migrated.schemaVersion).toBe(2)
+    expect(migrated.days[0].items[0].kind).toBe('auto')
     expect(migrated.days[0].notes).toBe('Keep traveller edits')
     expect(migrated.entities[0].name).toBe('Edited place name')
     expect(migrated.actions[0].status).toBe('done')
     expect(legacy.schemaVersion).toBe(1)
+    expect('kind' in legacy.days[0].items[0]).toBe(false)
     legacy.days[0].items[0].entityIds = ['missing']
     expect(() => parseTrip(legacy)).toThrow('Missing entity')
   })

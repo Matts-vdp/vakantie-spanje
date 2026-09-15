@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
-import { parseTrip, type Booking, type Entity, type Trip } from '../domain/trip'
+import { parseTrip, type Booking, type Entity, type ItemKind, type Trip } from '../domain/trip'
 import { actionTargets, actionUsesBookings, emptyBooking, moveItem, newEntity, removeEntity, schedule } from '../domain/operations'
+import { itemKindLabels } from '../domain/itinerary'
 
 export type SaveTrip = (trip: Trip) => Promise<void>
 export function Field({ label, value, onChange, type = 'text', required = false }: { label: string; value?: string; onChange: (value: string) => void; type?: string; required?: boolean }) {
@@ -77,6 +78,7 @@ export function Editor({ trip, mode, id, onSave, onDirty }: { trip: Trip; mode: 
       {['new', 'schedule'].includes(mode) && entity?.type === 'hotel' && <p>A hotel is assigned to the selected night. Edit the stay afterwards to extend its dates or adjust its booking.</p>}
       {mode === 'item' && item && day && <>
         <Field label="Visit title" required value={item.title} onChange={v => change(n => { n.days.find(d => d.id === day.id)!.items.find(i => i.id === id)!.title = v })} />
+        <label className="field">Timeline icon<select aria-label="Timeline icon" value={item.kind} onChange={e => change(n => { n.days.find(d => d.id === day.id)!.items.find(i => i.id === id)!.kind = e.target.value as ItemKind })}>{(Object.entries(itemKindLabels) as [ItemKind, string][]).map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></label>
         {daySelect(day.id, v => { setDraft(moveItem(draft, item.id, v)); setChanged(true); onDirty(true) })}
         {(['time', 'endTime', 'description', 'notes', 'choiceGroup'] as const).map(key => <Field key={key} label={{ time: 'Start time', endTime: 'End time', description: 'Visit description', notes: 'Visit notes', choiceGroup: 'Exclusive choice group (optional)' }[key]} type={key.includes('Time') || key === 'time' ? 'time' : 'text'} value={item[key]} onChange={v => change(n => { Object.assign(n.days.find(d => d.id === day.id)!.items.find(i => i.id === id)!, { [key]: v || (['description', 'notes'].includes(key) ? '' : undefined) }) })} />)}
         <label className="field">Visit status<select aria-label="Visit status" value={item.status} onChange={e => change(n => { n.days.find(d => d.id === day.id)!.items.find(i => i.id === id)!.status = e.target.value as typeof item.status })}>{['planned', 'done', 'skipped'].map(s => <option key={s}>{s}</option>)}</select></label>

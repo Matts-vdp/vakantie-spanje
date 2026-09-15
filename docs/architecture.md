@@ -8,11 +8,11 @@ The database version remains 1, with a `trip` store and `current` / `before-impo
 
 ## Portable schema v2 and v1 migration
 
-`src/domain/trip.ts` validates all storage, seed, save and JSON boundaries. It checks dates, times, unique IDs, entity/day/stay/visit references, overnight consistency and HTTP(S) URLs. V2 adds optional `booking.bookingUrl`, itinerary `choiceGroup`, and action `itemIds` / `stayIds`. Existing document URLs and all previous fields retain their meaning.
+`src/domain/trip.ts` validates all storage, seed, save and JSON boundaries. It checks dates, times, unique IDs, entity/day/stay/visit references, overnight consistency and HTTP(S) URLs. V2 adds optional `booking.bookingUrl`, itinerary `choiceGroup`, action `itemIds` / `stayIds`, and the itinerary `kind` used for timeline icons. A missing icon choice defaults to `auto`. Existing document URLs and all previous fields retain their meaning.
 
-`parseTrip` recognizes schema v1, copies its top-level record with version 2, then validates it with the complete current schema. It does not modify the input, read a new seed, add new source entities, or overwrite traveller fields. Migration is in memory on read; the next committed save or replacement persists v2. Validation failure leaves the original record untouched. Other versions are rejected. Database versioning and portable format versioning are independent.
+`parseTrip` recognizes schema v1, copies its top-level record with version 2, then validates it with the complete current schema. Missing timeline icon choices default to automatic classification based only on the current title and linked entities; no seed is consulted or merged. Migration does not modify the input or overwrite traveller fields. It occurs in memory on read; the next committed save or replacement persists v2. Validation failure leaves the original record untouched. Other versions are rejected. Database versioning and portable format versioning are independent.
 
-Version 2 is deliberate even though the new fields are optional: the old version-1 validator would silently strip unknown fields. Old builds now refuse a v2 record/export instead of accepting a lossy downgrade. Sharing from an old phone to an updated phone is supported; update the receiving app before importing a v2 export. There is no automatic downgrade.
+Version 2 is deliberate even though some fields are optional: the old version-1 validator would silently strip unknown fields. Old builds refuse a v2 record/export instead of accepting a lossy downgrade. Sharing from an old phone to an updated phone is supported; update the receiving app before importing a v2 export. There is no automatic downgrade.
 
 ## Ownership and editing
 

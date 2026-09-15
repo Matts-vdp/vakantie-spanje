@@ -3,6 +3,7 @@ import { formatDate } from '../domain/dates'
 import type { Booking, Day, Entity, Trip } from '../domain/trip'
 import { Icon } from './Icon'
 import { bookingLabel, choiceGroup, selectChoice } from '../domain/operations'
+import { itemKindLabels, resolveItemKind } from '../domain/itinerary'
 import { ActionList, BookingOverview } from './TripTools'
 import type { SaveTrip } from './Editor'
 
@@ -119,8 +120,10 @@ export function DayView({ trip, day, todayMode = false, onSaveNote, onDirty, onS
     {error && <p role="alert" className="error">{error}</p>}
     <section className="day-ahead" aria-label="Day itinerary">
       <DayNote key={day.id} day={day} onSave={onSaveNote} onDirty={onDirty} />
-      <ol className="timeline">{day.items.map((item) => <li key={item.id}>
-        <div className={`timeline-marker ${item.time ? '' : 'flex-time'}`}><span>{item.time || 'Flex'}</span><i /></div>
+      <ol className="timeline">{day.items.map((item) => {
+        const kind = resolveItemKind(item, entities)
+        return <li key={item.id}>
+        <div className={`timeline-marker ${item.time ? '' : 'flex-time'}`}><span className="timeline-time">{item.time || 'Flex'}</span><span className={`timeline-kind ${kind}`} title={itemKindLabels[kind]}>{kind === 'other' ? <i /> : <Icon name={kind} size={16} />}</span></div>
         <div className="timeline-content">
           <div className="timeline-title"><h3>{item.title}</h3><a className="icon-button edit-visit" href={`#/item/${item.id}`} aria-label={`Edit ${item.title}`}><Icon name="edit" size={16} /></a></div>
           <div className="meta-line">{item.status !== 'planned' && <span className={`status-badge ${item.status}`}>{item.status}</span>}{item.booking && <StatusBadge booking={item.booking} />}{item.optional && <span className="status-badge optional">Optional</span>}{item.booking?.arrivalBefore && <span className="status-badge neutral">Arrive by {item.booking.arrivalBefore}</span>}</div>
@@ -137,7 +140,7 @@ export function DayView({ trip, day, todayMode = false, onSaveNote, onDirty, onS
             </div>
           })}</div>}
         </div>
-      </li>)}</ol>
+      </li>})}</ol>
     </section>
     {hotel?.type === 'hotel' && <section className="hotel-panel">
       <p className="eyebrow">Tonight · {hotel.region}</p><div className="hotel-title"><h2><a href={`#/place/${hotel.id}`}>{hotel.name}</a></h2>{stay && <StatusBadge booking={stay.booking} />}</div>

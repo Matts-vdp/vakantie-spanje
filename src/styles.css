@@ -432,7 +432,7 @@ a,button {
   font-variant-numeric:tabular-nums;
   padding-top:2px
 }
-.timeline-marker span {
+.timeline-time {
   display:block;
   background:#f8f9f5;
   position:relative;
@@ -1033,30 +1033,41 @@ input:focus-visible,select:focus-visible { outline:3px solid #b98138; outline-of
 }
 .timeline-marker {
   display:grid;
-  grid-template-columns:39px 12px;
-  gap:4px;
+  grid-template-columns:38px 18px;
+  gap:2px;
   padding-top:2px;
   font-size:.76rem;
   font-weight:650;
   color:var(--green)
 }
-.timeline-marker span {
+.timeline-time {
   padding:0;
   background:transparent
 }
-.timeline-marker i {
+.timeline-kind {
   position:relative;
   z-index:1;
+  display:grid;
+  width:18px;
+  height:19px;
+  place-items:center;
+  color:#50764e;
+  background:var(--surface)
+}
+.timeline-kind svg {
+  stroke-width:1.85
+}
+.timeline-kind.other i {
+  display:block;
   width:10px;
   height:10px;
-  margin-top:4px;
-  border:2px solid #50764e;
+  border:2px solid currentColor;
   border-radius:50%;
-  background:white
+  background:var(--surface)
 }
 .timeline-marker:after {
-  left:47px;
-  top:27px;
+  left:49px;
+  top:22px;
   bottom:-17px;
   background:#cfd9cd
 }

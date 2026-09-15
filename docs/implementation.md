@@ -15,7 +15,7 @@ Implemented locally on 14 September 2026. Phase 4 rollout remains out of scope.
 - Traveller-entered Drive/document shortcuts and booking links store URLs only, with an empty state when none have been supplied.
 - JSON import has file validation, summary, explicit whole-trip replacement, a current-data export, and pre-import backup download/restore. Restore swaps current and backup atomically. No merging.
 - Native IndexedDB remains the durable store. Writes resolve after commit, stale tabs are rejected, and failed saves retain form drafts. Navigation, browser Back, unload, the Today date rollover and service-worker updates respect unsaved forms/in-flight writes.
-- Portable schema v2 explicitly migrates v1 in memory without seed merging. V2 exports prevent old builds from silently dropping new fields. Unsupported versions fail safely. The next successful save persists the migrated state.
+- Portable schema v2 explicitly migrates v1 in memory without seed merging. Timeline icon choices default safely to automatic classification when absent. V2 exports prevent old builds from silently dropping new fields. Unsupported versions fail safely. The next successful save persists the migrated state.
 - The source converter adds 12 narrative-to-existing-place associations and explicit Day 12 choice groups. Original planning HTML/specification are unchanged. Existing device data is not enriched with these seed changes.
 - Full validation, offline browser journeys, cross-context transfer, an actual phase-1-to-phase-2 service-worker upgrade and static `/travel/` hosting have been exercised. See `verification.md`.
 
@@ -28,6 +28,7 @@ Scheduling a hotel initially assigns one night (not the final departure day). Da
 ## Phase 3 — user refinement
 
 - Refined Today with the mockup-style date strip, a title-only day heading, itinerary-first ordering, compact edit icons, activity bottom sheets, and a day-note control beside “The day ahead”. Hotel stays, flights, and rental car are confirmed in the seed from traveller feedback; existing device data is never overwritten by this update.
+- Replaced timeline dots with compact monochrome activity icons for driving, walking, food, visits, stays, flights and cycling. Seed entries carry explicit choices; new or uncategorized visits can use automatic classification or a manual override in Edit visit.
 - Adopted the mockup’s strongest utility patterns without its lower-contrast dark palette: a sticky screen header, grouped timeline and Trip rows, semantic status pills, honest “Flex” timing, primary-only navigation in itinerary rows, compact hotel disclosure, visible near-term attention rows, filter chips, scan-friendly Explore cards, and activity bottom sheets from both Today and Explore.
 - Gather traveller feedback on the complete initial application.
 - Verify installation, Maps handoff, physical-phone file sharing and offline reopening on actual iOS/Android devices.

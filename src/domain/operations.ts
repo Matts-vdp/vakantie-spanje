@@ -24,7 +24,7 @@ export function schedule(trip: Trip, entity: Entity, dayId: string): Trip {
     day.stayId = stay.id
     return next
   }
-  day.items.push({ id: crypto.randomUUID(), title: entity.name, description: '', entityIds: [entity.id], optional: false, status: 'planned', notes: '' })
+  day.items.push({ id: crypto.randomUUID(), title: entity.name, description: '', entityIds: [entity.id], kind: 'auto', optional: false, status: 'planned', notes: '' })
   return next
 }
 export function removeEntity(trip: Trip, id: string): Trip {

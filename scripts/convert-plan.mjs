@@ -115,6 +115,25 @@ const narrativePlaces = {
   'day-10-item-4': ['hotel-la-posta'],
 }
 const refs = (node) => unique(node.find('a.activity-ref').toArray().map((el) => $(el).attr('href').slice(1)))
+const timelineKind = (title, ids) => {
+  const value = title.toLowerCase()
+  if (/\b(e-?bike|cycle|cycling|ride|shuttle|distance as you go)\b/.test(value)) return 'bike'
+  if (/\b(fly|flight)\b/.test(value)) return 'flight'
+  if (/\b(walk|walking|hike|hiking|stroll|on foot|turn around|cross the puertos)\b/.test(value)) return 'walk'
+  if (/^choose\b/.test(value)) return 'other'
+  if (/\b(breakfast|lunch|dinner|tapas|eat|drinks?)\b/.test(value)) return 'food'
+  if (/\b(check[ -]?in|hotel arrival|arrive in san martín)\b/.test(value)) return 'stay'
+  if (/\b(drive|driving|leave|continue (?:to|north|west)|collect the car|park below|cross puerto|return to hotel|arrive at .*airport)\b/.test(value)) return 'drive'
+  const linked = ids.map((id) => entities.find((entity) => entity.id === id)).filter(Boolean)
+  if (linked.some((entity) => entity.type === 'restaurant')) return 'food'
+  if (linked.some((entity) => entity.type === 'hotel')) return 'stay'
+  if (linked.length === 1 && linked[0].type === 'activity') {
+    const tags = linked[0].tags.join(' ').toLowerCase()
+    if (/\b(e-?bike|cycling)\b/.test(tags)) return 'bike'
+    if (/\b(hike|walk|walking)\b/.test(tags)) return 'walk'
+  }
+  return linked.some((entity) => entity.type === 'activity') ? 'visit' : 'other'
+}
 const relevantNoticeTitles = {
   1: ['Choose one'], 2: ['Must know'], 3: ['Action at check-in'], 4: ['Weather decides', 'If the top is cloudy'],
   5: ['Access and safety'], 6: [], 7: ['Book only if'], 8: ['Advance booking required', 'Check one week before'],
@@ -150,6 +169,7 @@ $('.day').each((i, el) => {
     }
     if (narrativePlaces[item.id]) item.entityIds = unique([...item.entityIds, ...narrativePlaces[item.id]])
     if (['day-12-item-2', 'day-12-item-3'].includes(item.id)) item.choiceGroup = 'Day 12 morning: Las Xanas or Naranco'
+    item.kind = timelineKind(item.title, item.entityIds)
     return item
   })
   const dayFacts = node.find('.log > div').toArray().map((el) => ({ label: text($(el), 'span'), value: text($(el), 'b') }))

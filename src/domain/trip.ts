@@ -7,6 +7,7 @@ const time = z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/)
 const webUrl = z.url().refine((value) => ['https:', 'http:'].includes(new URL(value).protocol), 'Use an HTTP(S) link')
 const link = z.object({ label: text, url: webUrl })
 const fact = z.object({ label: text, value: text })
+const itemKind = z.enum(['auto', 'drive', 'walk', 'food', 'visit', 'stay', 'flight', 'bike', 'other'])
 const booking = z.object({
   required: z.boolean().nullable(),
   status: z.enum(['unknown', 'not-needed', 'pending', 'booked', 'needs-check', 'cancelled']),
@@ -54,6 +55,7 @@ export const entitySchema = z.discriminatedUnion('type', [
 const itemSchema = z.object({
   id, title: z.string().min(1), description: text,
   entityIds: z.array(id),
+  kind: itemKind.default('auto'),
   choiceGroup: text.optional(),
   time: time.optional(),
   endTime: time.optional(),
@@ -143,9 +145,10 @@ export type Trip = z.infer<typeof tripSchema>
 export type Entity = z.infer<typeof entitySchema>
 export type Day = Trip['days'][number]
 export type Booking = z.infer<typeof booking>
+export type ItemKind = z.infer<typeof itemKind>
 
 /** V1 -> V2 is structural only: retain traveller data, never consult or merge a seed.
- * V2 marks the new booking/choice/action fields so old apps fail safely instead of stripping them.
+ * Missing timeline icon choices safely default to automatic classification.
  * Reading migrates in memory; the next committed save/replacement persists V2.
  */
 export function parseTrip(value: unknown): Trip {
