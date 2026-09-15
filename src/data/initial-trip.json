@@ -4232,7 +4232,8 @@
           "title": "Optional coastal stop: Bufones or Gulpiyuri",
           "description": "Only if the bus returns on time: choose Bufones de Pría when high tide and strong swell coincide, otherwise make a short stop at Gulpiyuri. Skip both if the mountain day runs late.",
           "entityIds": [
-            "opt-bufones"
+            "opt-bufones",
+            "opt-llanes-beaches"
           ],
           "optional": true,
           "status": "planned",
@@ -4253,11 +4254,6 @@
           "title": "Must know",
           "body": "The lakes road is closed to private cars. Book through the dedicated Covadonga bus platform and select an outward and return time. An early departure gives the best chance of fitting in the optional coast stop.",
           "kind": "warning"
-        },
-        {
-          "title": "Optional means optional",
-          "body": "Do not plan on both Bufones and Gulpiyuri. Choose one only if time and conditions are favourable; returning directly to Llanes is the default fallback.",
-          "kind": "choice"
         }
       ],
       "background": [
@@ -4362,11 +4358,6 @@
           "title": "Action at check-in",
           "body": "Confirm breakfast arrangements for both hiking mornings. A packed breakfast is particularly important for the early Cares bus day.",
           "kind": "warning"
-        },
-        {
-          "title": "Keep it forward-only",
-          "body": "Bufones has moved to Day 2 as an optional stop. Do not add it back here; the early cave booking is what makes Lebeña and a relaxed Potes lunch fit naturally.",
-          "kind": "choice"
         }
       ],
       "background": [
@@ -4559,11 +4550,6 @@
           "title": "Access and safety",
           "body": "Reserve the special Arenas–Poncebos bus. Carry 1.5 litres of water each; there is little shade, loose ground and no fence in places.",
           "kind": "warning"
-        },
-        {
-          "title": "Pace",
-          "body": "The plan is a 12 km return walk, not the full gorge crossing.",
-          "kind": "info"
         }
       ],
       "background": [
@@ -4657,18 +4643,7 @@
           "notes": ""
         }
       ],
-      "notices": [
-        {
-          "title": "At the hotel",
-          "body": "Request a refurbished room when booking. Ask reception about the garage before looking for parking.",
-          "kind": "warning"
-        },
-        {
-          "title": "Road note",
-          "body": "San Glorio is the trip's only remaining pass, but it is a broad, well-graded N-road.",
-          "kind": "info"
-        }
-      ],
+      "notices": [],
       "background": [
         "Morning. Mogrovejo is a stone village of towers and slate roofs directly beneath the Picos, small enough to walk in twenty minutes and worth every one. Then Santo Toribio de Liébana , a monastery holding what is claimed to be the largest surviving fragment of the True Cross — one of a handful of sites in Christendom granted a perpetual jubilee year.",
         "The drive south is the point of the day. The N-621 climbs the Puerto de San Glorio to 1,609 m; the short CA-893 side road from the pass reaches the Mirador de Llesba and its stone bear, with the whole southern wall of the Picos laid out. It is a short viewpoint stop from the parking area, and arguably the best view of the trip.",
@@ -4751,11 +4726,6 @@
         }
       ],
       "notices": [
-        {
-          "title": "Three versions",
-          "body": "Valporquero cave, Valdevimbre wine cellars, or a completely car-free city day.",
-          "kind": "choice"
-        },
         {
           "title": "Book only if",
           "body": "Valporquero has limited timed departures. Reserve in advance if that is your choice.",
@@ -4876,11 +4846,6 @@
           "title": "Check one week before",
           "body": "Trail closures can change because of post-fire erosion and rockfall risk.",
           "kind": "warning"
-        },
-        {
-          "title": "Castle trade-off",
-          "body": "Ponferrada Castle only fits before Canedo with an earlier departure from León. Otherwise leave it out and keep the winery schedule relaxed.",
-          "kind": "choice"
         }
       ],
       "background": [
@@ -4978,11 +4943,6 @@
           "title": "Major alternative",
           "body": "Choose Peñalba de Santiago instead of the full Las Médulas walk; the narrow road takes about an hour each way.",
           "kind": "choice"
-        },
-        {
-          "title": "Monday closure",
-          "body": "Ponferrada's Templar castle cannot be added today. It only fits before the booked Canedo visit on Day 8 with an earlier start from León.",
-          "kind": "warning"
         }
       ],
       "background": [
@@ -5085,11 +5045,6 @@
           "title": "Route instruction",
           "body": "Stay on the motorway to Trubia. Do not take the Lena exit or Cobertoria shortcut.",
           "kind": "warning"
-        },
-        {
-          "title": "Easy evening",
-          "body": "La Posta is on the village square with parking nearby, shops and several places to eat within walking distance.",
-          "kind": "info"
         }
       ],
       "background": [
@@ -5182,11 +5137,6 @@
           "title": "Before today",
           "body": "Reserve the e-bikes and return shuttle. Confirm the pickup point, latest collection time and payment method.",
           "kind": "warning"
-        },
-        {
-          "title": "Full day or relaxed",
-          "body": "UBERFINAL makes this a 35–45 km cycling day. The 18–22 km descent remains the weather, energy or late-start fallback.",
-          "kind": "choice"
         }
       ],
       "background": [
@@ -5394,18 +5344,7 @@
           }
         }
       ],
-      "notices": [
-        {
-          "title": "Before the trip",
-          "body": "Confirm the Bilbao-to-Asturias one-way fee and the exact rental return location.",
-          "kind": "warning"
-        },
-        {
-          "title": "Fuel",
-          "body": "Fill the tank before reaching the airport perimeter.",
-          "kind": "info"
-        }
-      ],
+      "notices": [],
       "background": [
         "Asturias Airport sits at Santiago del Monte, twenty minutes west of Avilés. This is the whole reason the last base moved: from Oviedo you would be leaving at eight and taking breakfast at quarter past seven, which most Spanish hotels will not serve.",
         "08:00 — breakfast, at a normal hour. 08:30 — leave, refuelling on the way out of town. 09:00 — airport. Rental drop-off, then bag drop. 11:00 — depart Asturias Airport. 13:05 — arrive in Brussels.",
@@ -5657,7 +5596,8 @@
       "Day 9 mentions Ponferrada; the library says it is closed Monday. This conflict is preserved for review.",
       "Day 12 requires choosing Las Xanas or Naranco. They do not fit together.",
       "No private document URLs, reservation names, references or sensitive documents were supplied.",
-      "Phase 2 maps 12 narrative destination rows to existing source places; no new location or opening claims are inferred. Day 12 morning entries share an editable exclusive choice group."
+      "Phase 2 maps 12 narrative destination rows to existing source places; no new location or opening claims are inferred. Day 12 morning entries share an editable exclusive choice group.",
+      "Keep-in-mind notices retain only actionable safety, access, weather, timing and choice constraints; repeated itinerary and planning-history cards are omitted."
     ]
   }
 }

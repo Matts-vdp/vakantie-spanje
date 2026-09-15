@@ -106,6 +106,7 @@ const entityIds = new Set(entities.map((e) => e.id))
 // Narrative destinations explicitly named in the source, reusing existing places/links.
 // Do not infer a trail turn, shuttle pickup, airport terminal or unnamed restaurant.
 const narrativePlaces = {
+  'day-2-item-4': ['opt-llanes-beaches'],
   'day-3-item-5': ['hotel-el-jisu'], 'day-3-item-6': ['hotel-el-jisu'],
   'day-4-item-3': ['opt-fuente-de'], 'day-4-item-4': ['hotel-el-jisu'], 'day-4-item-5': ['hotel-el-jisu'],
   'day-5-item-5': ['hotel-el-jisu'], 'day-8-item-3': ['opt-canedo'],
@@ -114,6 +115,11 @@ const narrativePlaces = {
   'day-10-item-4': ['hotel-la-posta'],
 }
 const refs = (node) => unique(node.find('a.activity-ref').toArray().map((el) => $(el).attr('href').slice(1)))
+const relevantNoticeTitles = {
+  1: ['Choose one'], 2: ['Must know'], 3: ['Action at check-in'], 4: ['Weather decides', 'If the top is cloudy'],
+  5: ['Access and safety'], 6: [], 7: ['Book only if'], 8: ['Advance booking required', 'Check one week before'],
+  9: ['Major alternative'], 10: ['Route instruction'], 11: ['Before today'], 12: ['Timing conflict', 'If it rains'], 13: [],
+}
 const days = []
 $('.day').each((i, el) => {
   const node = $(el)
@@ -147,14 +153,15 @@ $('.day').each((i, el) => {
     return item
   })
   const dayFacts = node.find('.log > div').toArray().map((el) => ({ label: text($(el), 'span'), value: text($(el), 'b') }))
+  const sourceNotices = node.find('.plan-card').toArray().map((el) => {
+    const card = $(el); const copy = card.clone(); copy.find('b').first().remove()
+    return { title: text(card, 'b'), body: content(copy), kind: card.hasClass('important') ? 'warning' : card.hasClass('choice') ? 'choice' : 'info' }
+  })
   const day = {
     id, date, title: text(node, '.day-title h3'),
     summary: dayFacts.filter((f) => f.label !== 'Sleep' && f.label !== 'Book').map((f) => `${f.label}: ${f.value}`).join(' · '),
     facts: dayFacts, items,
-    notices: node.find('.plan-card').toArray().map((el) => {
-      const card = $(el); const copy = card.clone(); copy.find('b').first().remove()
-      return { title: text(card, 'b'), body: content(copy), kind: card.hasClass('important') ? 'warning' : card.hasClass('choice') ? 'choice' : 'info' }
-    }),
+    notices: relevantNoticeTitles[number] ? sourceNotices.filter((notice) => relevantNoticeTitles[number].includes(notice.title)) : sourceNotices,
     background: node.find('.day-notes').children().toArray().map((el) => content($(el))).filter(Boolean), notes: '',
   }
   const stay = stays.find((s) => s.checkInDate <= date && date < s.checkOutDate)
@@ -199,7 +206,8 @@ const trip = {
     'Day 9 mentions Ponferrada; the library says it is closed Monday. This conflict is preserved for review.',
     'Day 12 requires choosing Las Xanas or Naranco. They do not fit together.',
     'No private document URLs, reservation names, references or sensitive documents were supplied.',
-    'Phase 2 maps 12 narrative destination rows to existing source places; no new location or opening claims are inferred. Day 12 morning entries share an editable exclusive choice group.',
+      'Phase 2 maps 12 narrative destination rows to existing source places; no new location or opening claims are inferred. Day 12 morning entries share an editable exclusive choice group.',
+      'Keep-in-mind notices retain only actionable safety, access, weather, timing and choice constraints; repeated itinerary and planning-history cards are omitted.',
   ] },
 }
 const output = `${JSON.stringify(trip, null, 2)}\n`

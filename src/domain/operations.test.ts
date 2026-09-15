@@ -69,4 +69,14 @@ describe('phase 2 canonical trip operations', () => {
     trip.actions[15].dueDate = trip.days[1].date
     expect(nearActions(trip, trip.days[2]).map(a => a.id)).toContain('action-16')
   })
+  it('includes both Day 2 coastal alternatives in the canonical trip', () => {
+    const trip = parseTrip(seed)
+    const item = trip.days[1].items[3]
+    expect(item.entityIds).toEqual(['opt-bufones', 'opt-llanes-beaches'])
+  })
+  it('keeps only actionable notices in the canonical trip', () => {
+    const trip = parseTrip(seed)
+    expect(trip.days[2].notices.map(notice => notice.title)).toEqual(['Action at check-in'])
+    expect(trip.days[5].notices).toEqual([])
+  })
 })

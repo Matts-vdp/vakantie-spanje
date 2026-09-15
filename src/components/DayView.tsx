@@ -103,12 +103,14 @@ export function DayView({ trip, day, todayMode = false, onSaveNote, onDirty, onS
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
   const [detail, setDetail] = useState<Extract<Entity, { type: 'activity' }>>()
+  const [noticesOpen, setNoticesOpen] = useState(true)
   async function update(nextTrip: Trip) { setBusy(true); setError(''); try { await onSaveTrip(nextTrip) } catch (e) { setError((e as Error).message) } finally { setBusy(false) } }
   const index = trip.days.findIndex((option) => option.id === day.id)
   const next = trip.days[index + 1]
   const stay = trip.stays.find((option) => option.id === day.stayId)
   const hotel = trip.entities.find((entity) => entity.id === stay?.hotelId)
   const entities = new Map(trip.entities.map((entity) => [entity.id, entity]))
+  const notices = day.notices
   return <div className="day-view">
     {todayMode && <DateSelector trip={trip} day={day} />}
     <header className="page-heading compact-day-heading">
@@ -136,8 +138,6 @@ export function DayView({ trip, day, todayMode = false, onSaveNote, onDirty, onS
           })}</div>}
         </div>
       </li>)}</ol>
-      {day.notices.length > 0 && <section className="notices"><h2>Keep in mind</h2>{day.notices.map((notice, i) => <div key={i} className={`notice ${notice.kind}`}><h3>{notice.title}</h3><p>{notice.body}</p></div>)}</section>}
-      {day.background.length > 0 && <details className="background"><summary>Details & planning background</summary>{day.background.map((paragraph, i) => <p key={i}>{paragraph}</p>)}</details>}
     </section>
     {hotel?.type === 'hotel' && <section className="hotel-panel">
       <p className="eyebrow">Tonight · {hotel.region}</p><div className="hotel-title"><h2><a href={`#/place/${hotel.id}`}>{hotel.name}</a></h2>{stay && <StatusBadge booking={stay.booking} />}</div>
@@ -146,6 +146,8 @@ export function DayView({ trip, day, todayMode = false, onSaveNote, onDirty, onS
       <details className="hotel-more"><summary>Arrival & stay details</summary>{stay && <BookingDetails booking={stay.booking} />}{hotel.hotel.arrivalRequirements && <p>{hotel.hotel.arrivalRequirements}</p>}{hotel.notes && <p>{hotel.notes}</p>}<p className="small muted">{stay?.checkInDate} — {stay?.checkOutDate} · Checkout {hotel.hotel.checkOut || 'confirm with hotel'}</p>{hotel.hotel.dinner && <p className="small">Dinner: {hotel.hotel.dinner}</p>}</details>
     </section>}
     {!hotel && <section className="notice no-stay"><h2>No overnight stay</h2><p>No hotel assigned to this night.</p><a className="detail-link" href="#/explore">Choose a hotel in Explore</a></section>}
+    {notices.length > 0 && <details className="notices" open={noticesOpen} onToggle={(event) => setNoticesOpen(event.currentTarget.open)}><summary><span>Keep in mind</span><Icon name="chevron" size={17} /></summary><div className="notice-list">{notices.map((notice, i) => <div key={i} className={`notice ${notice.kind}`}><h3>{notice.title}</h3><p>{notice.body}</p></div>)}</div></details>}
+    {day.background.length > 0 && <details className="background"><summary>Details & planning background</summary>{day.background.map((paragraph, i) => <p key={i}>{paragraph}</p>)}</details>}
     <section className="day-review" aria-labelledby="day-review-title"><div className="section-heading"><h2 id="day-review-title">Actions & bookings to review</h2></div><div className="actions"><a className="button" href={`#/new/${day.id}`}>Add a place or note</a><a className="action" href="#/explore">Find an alternative</a></div><ActionList trip={trip} dayId={day.id} /><BookingOverview trip={trip} dayId={day.id} /></section>
     {next && <a className="tomorrow" href={`#/${todayMode ? 'today' : 'day'}/${next.id}`}><span className="eyebrow">Tomorrow · {formatDate(next.date)}</span><strong>{next.title}</strong><span>{next.items.filter((item) => item.status !== 'skipped').slice(0, 3).map((item) => `${item.booking?.time || item.time || ''} ${item.title}`).join(' · ')}</span><span className="detail-link">See the next day <Icon name="arrow" size={18} /></span></a>}
     <ActivitySheet entity={detail} onClose={() => setDetail(undefined)} />

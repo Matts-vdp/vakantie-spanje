@@ -66,10 +66,6 @@ export function actionTargets(trip: Trip, action: Trip['actions'][number]) {
 export function actionDone(trip: Trip, action: Trip['actions'][number]) {
   const { visits, stays } = actionTargets(trip, action)
   const bookings = [...visits.map(v => v.item.booking), ...stays.map(s => s.booking)]
-  // The original hotel-board rows predate confirmed stay data. Resolve them from the
-  // stay bookings for existing device data as well as newly generated seeds.
-  const canonicalHotelAction = trip.id === 'green-spain-2026' && ['action-1', 'action-2', 'action-3', 'action-4', 'action-5'].includes(action.id)
-  if (canonicalHotelAction && stays.length > 0) return stays.every(stay => ['booked', 'not-needed'].includes(stay.booking.status))
   if (actionUsesBookings(trip, action)) return bookings.every(b => b?.status === 'booked' || b?.status === 'not-needed')
   return action.status === 'done'
 }
