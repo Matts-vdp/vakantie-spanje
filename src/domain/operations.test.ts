@@ -15,16 +15,16 @@ describe('phase 2 canonical trip operations', () => {
     moved.days[4].items[0].booking!.status = 'pending'
     expect(actionDone(moved, moved.actions[7])).toBe(false)
   })
-  it('keeps multi-booking resolution honest and resolves confirmed hotel actions', () => {
+  it('keeps multi-booking resolution honest and keeps operational hotel confirmations explicit', () => {
     const trip = parseTrip(seed)
     trip.days[7].items[1].booking = { ...emptyBooking(), status: 'booked' }
     expect(actionDone(trip, trip.actions[9])).toBe(false)
     trip.days[7].items[2].booking = { ...emptyBooking(), status: 'not-needed' }
     expect(actionDone(trip, trip.actions[9])).toBe(true)
     trip.actions[3].status = 'pending'
-    expect(actionDone(trip, trip.actions[3])).toBe(true)
-    trip.stays[1].booking.status = 'pending'
     expect(actionDone(trip, trip.actions[3])).toBe(false)
+    trip.actions[3].status = 'done'
+    expect(actionDone(trip, trip.actions[3])).toBe(true)
   })
   it('protects shared places and deletes only unused traveller-created entities', () => {
     let trip = parseTrip(seed)
@@ -52,7 +52,7 @@ describe('phase 2 canonical trip operations', () => {
     expect(parsed.schemaVersion).toBe(2)
     expect(parsed.days[0].notes).toBe('Existing traveller data')
     const chosen = selectChoice(parsed, 'day-12-item-2')
-    expect(chosen.days[11].items[2].status).toBe('skipped')
+    expect(chosen.days[11].items.find(item => item.id === 'day-12-item-3')?.status).toBe('skipped')
     expect(chosen.entities.some(e => e.id === 'opt-naranco')).toBe(true)
     chosen.days[0].items[0].choiceGroup = 'A or B'
     chosen.days[0].items[0].booking = { ...emptyBooking(), bookingUrl: 'https://example.com/booking' }
@@ -71,8 +71,8 @@ describe('phase 2 canonical trip operations', () => {
   })
   it('includes both Day 2 coastal alternatives in the canonical trip', () => {
     const trip = parseTrip(seed)
-    const item = trip.days[1].items[3]
-    expect(item.entityIds).toEqual(['opt-bufones', 'opt-llanes-beaches'])
+    const alternatives = trip.days[1].items.filter(item => item.choiceGroup === 'Day 2 optional coast stop')
+    expect(alternatives.map(item => item.entityIds[0])).toEqual(['opt-bufones', 'opt-llanes-beaches'])
   })
   it('keeps only actionable notices in the canonical trip', () => {
     const trip = parseTrip(seed)

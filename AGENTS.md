@@ -19,12 +19,12 @@ This is a mobile travel utility that must stay usable during an active trip.
 - Record material assumptions in docs. Ask only when missing information changes the product and cannot be inferred.
 - Keep changes small and low risk during the live trip; avoid unrelated refactors.
 - Never overwrite the original specification or planning HTML as a side effect of app changes. Preserve existing user edits.
-- The source converter is build-time development tooling, never an import/merge path for current device data.
+- `src/data/initial-trip.json` is the authoritative initial dataset. Edit and validate it directly; never regenerate it from the planning HTML. The archived converter may only write a separate preview and is never an import/merge path for current device data.
 - Check the selected Node version and use the committed package lock. Cross-platform commands must work on Windows and Linux.
 
 ## Commands and verification
 - Node 24 recommended; `npm ci` installs pinned dependencies.
-- `npm run dev` starts the app at localhost; `npm run check` checks source conversion, ESLint, unit tests, TypeScript, production build, and PWA generation.
+- `npm run dev` starts the app at localhost; `npm run check` checks the canonical seed, ESLint, unit tests, TypeScript, production build, and PWA generation.
 - `npm run test:e2e` tests the built app, persistence, export, and offline reopening. Run `npm run build` first.
 - On Windows tests use installed Edge in a headless isolated profile. Elsewhere install Chromium with `npx playwright install --with-deps chromium`.
 - Test meaningful failure paths around storage and schema changes. Do not write tests that only duplicate trivial presentation code.

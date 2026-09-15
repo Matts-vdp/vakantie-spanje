@@ -14,8 +14,7 @@
     "lint": "eslint .",
     "test": "vitest run",
     "test:e2e": "node scripts/build-lifecycle-fixture.mjs && playwright test",
-    "data:generate": "node scripts/convert-plan.mjs",
-    "data:check": "node scripts/convert-plan.mjs --check",
+    "data:check": "node --experimental-strip-types scripts/check-seed.mjs",
     "check": "npm run data:check && npm run lint && npm run test && npm run build"
   },
   "dependencies": {

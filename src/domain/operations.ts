@@ -60,7 +60,7 @@ export function actionTargets(trip: Trip, action: Trip['actions'][number]) {
   const stayIds = action.stayIds ?? source?.stays ?? []
   const visits = trip.days.flatMap(day => day.items.filter(i => itemIds.includes(i.id)).map(item => ({ day, item })))
   const stays = trip.stays.filter(s => stayIds.includes(s.id))
-  const dayIds = [...action.dayIds, ...(source?.days ?? []), ...visits.map(v => v.day.id), ...trip.days.filter(d => stays.some(s => s.id === d.stayId)).map(d => d.id)]
+  const dayIds = [...new Set([...action.dayIds, ...(source?.days ?? []), ...visits.map(v => v.day.id), ...trip.days.filter(d => stays.some(s => s.id === d.stayId)).map(d => d.id)])]
   return { visits, stays, dayIds }
 }
 export function actionDone(trip: Trip, action: Trip['actions'][number]) {

@@ -5,7 +5,7 @@
   "timezone": "Europe/Madrid",
   "startDate": "2026-09-20",
   "endDate": "2026-10-02",
-  "updatedAt": "2026-08-10T00:00:00.000Z",
+  "updatedAt": "2026-09-15T00:00:00.000Z",
   "revision": 0,
   "entities": [
     {
@@ -1536,7 +1536,8 @@
       "userCreated": false,
       "sourceId": "opt-canedo",
       "navigationUrl": "https://www.google.com/maps/search/?api=1&query=Palacio+de+Canedo",
-      "websiteUrl": "https://pradaatope.es/visitas-guiadas-catas",
+      "websiteUrl": "https://pradaatope.es/",
+      "phone": "+34 987 563 366",
       "type": "activity",
       "activity": {
         "duration": "",
@@ -1827,7 +1828,7 @@
       "id": "opt-senda-oso",
       "name": "Senda del Oso by bicycle",
       "region": "San Martín de Teverga",
-      "description": "A converted mining railway through river gorges, tunnels and woodland. Start five minutes from the hotel at Entrago; ride the easy Teverga descent or add the Quirós arm for UBERFINAL's longer, full-day version.",
+      "description": "A converted mining railway through river gorges, tunnels and woodland. Start five minutes from the hotel at Entrago; ride the easy Teverga descent or add the Quirós arm for a longer, full-day version.",
       "notes": "The route passes the managed bear enclosure near Proaza; seeing its remaining rescued bear is possible, never guaranteed. Payment terms vary by operator, so do not assume cash-only.",
       "tags": [
         "Current draft · Day 11",
@@ -3782,6 +3783,170 @@
       }
     },
     {
+      "id": "place-playa-toro",
+      "name": "Playa de Toró",
+      "region": "Llanes",
+      "description": "A small cove east of central Llanes, known for the limestone stacks left standing in the water.",
+      "notes": "Swimming depends on sea and weather conditions.",
+      "tags": [
+        "Beach",
+        "Short walk"
+      ],
+      "links": [
+        {
+          "label": "Map and directions",
+          "url": "https://www.google.com/maps/search/?api=1&query=Playa+de+Toro+Llanes"
+        }
+      ],
+      "facts": [],
+      "userCreated": false,
+      "type": "activity",
+      "navigationUrl": "https://www.google.com/maps/search/?api=1&query=Playa+de+Toro+Llanes",
+      "activity": {
+        "duration": "Flexible",
+        "distance": "About 10 minutes from the hotel",
+        "effort": "Easy",
+        "weather": "Only swim when sea conditions are suitable",
+        "accessNotes": "",
+        "bookingRequirement": "",
+        "timingNote": "Late afternoon if the arrival day stays on schedule"
+      }
+    },
+    {
+      "id": "place-covadonga-sanctuary",
+      "name": "Sanctuary of Covadonga",
+      "region": "Covadonga",
+      "description": "The basilica and Santa Cueva below the lakes road.",
+      "notes": "Visit after returning from the lakes if the bus schedule allows.",
+      "tags": [
+        "Sanctuary",
+        "Visit"
+      ],
+      "links": [
+        {
+          "label": "Map and directions",
+          "url": "https://www.google.com/maps/search/?api=1&query=Santuario+de+Covadonga"
+        }
+      ],
+      "facts": [],
+      "userCreated": false,
+      "type": "activity",
+      "navigationUrl": "https://www.google.com/maps/search/?api=1&query=Santuario+de+Covadonga",
+      "activity": {
+        "duration": "Flexible",
+        "distance": "Short visit",
+        "effort": "Easy",
+        "weather": "All weather",
+        "accessNotes": "The sanctuary is below the restricted lakes road.",
+        "bookingRequirement": "",
+        "timingNote": "After the lakes bus returns"
+      }
+    },
+    {
+      "id": "transport-covadonga-bus",
+      "name": "Covadonga lakes bus",
+      "region": "Cangas de Onís / Covadonga",
+      "description": "Required public transport for the restricted lakes road on the trip date.",
+      "notes": "Choose the exact origin while booking; not every service calls at every car park. Recheck the timetable shortly before travel.",
+      "tags": [
+        "Bus",
+        "Booking required",
+        "Recheck"
+      ],
+      "links": [
+        {
+          "label": "Official access information",
+          "url": "https://www.turismoasturias.es/en/organiza-tu-viaje/como-llegar/acceso-a-lagos"
+        },
+        {
+          "label": "Book the lakes bus",
+          "url": "https://www.buslagoscovadonga.es/home"
+        }
+      ],
+      "websiteUrl": "https://www.buslagoscovadonga.es/home",
+      "facts": [],
+      "userCreated": false,
+      "type": "transport",
+      "transport": {
+        "mode": "bus",
+        "details": "Book an outward origin and ascent time with enough margin for at least 2h30 at the lakes. Confirm the ticket's exact stop."
+      }
+    },
+    {
+      "id": "transport-cares-bus",
+      "name": "Arenas–Poncebos access bus",
+      "region": "Arenas de Cabrales / Poncebos",
+      "description": "Seasonal bus access for the Cares route from Arenas de Cabrales.",
+      "notes": "Confirm the exact stop and departure times on the ticket. Check the National Park alert immediately before leaving because live access status can change.",
+      "tags": [
+        "Bus",
+        "Booking recommended",
+        "Live access check"
+      ],
+      "links": [
+        {
+          "label": "Official route information",
+          "url": "https://www.turismoasturias.es/en/senderismo/rutas/montaneros/ruta-del-cares"
+        },
+        {
+          "label": "Bus booking provider",
+          "url": "https://www.alsa.es/"
+        },
+        {
+          "label": "National Park alerts",
+          "url": "https://parquenacionalpicoseuropa.es/"
+        },
+        {
+          "label": "Arenas bus station map",
+          "url": "https://www.google.com/maps/search/?api=1&query=Estacion+de+Autobuses+Arenas+de+Cabrales"
+        }
+      ],
+      "navigationUrl": "https://www.google.com/maps/search/?api=1&query=Estacion+de+Autobuses+Arenas+de+Cabrales",
+      "websiteUrl": "https://www.alsa.es/",
+      "facts": [],
+      "userCreated": false,
+      "type": "transport",
+      "transport": {
+        "mode": "bus",
+        "details": "Reserve Arenas–Poncebos transport in advance where possible; onboard places are not guaranteed."
+      }
+    },
+    {
+      "id": "transport-asturias-airport",
+      "name": "Asturias Airport",
+      "region": "Santiago del Monte, Asturias",
+      "description": "Return airport for the flight to Brussels.",
+      "notes": "Allow time to refuel, return the rental car and drop bags.",
+      "tags": [
+        "Airport",
+        "Car return"
+      ],
+      "links": [
+        {
+          "label": "Official airport information",
+          "url": "https://www.aena.es/en/asturias.html"
+        },
+        {
+          "label": "Driving information",
+          "url": "https://www.aena.es/en/asturias/getting-there/car.html"
+        },
+        {
+          "label": "Map and directions",
+          "url": "https://www.google.com/maps/search/?api=1&query=Asturias+Airport"
+        }
+      ],
+      "navigationUrl": "https://www.google.com/maps/search/?api=1&query=Asturias+Airport",
+      "websiteUrl": "https://www.aena.es/en/asturias.html",
+      "phone": "+34 913 211 000",
+      "facts": [],
+      "userCreated": false,
+      "type": "transport",
+      "transport": {
+        "mode": "flight",
+        "details": "Rental-car return and departure airport."
+      }
+    },
+    {
       "id": "hotel-montemar",
       "name": "Hotel Montemar Llanes",
       "region": "Llanes",
@@ -3799,6 +3964,8 @@
       "type": "hotel",
       "sourceId": "hotels/row-1",
       "navigationUrl": "https://www.google.com/maps/search/?api=1&query=Hotel+Montemar+Llanes",
+      "websiteUrl": "https://www.hotelmontemarllanes.com/",
+      "phone": "+34 985 400 100",
       "hotel": {
         "checkIn": "16:00–22:00",
         "checkOut": "08:00–12:00",
@@ -3827,6 +3994,7 @@
       "type": "hotel",
       "sourceId": "hotels/row-2",
       "navigationUrl": "https://www.google.com/maps/search/?api=1&query=Hotel+El+Jisu+Camale%C3%B1o",
+      "websiteUrl": "https://www.hoteleljisu.com/",
       "hotel": {
         "checkIn": "15:00–23:30",
         "checkOut": "08:00–12:00",
@@ -3856,6 +4024,8 @@
       "type": "hotel",
       "sourceId": "hotels/row-3",
       "navigationUrl": "https://www.google.com/maps/search/?api=1&query=Hotel+MyPalace+Le%C3%B3n+Calle+San+Francisco+13",
+      "websiteUrl": "https://mypalaceleon.com/",
+      "phone": "+34 987 377 697",
       "hotel": {
         "checkIn": "14:00–00:00",
         "checkOut": "07:00–12:00",
@@ -3884,6 +4054,8 @@
       "type": "hotel",
       "sourceId": "hotels/row-4",
       "navigationUrl": "https://www.google.com/maps/search/?api=1&query=O+Palleiro+do+Pe+do+Forno+Orell%C3%A1n",
+      "websiteUrl": "https://opalleiro.com/",
+      "phone": "+34 649 711 439",
       "hotel": {
         "checkIn": "16:00–23:30",
         "checkOut": "By 12:00",
@@ -3912,11 +4084,13 @@
       "type": "hotel",
       "sourceId": "hotels/row-5",
       "navigationUrl": "https://www.google.com/maps/search/?api=1&query=La+Posta+del+Camin+Real+Teverga",
+      "websiteUrl": "https://hotellapostadelcaminreal.com/",
+      "phone": "+34 641 354 300",
       "hotel": {
         "checkIn": "16:00–21:00",
         "checkOut": "09:00–12:00",
         "breakfast": "Available; confirm rate/time",
-        "dinner": "Village restaurants within walking distance; Casa Laureano is the source’s first choice.",
+        "dinner": "Village restaurants are within walking distance; Casa Laureano is a nearby dinner option.",
         "parking": "Parking nearby",
         "arrivalRequirements": "Advise arrival time in advance; confirm breakfast inclusion and serving time.",
         "roomNotes": ""
@@ -3940,6 +4114,8 @@
       "type": "hotel",
       "sourceId": "hotels/row-6",
       "navigationUrl": "https://www.google.com/maps/search/?api=1&query=Palacio+de+Avil%C3%A9s+Affiliated+by+Meli%C3%A1",
+      "websiteUrl": "https://www.melia.com/en/hotels/spain/aviles/palacio-de-aviles-affiliated-by-melia",
+      "phone": "+34 985 129 080",
       "hotel": {
         "checkIn": "From 15:00",
         "checkOut": "By 12:00",
@@ -3957,10 +4133,22 @@
       "description": "Arrival-night dinner in the sister hotel’s old convent dining room.",
       "notes": "",
       "tags": [],
-      "links": [],
+      "links": [
+        {
+          "label": "Restaurant website",
+          "url": "https://www.hoteldonpacollanes.com/"
+        },
+        {
+          "label": "Map and directions",
+          "url": "https://www.google.com/maps/search/?api=1&query=Hotel+Don+Paco+Llanes"
+        }
+      ],
       "facts": [],
       "userCreated": false,
       "type": "restaurant",
+      "navigationUrl": "https://www.google.com/maps/search/?api=1&query=Hotel+Don+Paco+Llanes",
+      "websiteUrl": "https://www.hoteldonpacollanes.com/",
+      "phone": "+34 985 400 150",
       "restaurant": {
         "mealNote": "Reserve the arrival-night table in advance.",
         "openingNote": ""
@@ -3970,13 +4158,25 @@
       "id": "restaurant-casa-laureano",
       "name": "Casa Laureano",
       "region": "San Martín de Teverga",
-      "description": "The source’s first choice for Asturian stews, wild game, sausage and fabada.",
+      "description": "A nearby option for Asturian stews, wild game, sausage and fabada.",
       "notes": "",
       "tags": [],
-      "links": [],
+      "links": [
+        {
+          "label": "Restaurant website",
+          "url": "https://restaurantecasalaureano.es/"
+        },
+        {
+          "label": "Map and directions",
+          "url": "https://www.google.com/maps/search/?api=1&query=Restaurante+Casa+Laureano+Teverga"
+        }
+      ],
       "facts": [],
       "userCreated": false,
       "type": "restaurant",
+      "navigationUrl": "https://www.google.com/maps/search/?api=1&query=Restaurante+Casa+Laureano+Teverga",
+      "websiteUrl": "https://restaurantecasalaureano.es/",
+      "phone": "+34 985 764 213",
       "restaurant": {
         "mealNote": "Walk from La Posta.",
         "openingNote": "Check current opening nights shortly before the trip."
@@ -4085,6 +4285,7 @@
           "status": "planned",
           "notes": "",
           "time": "09:20",
+          "endTime": "11:15",
           "booking": {
             "required": true,
             "status": "booked",
@@ -4109,15 +4310,28 @@
         },
         {
           "id": "day-1-item-3",
-          "title": "Optional arrival stop",
-          "description": "If you land before midday, choose El Capricho in Comillas or the harbour at San Vicente de la Barquera.",
+          "title": "Arrival option — El Capricho",
+          "description": "If you land before midday, stop in Comillas for Gaudí's El Capricho.",
           "entityIds": [
-            "opt-capricho",
+            "opt-capricho"
+          ],
+          "optional": true,
+          "status": "planned",
+          "notes": "",
+          "choiceGroup": "Day 1 arrival stop",
+          "kind": "visit"
+        },
+        {
+          "id": "day-1-item-3b",
+          "title": "Arrival option — San Vicente",
+          "description": "If you land before midday, stop at the harbour and castle in San Vicente de la Barquera.",
+          "entityIds": [
             "opt-san-vicente"
           ],
           "optional": true,
           "status": "planned",
           "notes": "",
+          "choiceGroup": "Day 1 arrival stop",
           "kind": "visit"
         },
         {
@@ -4125,6 +4339,7 @@
           "title": "Check in, then walk Llanes",
           "description": "Follow the Paseo de San Pedro to the Cubos de la Memoria in the last hour of light.",
           "entityIds": [
+            "hotel-montemar",
             "opt-llanes-town"
           ],
           "optional": false,
@@ -4137,7 +4352,7 @@
           "title": "Finish at Playa de Toró",
           "description": "The cove is ten minutes from the hotel and swimmable if time and weather allow.",
           "entityIds": [
-            "opt-llanes-town"
+            "place-playa-toro"
           ],
           "optional": false,
           "status": "planned",
@@ -4156,7 +4371,7 @@
           "notes": "",
           "booking": {
             "required": true,
-            "status": "unknown",
+            "status": "pending",
             "notes": "Reserve this table; no confirmation provided."
           },
           "kind": "food"
@@ -4206,10 +4421,18 @@
           "id": "day-2-item-1",
           "title": "Park below Covadonga",
           "description": "Drive to Cangas de Onís or El Repelao and take the bus booked for your chosen outward and return times.",
-          "entityIds": [],
+          "entityIds": [
+            "transport-covadonga-bus"
+          ],
           "optional": false,
           "status": "planned",
-          "notes": "",
+          "notes": "The exact boarding stop is chosen during booking; follow the ticket rather than assuming a car park.",
+          "booking": {
+            "required": true,
+            "status": "pending",
+            "bookingUrl": "https://www.buslagoscovadonga.es/home",
+            "notes": "Book an early ascent and a return with enough margin for at least 2h30 at the lakes. Recheck the operating timetable before travel."
+          },
           "kind": "drive"
         },
         {
@@ -4229,7 +4452,7 @@
           "title": "Visit the sanctuary",
           "description": "See the basilica and Santa Cueva after returning from the lakes.",
           "entityIds": [
-            "opt-covadonga"
+            "place-covadonga-sanctuary"
           ],
           "optional": false,
           "status": "planned",
@@ -4238,15 +4461,28 @@
         },
         {
           "id": "day-2-item-4",
-          "title": "Optional coastal stop: Bufones or Gulpiyuri",
-          "description": "Only if the bus returns on time: choose Bufones de Pría when high tide and strong swell coincide, otherwise make a short stop at Gulpiyuri. Skip both if the mountain day runs late.",
+          "title": "Coast option — Bufones de Pría",
+          "description": "Only if the bus returns on time and high tide and strong swell coincide; skip it if the mountain day runs late.",
           "entityIds": [
-            "opt-bufones",
+            "opt-bufones"
+          ],
+          "optional": true,
+          "status": "planned",
+          "notes": "",
+          "choiceGroup": "Day 2 optional coast stop",
+          "kind": "visit"
+        },
+        {
+          "id": "day-2-item-4b",
+          "title": "Coast option — Gulpiyuri",
+          "description": "Make this the short alternative when the Bufones conditions are poor; skip it if the mountain day runs late.",
+          "entityIds": [
             "opt-llanes-beaches"
           ],
           "optional": true,
           "status": "planned",
           "notes": "",
+          "choiceGroup": "Day 2 optional coast stop",
           "kind": "visit"
         },
         {
@@ -4254,7 +4490,7 @@
           "title": "Dinner — choose in Llanes",
           "description": "Keep the evening flexible and pick somewhere in town after returning from the lakes or beach.",
           "entityIds": [],
-          "optional": true,
+          "optional": false,
           "status": "planned",
           "notes": "",
           "kind": "food"
@@ -4305,10 +4541,14 @@
           "id": "day-3-item-1",
           "title": "Leave Llanes around 08:00–08:15",
           "description": "Drive directly east towards El Soplao, without the former Bufones backtrack.",
-          "entityIds": [],
+          "entityIds": [
+            "opt-el-soplao"
+          ],
           "optional": false,
           "status": "planned",
           "notes": "",
+          "time": "08:00",
+          "endTime": "08:15",
           "kind": "drive"
         },
         {
@@ -4321,6 +4561,14 @@
           "optional": false,
           "status": "planned",
           "notes": "",
+          "time": "10:00",
+          "booking": {
+            "required": true,
+            "status": "pending",
+            "arrivalBefore": "09:30",
+            "bookingUrl": "https://uniticket.janto.es/elsoplao/public/janto/?Nivel=Evento&idEvento=VISITA",
+            "notes": "10:00 is a planning target, not a reservation. Choose the first practical live slot and arrive at least 30 minutes early."
+          },
           "kind": "visit"
         },
         {
@@ -4333,13 +4581,16 @@
           "optional": false,
           "status": "planned",
           "notes": "",
+          "time": "12:15",
           "kind": "drive"
         },
         {
           "id": "day-3-item-4",
           "title": "Lunch and stroll in Potes",
           "description": "Allow a relaxed lunch and a short look around town. Visit Santo Toribio afterwards only if the day is running comfortably.",
-          "entityIds": [],
+          "entityIds": [
+            "opt-potes"
+          ],
           "optional": false,
           "status": "planned",
           "notes": "",
@@ -4355,6 +4606,8 @@
           "optional": false,
           "status": "planned",
           "notes": "",
+          "time": "16:30",
+          "endTime": "17:00",
           "kind": "drive"
         },
         {
@@ -4422,13 +4675,21 @@
           "optional": false,
           "status": "planned",
           "notes": "",
-          "kind": "walk"
+          "booking": {
+            "required": true,
+            "status": "pending",
+            "bookingUrl": "https://entradas.telefericofuentede.com/",
+            "notes": "Book the first practical 30-minute slot at least 24 hours ahead. Check live weather and operation that morning; the plan returns on foot, so a one-way ticket may be appropriate."
+          },
+          "kind": "visit"
         },
         {
           "id": "day-4-item-2",
           "title": "Cross the Puertos de Áliva",
           "description": "Follow the current signed route past the Chalet Real and down through high pasture.",
-          "entityIds": [],
+          "entityIds": [
+            "opt-fuente-de"
+          ],
           "optional": false,
           "status": "planned",
           "notes": "",
@@ -4519,10 +4780,18 @@
           "id": "day-5-item-1",
           "title": "Leave early for Arenas de Cabrales",
           "description": "Allow 1h20–1h35, park there and take the reserved access bus to Poncebos.",
-          "entityIds": [],
+          "entityIds": [
+            "transport-cares-bus"
+          ],
           "optional": false,
           "status": "planned",
-          "notes": "",
+          "notes": "Check the National Park alert immediately before leaving; live route status can change.",
+          "booking": {
+            "required": true,
+            "status": "pending",
+            "bookingUrl": "https://www.alsa.es/",
+            "notes": "Reserve the seasonal Arenas–Poncebos bus in advance where possible and confirm the exact stop and timetable."
+          },
           "kind": "drive"
         },
         {
@@ -4541,7 +4810,9 @@
           "id": "day-5-item-3",
           "title": "Turn around after two hours",
           "description": "Treat the turnaround as a rule; the return takes the same amount of time.",
-          "entityIds": [],
+          "entityIds": [
+            "opt-cares"
+          ],
           "optional": false,
           "status": "planned",
           "notes": "",
@@ -4557,6 +4828,11 @@
           "optional": false,
           "status": "planned",
           "notes": "",
+          "booking": {
+            "required": true,
+            "status": "pending",
+            "notes": "Choose and reserve a real timed cave tour around the bus schedule if this stop is retained."
+          },
           "kind": "visit"
         },
         {
@@ -4655,6 +4931,7 @@
           "title": "Check in and walk into León",
           "description": "Ask for parking guidance, then settle into the compact historic centre.",
           "entityIds": [
+            "hotel-mypalace",
             "opt-leon-centre"
           ],
           "optional": false,
@@ -4714,16 +4991,47 @@
       "items": [
         {
           "id": "day-7-item-1",
-          "title": "Choose the morning over breakfast",
-          "description": "Drive north to Valporquero, south to Valdevimbre, or keep the whole day in León.",
+          "title": "Morning option — Valporquero cave",
+          "description": "Drive north for a timed cave tour; choose this only if it is booked in advance.",
           "entityIds": [
-            "opt-valporquero",
+            "opt-valporquero"
+          ],
+          "optional": true,
+          "status": "planned",
+          "notes": "",
+          "choiceGroup": "Day 7 morning",
+          "booking": {
+            "required": true,
+            "status": "pending",
+            "notes": "Reserve a timed departure in advance if choosing this option."
+          },
+          "kind": "visit"
+        },
+        {
+          "id": "day-7-item-1b",
+          "title": "Morning option — Valdevimbre",
+          "description": "Drive south for the village's underground bodegas and lunch.",
+          "entityIds": [
             "opt-valdevimbre"
           ],
           "optional": true,
           "status": "planned",
           "notes": "",
-          "kind": "other"
+          "choiceGroup": "Day 7 morning",
+          "kind": "food"
+        },
+        {
+          "id": "day-7-item-1c",
+          "title": "Morning option — relaxed León",
+          "description": "Stay in the city and explore at walking pace without another drive.",
+          "entityIds": [
+            "opt-leon-centre"
+          ],
+          "optional": true,
+          "status": "planned",
+          "notes": "",
+          "choiceGroup": "Day 7 morning",
+          "kind": "walk"
         },
         {
           "id": "day-7-item-2",
@@ -4735,6 +5043,8 @@
           "optional": false,
           "status": "planned",
           "notes": "",
+          "time": "17:30",
+          "endTime": "18:30",
           "kind": "visit"
         },
         {
@@ -4754,7 +5064,9 @@
           "id": "day-7-item-4",
           "title": "Dinner — Barrio Húmedo or LAV, León",
           "description": "Improvise with another tapas crawl, or reserve LAV if you would prefer one seated dinner overlooking Plaza de Santo Domingo.",
-          "entityIds": [],
+          "entityIds": [
+            "opt-leon-tapas"
+          ],
           "optional": false,
           "status": "planned",
           "notes": "",
@@ -4805,7 +5117,9 @@
           "id": "day-8-item-1",
           "title": "Leave León",
           "description": "Drive west to Palacio de Canedo, allowing about 1½ hours plus a little arrival margin.",
-          "entityIds": [],
+          "entityIds": [
+            "opt-canedo"
+          ],
           "optional": false,
           "status": "planned",
           "notes": "",
@@ -4824,6 +5138,11 @@
           "notes": "",
           "time": "11:30",
           "endTime": "13:00",
+          "booking": {
+            "required": true,
+            "status": "pending",
+            "notes": "11:30 is a planning target, not a confirmed booking. Guided tours currently require advance reservation by phone."
+          },
           "kind": "visit"
         },
         {
@@ -4838,6 +5157,12 @@
           "notes": "",
           "time": "13:15",
           "endTime": "15:15",
+          "booking": {
+            "required": true,
+            "status": "pending",
+            "bookingUrl": "https://www.covermanager.com/reservation/module_restaurant/Prada-PalacioCanedo/spanish",
+            "notes": "13:15 is a planning target, not a confirmed table. Reserve after confirming the tour time."
+          },
           "kind": "food"
         },
         {
@@ -5031,7 +5356,9 @@
           "id": "day-10-item-1",
           "title": "Leave Orellán",
           "description": "Drive via Ponferrada to Astorga.",
-          "entityIds": [],
+          "entityIds": [
+            "opt-astorga-gaudi"
+          ],
           "optional": false,
           "status": "planned",
           "notes": "",
@@ -5055,15 +5382,27 @@
         {
           "id": "day-10-item-3",
           "title": "Continue north",
-          "description": "Take the A-6 and AP-66; Santa Cristina de Lena is an optional 35–60-minute fixed-hours stop.",
+          "description": "Take the A-6 and AP-66 towards Trubia, avoiding the Cobertoria shortcut.",
           "entityIds": [
-            "opt-santa-cristina"
+            "hotel-la-posta"
           ],
           "optional": false,
           "status": "planned",
           "notes": "",
           "time": "15:00",
           "kind": "drive"
+        },
+        {
+          "id": "day-10-item-3b",
+          "title": "Optional stop — Santa Cristina de Lena",
+          "description": "Allow 35–60 minutes for this fixed-hours stop only if its current access works with the transfer.",
+          "entityIds": [
+            "opt-santa-cristina"
+          ],
+          "optional": true,
+          "status": "planned",
+          "notes": "Contact the custodian ahead if seeing the interior matters.",
+          "kind": "visit"
         },
         {
           "id": "day-10-item-4",
@@ -5082,14 +5421,14 @@
         {
           "id": "day-10-item-5",
           "title": "Dinner — walk into San Martín",
-          "description": "Use the village restaurants rather than planning the evening around the hotel. Casa Laureano is the UBERFINAL first choice.",
+          "description": "Use the village restaurants rather than planning the evening around the hotel. Casa Laureano is a nearby option.",
           "entityIds": [
             "restaurant-casa-laureano"
           ],
           "optional": false,
           "status": "planned",
           "notes": "",
-          "kind": "walk"
+          "kind": "food"
         }
       ],
       "notices": [
@@ -5106,7 +5445,7 @@
         "Cocido maragato Served backwards — nine or ten meats first, then the chickpeas and cabbage, and the soup last. The local story involves soldiers eating the best part before a battle could interrupt them. Order one between two unless you plan to skip dinner, which is the honest option.",
         "A fixed-hours stop on the A-66 At Pola de Lena, just off the motorway on the last leg north, Santa Cristina de Lena stands alone on a hillside — a small 9th-century church belonging to the same UNESCO listing as the Oviedo monuments you see on Day 12. Allow 35–60 minutes including the approach. On your Tuesday it is currently open 11:00–13:00 and 16:30–18:30; contact the custodian ahead if the interior matters.",
         "One turning to avoid Coming north on the A-66, do not take the Lena exit for the Cobertoria shortcut — that is precisely the hairpin road you have removed from this trip. Stay on the motorway as far as Trubia and come up the Trubia valley at river level, through Proaza and Caranga. Twenty minutes longer, and flat all the way.",
-        "A recovery evening that needs little planning La Posta sits on the village square with parking nearby. San Martín is the capital of its valley, with shops and several places to eat and drink within walking distance. Casa Laureano is the UBERFINAL first choice for Asturian stews, wild game, sausage and fabada. Check current opening nights shortly before the trip, then walk to dinner and leave the car parked."
+        "A recovery evening that needs little planning La Posta sits on the village square with parking nearby. San Martín is the capital of its valley, with shops and several places to eat and drink within walking distance. Casa Laureano is a nearby option for Asturian stews, wild game, sausage and fabada. Check current opening nights shortly before the trip, then walk to dinner and leave the car parked."
       ],
       "notes": "",
       "stayId": "stay-5"
@@ -5139,7 +5478,9 @@
           "id": "day-11-item-1",
           "title": "Drive to Entrago",
           "description": "The trailhead and bike rental are about five minutes from La Posta.",
-          "entityIds": [],
+          "entityIds": [
+            "opt-senda-oso"
+          ],
           "optional": false,
           "status": "planned",
           "notes": "",
@@ -5156,13 +5497,20 @@
           "optional": false,
           "status": "planned",
           "notes": "",
+          "booking": {
+            "required": true,
+            "status": "pending",
+            "notes": "Reserve the e-bikes and return shuttle together; confirm payment method and the exact endpoint."
+          },
           "kind": "bike"
         },
         {
           "id": "day-11-item-3",
-          "title": "Choose the distance as you go",
-          "description": "The standard descent is 18–22 km. Add part of the Quirós arm for roughly 28–35 km, or arrange the UBERFINAL-style 35–45 km full-day version.",
-          "entityIds": [],
+          "title": "Optional Quirós extension",
+          "description": "The standard descent is 18–22 km. Add part of the Quirós arm for roughly 28–35 km, or pre-arrange a 35–45 km full-day version.",
+          "entityIds": [
+            "opt-senda-oso"
+          ],
           "optional": true,
           "status": "planned",
           "notes": "",
@@ -5176,13 +5524,20 @@
           "optional": false,
           "status": "planned",
           "notes": "",
+          "booking": {
+            "required": true,
+            "status": "pending",
+            "notes": "The route is not fixed until the operator confirms the agreed pickup point and latest collection time."
+          },
           "kind": "bike"
         },
         {
           "id": "day-11-item-5",
           "title": "Dinner — San Martín de Teverga",
           "description": "Walk from La Posta to the village restaurants. Keep the evening unreserved unless a current opening check suggests otherwise.",
-          "entityIds": [],
+          "entityIds": [
+            "opt-san-martin-evening"
+          ],
           "optional": false,
           "status": "planned",
           "notes": "",
@@ -5231,16 +5586,6 @@
       ],
       "items": [
         {
-          "id": "day-12-item-1",
-          "title": "Choose the morning before leaving",
-          "description": "Nature means Las Xanas; culture means the Naranco monuments. Their verified timings do not allow both.",
-          "entityIds": [],
-          "optional": true,
-          "status": "planned",
-          "notes": "",
-          "kind": "other"
-        },
-        {
           "id": "day-12-item-2",
           "title": "Nature version — walk Las Xanas",
           "description": "Allow the official 3–5 hours before lunch, then skip Naranco and continue to central Oviedo.",
@@ -5278,6 +5623,8 @@
           "optional": false,
           "status": "planned",
           "notes": "",
+          "time": "16:00",
+          "endTime": "18:00",
           "kind": "visit"
         },
         {
@@ -5285,6 +5632,7 @@
           "title": "Continue to Avilés",
           "description": "Walk the old quarter and cross to the Centro Niemeyer after dark if energy allows.",
           "entityIds": [
+            "hotel-palacio-aviles",
             "opt-aviles-centre",
             "opt-niemeyer"
           ],
@@ -5297,8 +5645,10 @@
           "id": "day-12-item-6",
           "title": "Dinner — choose around Calle Galiana, Avilés",
           "description": "Pick somewhere under the arcades after checking in. Keep this flexible around the Oviedo timing and the optional Niemeyer walk.",
-          "entityIds": [],
-          "optional": true,
+          "entityIds": [
+            "opt-aviles-centre"
+          ],
+          "optional": false,
           "status": "planned",
           "notes": "",
           "kind": "food"
@@ -5360,7 +5710,9 @@
           "id": "day-13-item-1",
           "title": "Breakfast in Avilés",
           "description": "Eat at the hotel at a normal hour.",
-          "entityIds": [],
+          "entityIds": [
+            "hotel-palacio-aviles"
+          ],
           "optional": false,
           "status": "planned",
           "notes": "",
@@ -5371,7 +5723,9 @@
           "id": "day-13-item-2",
           "title": "Leave for the airport",
           "description": "Refuel on the way out of town.",
-          "entityIds": [],
+          "entityIds": [
+            "transport-asturias-airport"
+          ],
           "optional": false,
           "status": "planned",
           "notes": "",
@@ -5382,7 +5736,9 @@
           "id": "day-13-item-3",
           "title": "Arrive at Asturias Airport",
           "description": "Return the rental car, then check in and drop bags.",
-          "entityIds": [],
+          "entityIds": [
+            "transport-asturias-airport"
+          ],
           "optional": false,
           "status": "planned",
           "notes": "",
@@ -5398,11 +5754,14 @@
           "id": "day-13-item-4",
           "title": "Fly to Brussels",
           "description": "Arrive in Brussels at 13:05.",
-          "entityIds": [],
+          "entityIds": [
+            "transport-asturias-airport"
+          ],
           "optional": false,
           "status": "planned",
           "notes": "",
           "time": "11:00",
+          "endTime": "13:05",
           "booking": {
             "required": true,
             "status": "booked",
@@ -5430,7 +5789,10 @@
         "hotel-la-posta"
       ],
       "dayIds": [],
-      "status": "done",
+      "stayIds": [
+        "stay-5"
+      ],
+      "status": "pending",
       "kind": "confirmation"
     },
     {
@@ -5442,20 +5804,26 @@
         "hotel-mypalace"
       ],
       "dayIds": [],
-      "status": "done",
+      "stayIds": [
+        "stay-3"
+      ],
+      "status": "pending",
       "kind": "confirmation"
     },
     {
       "id": "action-3",
       "title": "Palacio de Avilés",
-      "description": "Montemar (Llanes) and Palacio de Avilés (one night — request the modern wing, and ask whether an event is booked).",
+      "description": "Palacio de Avilés — request the modern wing and ask whether an event is booked for the night before the flight.",
       "timing": "This week",
       "entityIds": [
         "hotel-palacio-aviles"
       ],
       "dayIds": [],
-      "status": "done",
-      "kind": "booking"
+      "stayIds": [
+        "stay-6"
+      ],
+      "status": "pending",
+      "kind": "confirmation"
     },
     {
       "id": "action-4",
@@ -5466,8 +5834,11 @@
         "hotel-el-jisu"
       ],
       "dayIds": [],
-      "status": "done",
-      "kind": "booking"
+      "stayIds": [
+        "stay-2"
+      ],
+      "status": "pending",
+      "kind": "confirmation"
     },
     {
       "id": "action-5",
@@ -5478,7 +5849,10 @@
         "hotel-o-palleiro"
       ],
       "dayIds": [],
-      "status": "done",
+      "stayIds": [
+        "stay-4"
+      ],
+      "status": "pending",
       "kind": "confirmation"
     },
     {
@@ -5487,8 +5861,15 @@
       "description": "Confirm the one-way car hire fee, Bilbao to Asturias.",
       "timing": "This week",
       "entityIds": [],
-      "dayIds": [],
-      "status": "done",
+      "dayIds": [
+        "day-1",
+        "day-13"
+      ],
+      "itemIds": [
+        "day-1-item-2",
+        "day-13-item-3"
+      ],
+      "status": "pending",
       "kind": "confirmation"
     },
     {
@@ -5496,8 +5877,13 @@
       "title": "Fuente Dé cable car",
       "description": "Fuente Dé cable car — timed ticket online, first available slot. Confirm the 23 September opening time and use the current signed route back to Fuente Dé.",
       "timing": "2–3 weeks out",
-      "entityIds": [],
+      "entityIds": [
+        "opt-fuente-de"
+      ],
       "dayIds": [],
+      "itemIds": [
+        "day-4-item-1"
+      ],
       "status": "pending",
       "kind": "confirmation"
     },
@@ -5506,8 +5892,13 @@
       "title": "El Soplao",
       "description": "El Soplao — reserve a timed guided tour around 10:00 and arrive at least 30 minutes early. This timing protects the planned Lebeña visit before 13:30.",
       "timing": "2–3 weeks out",
-      "entityIds": [],
+      "entityIds": [
+        "opt-el-soplao"
+      ],
       "dayIds": [],
+      "itemIds": [
+        "day-3-item-2"
+      ],
       "status": "pending",
       "kind": "booking"
     },
@@ -5516,8 +5907,13 @@
       "title": "Valporquero",
       "description": "Valporquero , if you want the León Saturday to include it — only 30 tickets per departure are sold online.",
       "timing": "2–3 weeks out",
-      "entityIds": [],
+      "entityIds": [
+        "opt-valporquero"
+      ],
       "dayIds": [],
+      "itemIds": [
+        "day-7-item-1"
+      ],
       "status": "pending",
       "kind": "booking"
     },
@@ -5526,8 +5922,14 @@
       "title": "Palacio de Canedo",
       "description": "Palacio de Canedo — reserve an 11:30 winery tour and a 13:15 restaurant table for Sunday 27 September. Book both together by phone and nominate a driver who limits or skips the tasting.",
       "timing": "2–3 weeks out",
-      "entityIds": [],
+      "entityIds": [
+        "opt-canedo"
+      ],
       "dayIds": [],
+      "itemIds": [
+        "day-8-item-2",
+        "day-8-item-3"
+      ],
       "status": "pending",
       "kind": "booking"
     },
@@ -5540,6 +5942,9 @@
         "restaurant-don-paco"
       ],
       "dayIds": [],
+      "itemIds": [
+        "day-1-item-6"
+      ],
       "status": "pending",
       "kind": "booking"
     },
@@ -5548,8 +5953,14 @@
       "title": "Covadonga shuttle bus",
       "description": "Covadonga shuttle bus through the dedicated buslagoscovadonga platform — book an early outward journey and a return time with enough margin for the three-hour walk. Bufones or Gulpiyuri remains optional afterwards.",
       "timing": "Final week",
-      "entityIds": [],
+      "entityIds": [
+        "transport-covadonga-bus",
+        "opt-covadonga"
+      ],
       "dayIds": [],
+      "itemIds": [
+        "day-2-item-1"
+      ],
       "status": "pending",
       "kind": "booking"
     },
@@ -5558,8 +5969,14 @@
       "title": "Arenas–Poncebos access bus",
       "description": "Arenas–Poncebos access bus for the Cares walk — the special transport plan is active on 24 September.",
       "timing": "Final week",
-      "entityIds": [],
+      "entityIds": [
+        "transport-cares-bus",
+        "opt-cares"
+      ],
       "dayIds": [],
+      "itemIds": [
+        "day-5-item-1"
+      ],
       "status": "pending",
       "kind": "booking"
     },
@@ -5568,8 +5985,14 @@
       "title": "E-bikes at Entrago",
       "description": "E-bikes at Entrago — reserve the bicycles and return shuttle; confirm the chosen operator's payment method.",
       "timing": "Final week",
-      "entityIds": [],
+      "entityIds": [
+        "opt-senda-oso"
+      ],
       "dayIds": [],
+      "itemIds": [
+        "day-11-item-2",
+        "day-11-item-4"
+      ],
       "status": "pending",
       "kind": "confirmation"
     },
@@ -5582,6 +6005,9 @@
         "opt-cabrales"
       ],
       "dayIds": [],
+      "itemIds": [
+        "day-5-item-4"
+      ],
       "status": "pending",
       "kind": "booking"
     },
@@ -5590,8 +6016,13 @@
       "title": "Las Médulas",
       "description": "Re-check which Las Médulas routes and visitor services are open; do not rely on a reception centre being staffed.",
       "timing": "Final week",
-      "entityIds": [],
+      "entityIds": [
+        "opt-medulas-walk"
+      ],
       "dayIds": [],
+      "itemIds": [
+        "day-9-item-1"
+      ],
       "status": "pending",
       "kind": "access"
     }
@@ -5655,15 +6086,16 @@
     "file": "vacation-plan.html",
     "sha256": "e3a36c72a0526e70c22bd4c2c082e942672772d98a2a088c2ea9d6062a3cfe31",
     "notes": [
-      "Converted from the working plan. Source facts and opening hours are not newly verified.",
+      "Originally converted from the working plan; this canonical JSON is now maintained directly and is not regenerated from the HTML.",
       "Hotel stays, both flights and the rental car are confirmed from traveller feedback. Other reservations remain unknown until supplied.",
-      "Dates are 20 September–2 October 2026, Europe/Madrid. Seed timestamp denotes the source revision month, not a user save.",
+      "Dates are 20 September–2 October 2026, Europe/Madrid. The seed timestamp records the latest canonical-data review, not a user save.",
       "Mutually exclusive choices remain optional itinerary entries; no automatic selection was made.",
       "Booking-board timing remains relative (This week / Final week); exact due dates need confirmation.",
       "Day 9 mentions Ponferrada; the library says it is closed Monday. This conflict is preserved for review.",
       "Day 12 requires choosing Las Xanas or Naranco. They do not fit together.",
       "No private document URLs, reservation names, references or sensitive documents were supplied.",
-      "Phase 2 maps 12 narrative destination rows to existing source places; no new location or opening claims are inferred. Day 12 morning entries share an editable exclusive choice group.",
+      "The September review added direct actions, structured itinerary times, explicit booking state and editable exclusive choice groups without changing schema v2.",
+      "Official operator or tourism sources were added for Covadonga, Cares, Fuente Dé, El Soplao, Palacio de Canedo, Asturias Airport, hotels and named restaurants. Live conditions and unconfirmed slots remain marked for recheck.",
       "Keep-in-mind notices retain only actionable safety, access, weather, timing and choice constraints; repeated itinerary and planning-history cards are omitted."
     ]
   }

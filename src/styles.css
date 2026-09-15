@@ -214,6 +214,25 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 .sheet-body>.actions {
   margin-bottom:18px
 }
+.sheet-choice {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;
+  gap:12px;
+  margin:0 0 18px;
+  padding:12px;
+  border:1px solid #cdddc8;
+  border-radius:12px;
+  background:#edf3e8
+}
+.sheet-choice strong,.sheet-choice small {
+  display:block
+}
+.sheet-choice small {
+  margin-top:3px;
+  color:var(--muted);
+  font-size:.72rem
+}
 .sheet-facts {
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -1136,6 +1155,63 @@ input:focus-visible,select:focus-visible { outline:3px solid #b98138; outline-of
   gap:6px;
   margin-top:11px;
 }
+.choice-options {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:7px;
+  margin-top:9px
+}
+.choice-option {
+  position:relative;
+  overflow:hidden;
+  min-width:0;
+  border:1px solid #dbe4d8;
+  border-radius:9px;
+  background:#f5f7f3
+}
+.choice-option.selected {
+  border-color:#7fa17d;
+  background:#e6f0e4
+}
+.choice-option.skipped {
+  background:#f3f1ef
+}
+.choice-option>button,.choice-option>a {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 16px;
+  width:100%;
+  min-height:60px;
+  padding:9px;
+  border:0;
+  background:transparent;
+  color:inherit;
+  text-align:left;
+  text-decoration:none
+}
+.choice-option strong,.choice-option small {
+  display:block;
+  min-width:0;
+  grid-column:1
+}
+.choice-option strong {
+  font-size:.72rem;
+  line-height:1.3
+}
+.choice-option small {
+  overflow:hidden;
+  margin-top:4px;
+  color:var(--muted);
+  font-size:.64rem;
+  line-height:1.25;
+  text-overflow:ellipsis;
+  white-space:nowrap
+}
+.choice-option>button>svg,.choice-option>a>svg {
+  grid-column:2;
+  grid-row:1/3;
+  align-self:center;
+  color:var(--green)
+}
 .item-place {
   display:flex;
   align-items:center;
@@ -1544,7 +1620,7 @@ input:focus-visible,select:focus-visible { outline:3px solid #b98138; outline-of
   gap:12px;
   padding-top:12px!important
 }
-.export-panel,.import-panel {
+.export-panel,.import-panel,.reset-panel {
   display:grid;
   align-items:center;
   gap:10px;
@@ -1565,19 +1641,19 @@ input:focus-visible,select:focus-visible { outline:3px solid #b98138; outline-of
   background:#e2ede0;
   color:var(--green)
 }
-.export-panel strong,.export-panel small,.import-panel strong,.import-panel small {
+.export-panel strong,.export-panel small,.import-panel strong,.import-panel small,.reset-panel strong,.reset-panel small {
   display:block
 }
-.export-panel strong,.import-panel strong {
+.export-panel strong,.import-panel strong,.reset-panel strong {
   font-size:.84rem
 }
-.export-panel small,.import-panel small {
+.export-panel small,.import-panel small,.reset-panel small {
   margin-top:2px;
   color:var(--muted);
   font-size:.72rem;
   line-height:1.45
 }
-.import-panel {
+.import-panel,.reset-panel {
   grid-template-columns:minmax(0,1fr) auto
 }
 .file-action {
@@ -1604,7 +1680,7 @@ input:focus-visible,select:focus-visible { outline:3px solid #b98138; outline-of
   .export-panel>.button {
     grid-column:1/-1
   }
-  .import-panel {
+  .import-panel,.reset-panel {
     grid-template-columns:1fr
   }
   .file-action {

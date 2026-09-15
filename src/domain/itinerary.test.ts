@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import seed from '../data/initial-trip.json'
-import { resolveItemKind } from './itinerary'
+import { itemTimeLabel, resolveItemKind } from './itinerary'
 import { parseTrip } from './trip'
 
 describe('timeline item kinds', () => {
@@ -34,5 +34,11 @@ describe('timeline item kinds', () => {
     expect(resolveItemKind(item, entities)).toBe('food')
     item.title = 'Walk back from dinner'
     expect(resolveItemKind(item, entities)).toBe('walk')
+  })
+
+  it('formats exact times and time windows for the timeline', () => {
+    const item = structuredClone(trip.days[0].items[0])
+    expect(itemTimeLabel({ ...item, time: '09:20', endTime: '11:15' })).toBe('09:20–11:15')
+    expect(itemTimeLabel({ ...item, time: undefined, endTime: undefined })).toBe('Flex')
   })
 })

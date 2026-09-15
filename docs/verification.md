@@ -4,7 +4,7 @@ Verified on 14 September 2026 with Node **24.11.1**, pinned installed dependenci
 
 ## Completed
 
-- `npm run check` passes: source-conversion drift, ESLint, **19 unit/storage tests**, TypeScript, production build and PWA generation.
+- `npm run check` passes: canonical-seed schema validation, ESLint, **24 unit/storage tests**, TypeScript, production build and PWA generation.
 - `npm run test:e2e` passes: **11 production-browser journeys**.
 - Unit/storage checks cover existing seed-once/revision behavior, migration of version-1 edits into version 2, automatic and explicit timeline icons, lossless current-format round trips, invalid/future schemas and links, broken references, shared-entity deletion safeguards, moving booked visits and action relationships, exclusive choices, hotel scheduling and contextual dates.
 - An injected IndexedDB transaction abort rejects both save and replacement, preserves the current trip and existing backup, and never reports success. Restore swaps records with a new local revision.

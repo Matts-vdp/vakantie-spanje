@@ -48,11 +48,19 @@ Browser tests use isolated storage, explicit trip days, a phone viewport and the
 
 ## Data and privacy
 
-The checked-in HTML is source material, not an app screen. `npm run data:generate` regenerates `src/data/initial-trip.json` and `docs/source-audit.md`. The converter retains source facts and flags unresolved choices; it does not verify current opening times or infer confirmed bookings. `npm run data:check` detects drift. Review explicit hotel mappings if dates or stays change.
+`src/data/initial-trip.json` is the authoritative initial dataset. Edit it directly and run `npm run data:check` to validate it against the current portable schema. The checked-in HTML and `docs/source-audit.md` are historical source material, not app screens or regeneration inputs for normal development. The archived converter requires an explicit preview output path and refuses to overwrite the canonical seed.
 
 Seed generation never touches browser data. Once initialized, the device's saved trip wins. Browser clearing/eviction can remove local data, so export backups. Phones do not synchronize.
 
 Sensitive documents belong in restricted Google Drive storage. The app contains no credentials, private documents or document integrations. Any eventual public static deployment will expose its bundled seed itinerary even if the repository is private.
+
+## GitHub Pages deployment
+
+Pushes to `main` are built and deployed by `.github/workflows/deploy-pages.yml`; the existing validation workflow continues to run independently. In the GitHub repository, select **Settings → Pages → Build and deployment → GitHub Actions** once to enable the deployment source. The project site is then available at:
+
+<https://matts-vdp.github.io/vakantie-spanje/>
+
+The relative Vite base is intentional: it keeps generated assets, the web manifest and service worker valid under the GitHub Pages repository subdirectory while preserving deployment to other static subdirectories. GitHub Pages is public, including when a plan permits Pages for a private repository; do not add sensitive itinerary data or private documents to bundled assets.
 
 ## Project map
 
@@ -60,10 +68,10 @@ Sensitive documents belong in restricted Google Drive storage. The app contains 
 | --- | --- |
 | `src/domain/` | Versioned schema, inferred types and Spain-local calendar helpers |
 | `src/storage/` | Native IndexedDB transactions and concurrency checks |
-| `src/data/` | Generated initial trip |
+| `src/data/` | Authoritative initial trip dataset |
 | `src/components/` | Shared day view, actions, icons and PWA update prompt |
-| `scripts/` | Reproducible source conversion and local SVG icon rendering |
+| `scripts/` | Seed validation, archived source conversion and local SVG icon rendering |
 | `tests/` | Production browser journeys |
 | `docs/` | Architecture, source audit and phase handoff |
 
-No hosting provider or deployment credentials are configured.
+GitHub Pages deployment uses the repository-provided `GITHUB_TOKEN`; no deployment credentials are stored in the repository.

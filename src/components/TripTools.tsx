@@ -41,7 +41,7 @@ export function BookingOverview({ trip, dayId }: { trip: Trip; dayId?: string })
   const confirmed = rows.filter(row => ['booked', 'not-needed'].includes(row.booking.status)).length
   return <details className="more-section booking-overview"><summary><span><strong>Bookings overview</strong><small>{confirmed} of {rows.length} confirmed or not needed</small></span><Icon name="chevron" size={18} /></summary><div className="booking-progress" aria-label={`${confirmed} of ${rows.length} bookings confirmed`}><span style={{ width: `${rows.length ? confirmed / rows.length * 100 : 0}%` }} /></div><section className="tool-section">{content}</section></details>
 }
-export function MoreTools({ trip, onReplace, onDirty }: { trip: Trip; onReplace: SaveTrip; onDirty: (value: boolean) => void }) {
+export function MoreTools({ trip, initialTrip, onReplace, onDirty }: { trip: Trip; initialTrip: Trip; onReplace: SaveTrip; onDirty: (value: boolean) => void }) {
   const [candidate, setCandidate] = useState<Trip | null>(null)
   const [kind, setKind] = useState('Import')
   const [message, setMessage] = useState('')
@@ -55,20 +55,27 @@ export function MoreTools({ trip, onReplace, onDirty }: { trip: Trip; onReplace:
   }
   async function backup() {
     setBusy(true); setMessage('')
-    try { const value = await tripStore.readBackup(); if (!value) { setMessage('No pre-import backup exists yet.'); return } setCandidate(value); setKind('Restore backup'); onDirty(true) }
+    try { const value = await tripStore.readBackup(); if (!value) { setMessage('No previous-trip backup exists yet.'); return } setCandidate(value); setKind('Restore backup'); onDirty(true) }
     catch (e) { setMessage((e as Error).message) } finally { setBusy(false) }
+  }
+  function resetToInitial() {
+    setMessage('')
+    setCandidate(structuredClone(initialTrip))
+    setKind('Reset to initial trip')
+    onDirty(true)
   }
   async function replace() {
     if (!candidate) return
     setBusy(true)
-    try { await onReplace(candidate); setCandidate(null); onDirty(false); setMessage('Trip replaced on this device. The previous trip is now the pre-import backup.') }
+    try { await onReplace(candidate); setCandidate(null); onDirty(false); setMessage(kind === 'Reset to initial trip' ? 'Trip reset to the bundled initial data. Your previous trip is available as the saved backup.' : 'Trip replaced on this device. The previous trip is now the saved backup.') }
     catch (e) { setMessage((e as Error).message) } finally { setBusy(false) }
   }
   return <div className="more-tools">
     <details className="more-section trip-data-section"><summary><span><strong>Trip data</strong><small>Back up or move this trip</small></span><Icon name="chevron" size={18} /></summary><section className="tool-section trip-data-body">
       <div className="export-panel"><span className="data-icon"><Icon name="trip" size={20} /></span><div><strong>Keep a portable copy</strong><small>Download everything saved on this device as one JSON file.</small></div><button className="button" onClick={() => downloadTrip(trip)}>Export trip data</button></div>
       <div className="import-panel"><div><strong>Import trip data</strong><small>Choose an export to review before replacing this device’s trip.</small></div><label className="action file-action">Choose file<input aria-label="Import trip data" type="file" accept=".json,application/json" disabled={busy} onChange={e => { void select(e.target.files?.[0]); e.target.value = '' }} /></label></div>
-      <button className="text-button backup-link" disabled={busy} onClick={() => { void backup() }}>Review pre-import backup</button>
+      <div className="reset-panel"><div><strong>Start again from the bundled trip</strong><small>Replace local edits with the current initial JSON. The trip on this device is saved automatically as the one recoverable backup.</small></div><button className="action danger" disabled={busy} onClick={resetToInitial}>Reset to initial trip</button></div>
+      <button className="text-button backup-link" disabled={busy} onClick={() => { void backup() }}>Review saved backup</button>
       {candidate && <div className="import-preview"><h3>{kind}: {candidate.name}</h3><p>{candidate.startDate} — {candidate.endDate} · {candidate.days.length} days · {candidate.entities.length} places · {candidate.stays.length} stays · {candidate.days.reduce((n, d) => n + d.items.length, 0)} visits</p><p>Saved {candidate.updatedAt}. This replaces this device’s entire current trip, including notes, bookings and document links. Nothing is merged. One previous trip is kept atomically as a backup; restoring swaps that backup with the current trip.</p><div className="actions"><button className="action" disabled={busy} onClick={() => downloadTrip(trip, 'before-replacement')}>Export current data first</button>{kind === 'Restore backup' && <button className="action" onClick={() => downloadTrip(candidate, 'backup')}>Download backup</button>}<button className="button" disabled={busy} onClick={() => { void replace() }}>Confirm entire trip replacement</button><button className="action" disabled={busy} onClick={() => { setCandidate(null); onDirty(false); setMessage('Replacement cancelled. Current trip is unchanged.') }}>Cancel replacement</button></div></div>}
       {message && <p role="status">{message}</p>}<button className="text-button" onClick={() => { void navigator.storage?.persist?.().then(granted => setMessage(granted ? 'Persistent storage granted.' : 'Browser storage is managed automatically. Keep exports too.')).catch(() => setMessage('Storage preference could not be changed.')) }}>Ask browser to keep trip data</button>
     </section></details>

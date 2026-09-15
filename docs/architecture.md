@@ -52,7 +52,7 @@ Review pre-import backup validates and previews the single stored backup and all
 
 ## Source and offline boundaries
 
-The build-time converter processes the planning HTML only for empty-device seed data. Twelve explicit narrative destinations now reuse existing source entities/links; uncertain trail turns, parking/shuttle pickup points, airport terminals and restaurant URLs are left unset. The source audit documents this. Neither the original HTML nor specification is copied into the production output.
+`src/data/initial-trip.json` is the authoritative initial dataset and is maintained directly. `npm run data:check` validates that exact file against the current portable schema and rejects unknown/defaulted fields. The planning HTML and source audit are preserved as historical provenance. The archived converter can create a separately named preview for comparison, but refuses to overwrite the canonical seed. Neither the original HTML nor specification is copied into the production output.
 
 The PWA precaches local app assets and the bundled seed. IndexedDB is independent of app-shell caches. No service-worker activation, seed regeneration or application startup resets local edits. Maps, websites, booking links and restricted Drive links are external and not cached or embedded. The app contains no private documents or supplied private URLs.
 

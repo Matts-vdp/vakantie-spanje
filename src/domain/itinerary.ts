@@ -14,6 +14,8 @@ export const itemKindLabels: Record<ItemKind, string> = {
   other: 'Other',
 }
 
+export const itemTimeLabel = (item: Item) => item.time ? `${item.time}${item.endTime ? `–${item.endTime}` : ''}` : 'Flex'
+
 /** Resolve only from the traveller's current item and linked places. No seed data is consulted. */
 export function resolveItemKind(item: Item, entities: Map<string, Entity>): Exclude<ItemKind, 'auto'> {
   if (item.kind !== 'auto') return item.kind

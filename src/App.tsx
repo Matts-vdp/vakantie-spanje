@@ -13,6 +13,7 @@ const tabs: { id: string; label: string; icon: IconName }[] = [
   { id: 'today', label: 'Today', icon: 'today' }, { id: 'trip', label: 'Trip', icon: 'trip' },
   { id: 'explore', label: 'Explore', icon: 'explore' }, { id: 'more', label: 'More', icon: 'more' },
 ]
+const initialTrip = parseTrip(seed)
 const readRoute = () => window.location.hash.replace(/^#\/?/, '') || 'today'
 
 function PlaceDetail({ entity, trip }: { entity: Entity; trip: Trip }) {
@@ -73,7 +74,7 @@ export function App() {
 
   useEffect(() => {
     let cancelled = false
-    void tripStore.loadOrInitialize(parseTrip(seed)).then((value) => { if (!cancelled) setTrip(value) }).catch((error: unknown) => { if (!cancelled) setError(error instanceof Error ? error.message : 'Could not load device storage.') })
+    void tripStore.loadOrInitialize(initialTrip).then((value) => { if (!cancelled) setTrip(value) }).catch((error: unknown) => { if (!cancelled) setError(error instanceof Error ? error.message : 'Could not load device storage.') })
     return () => { cancelled = true }
   }, [])
   useEffect(() => {
@@ -132,7 +133,7 @@ export function App() {
       {section === 'trip' && <><header className="page-heading"><p className="eyebrow">20 September — 2 October</p><h1>The whole trip</h1><p className="lede">13 days · 12 nights · 6 bases</p></header><div className="trip-list">{trip.days.map((day, index) => <a className={`trip-row ${day.date === current.today ? 'current' : ''}`} key={day.id} href={`#/day/${day.id}`}><span className="day-number">Day<b>{index + 1}</b></span><div><h2>{day.title}</h2><p>{formatDate(day.date)}</p><div className="meta-line">{day.facts.filter(fact => !['Sleep', 'Book'].includes(fact.label)).slice(0, 2).map(fact => <span className="status-badge neutral" key={fact.label}>{fact.label}: {fact.value}</span>)}</div></div><Icon name="chevron" size={18} /></a>)}</div></>}
       {section === 'explore' && <Explore trip={trip} />}
       {section === 'place' && selectedEntity && <PlaceDetail entity={selectedEntity} trip={trip} />}
-      {section === 'more' && <><header className="page-heading"><h1>More</h1></header><MoreTools trip={trip} onReplace={next => saveTrip(next, true)} onDirty={guardDirty} /></>}
+      {section === 'more' && <><header className="page-heading"><h1>More</h1></header><MoreTools trip={trip} initialTrip={initialTrip} onReplace={next => saveTrip(next, true)} onDirty={guardDirty} /></>}
       {['new', 'entity', 'item', 'stay', 'schedule', 'documents', 'action'].includes(section) && <Editor key={route} trip={trip} mode={section} id={id} onSave={saveTrip} onDirty={guardDirty} />}
     </main>
     <PwaStatus busy={dirty || saving} />

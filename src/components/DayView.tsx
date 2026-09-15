@@ -3,9 +3,12 @@ import { formatDate } from '../domain/dates'
 import type { Booking, Day, Entity, Trip } from '../domain/trip'
 import { Icon } from './Icon'
 import { bookingLabel, choiceGroup, selectChoice } from '../domain/operations'
-import { itemKindLabels, resolveItemKind } from '../domain/itinerary'
+import { itemKindLabels, itemTimeLabel, resolveItemKind } from '../domain/itinerary'
 import { ActionList, BookingOverview } from './TripTools'
 import type { SaveTrip } from './Editor'
+
+type Activity = Extract<Entity, { type: 'activity' }>
+type SheetSelection = { group: string; selected: boolean; busy: boolean; onSelect: () => void }
 
 export function BookingDetails({ booking }: { booking: Booking }) {
   return <div className="booking-details"><p><b>{bookingLabel(booking)} {booking.time}</b>{booking.date && ` · ${booking.date}`}{booking.arrivalBefore && ` · Arrive before ${booking.arrivalBefore}`}</p>
@@ -22,8 +25,8 @@ export function PlaceActions({ entity }: { entity: Entity }) {
   </div>
 }
 
-function StatusBadge({ booking }: { booking: Booking }) {
-  return <span className={`status-badge ${booking.status}`}>{booking.status === 'booked' && <Icon name="check" size={13} />}{bookingLabel(booking)}{booking.time && ` · ${booking.time}`}</span>
+function StatusBadge({ booking, hideTime = false }: { booking: Booking; hideTime?: boolean }) {
+  return <span className={`status-badge ${booking.status}`}>{booking.status === 'booked' && <Icon name="check" size={13} />}{bookingLabel(booking)}{booking.time && !hideTime && ` · ${booking.time}`}</span>
 }
 
 function DateSelector({ trip, day }: { trip: Trip; day: Day }) {
@@ -69,7 +72,7 @@ function DayNote({ day, onSave, onDirty }: { day: Day; onSave: (value: string) =
   </>
 }
 
-export function ActivitySheet({ entity, onClose }: { entity?: Extract<Entity, { type: 'activity' }>; onClose: () => void }) {
+export function ActivitySheet({ entity, selection, onClose }: { entity?: Activity; selection?: SheetSelection; onClose: () => void }) {
   const close = useRef<HTMLButtonElement>(null)
   useEffect(() => {
     if (!entity) return
@@ -91,6 +94,7 @@ export function ActivitySheet({ entity, onClose }: { entity?: Extract<Entity, { 
       <div className="sheet-handle" />
       <header className="sheet-head"><div><p className="eyebrow">{entity.region} · activity</p><h2 id="activity-sheet-title">{entity.name}</h2></div><button ref={close} className="icon-button" aria-label="Close activity details" onClick={onClose}><Icon name="close" size={20} /></button></header>
       <div className="sheet-body">{entity.description && <p className="sheet-lede">{entity.description}</p>}<PlaceActions entity={entity} />
+        {selection && <div className="sheet-choice"><div><strong>{selection.group}</strong><small>{selection.selected ? 'This option is selected.' : 'Choose this option for the itinerary.'}</small></div><button className="button" disabled={selection.selected || selection.busy} onClick={selection.onSelect}>{selection.selected ? 'Selected' : 'Choose this option'}</button></div>}
         {facts.length > 0 && <dl className="sheet-facts">{facts.map((fact) => <div key={fact.label}><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}</dl>}
         {entity.notes && <div className="sheet-note preserve-lines">{entity.notes}</div>}
         {entity.activity.accessNotes && entity.activity.accessNotes !== entity.notes && <div className="sheet-note preserve-lines">{entity.activity.accessNotes}</div>}
@@ -103,14 +107,29 @@ export function ActivitySheet({ entity, onClose }: { entity?: Extract<Entity, { 
 export function DayView({ trip, day, todayMode = false, onSaveNote, onDirty, onSaveTrip }: { onSaveTrip: SaveTrip; trip: Trip; day: Day; todayMode?: boolean; onSaveNote: (value: string) => Promise<void>; onDirty: (value: boolean) => void }) {
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
-  const [detail, setDetail] = useState<Extract<Entity, { type: 'activity' }>>()
+  const [detail, setDetail] = useState<Activity>()
+  const [detailChoiceId, setDetailChoiceId] = useState<string>()
   const [noticesOpen, setNoticesOpen] = useState(true)
-  async function update(nextTrip: Trip) { setBusy(true); setError(''); try { await onSaveTrip(nextTrip) } catch (e) { setError((e as Error).message) } finally { setBusy(false) } }
+  async function update(nextTrip: Trip) { setBusy(true); setError(''); try { await onSaveTrip(nextTrip); return true } catch (e) { setError((e as Error).message); return false } finally { setBusy(false) } }
   const index = trip.days.findIndex((option) => option.id === day.id)
   const next = trip.days[index + 1]
   const stay = trip.stays.find((option) => option.id === day.stayId)
-  const hotel = trip.entities.find((entity) => entity.id === stay?.hotelId)
+  const checkoutStay = !stay ? trip.stays.find((option) => option.checkOutDate === day.date) : undefined
+  const stayContext = stay ?? checkoutStay
+  const checkoutOnly = !stay && Boolean(checkoutStay)
+  const hotel = trip.entities.find((entity) => entity.id === stayContext?.hotelId)
   const entities = new Map(trip.entities.map((entity) => [entity.id, entity]))
+  type ItineraryRow = { type: 'item'; item: Day['items'][number] } | { type: 'choice'; group: string; items: Day['items'] }
+  const itineraryRows: ItineraryRow[] = []
+  const grouped = new Set<string>()
+  day.items.forEach((item) => {
+    const group = choiceGroup(trip, item)
+    if (!group) itineraryRows.push({ type: 'item', item })
+    else if (!grouped.has(group)) {
+      grouped.add(group)
+      itineraryRows.push({ type: 'choice', group, items: day.items.filter((candidate) => choiceGroup(trip, candidate) === group) })
+    }
+  })
   const notices = day.notices
   return <div className="day-view">
     {todayMode && <DateSelector trip={trip} day={day} />}
@@ -120,15 +139,30 @@ export function DayView({ trip, day, todayMode = false, onSaveNote, onDirty, onS
     {error && <p role="alert" className="error">{error}</p>}
     <section className="day-ahead" aria-label="Day itinerary">
       <DayNote key={day.id} day={day} onSave={onSaveNote} onDirty={onDirty} />
-      <ol className="timeline">{day.items.map((item) => {
+      <ol className="timeline">{itineraryRows.map((row) => {
+        if (row.type === 'choice') {
+          const hasSelection = row.items.some((item) => item.status === 'skipped')
+          return <li className="choice-row" key={row.group}>
+            <div className="timeline-marker flex-time"><span className="timeline-time">Choice</span><span className="timeline-kind visit" title="Choose an activity"><Icon name="visit" size={16} /></span></div>
+            <div className="timeline-content"><div className="timeline-title"><h3>{row.group}</h3></div><p>Tap an option for details.</p><div className="choice-options">{row.items.map((item) => {
+              const activity = item.entityIds.map((id) => entities.get(id)).find((entity): entity is Activity => entity?.type === 'activity')
+              const selected = hasSelection && item.status !== 'skipped'
+              const shortTitle = item.title.replace(/^.*?—\s*/, '').replace(/^./, (letter) => letter.toUpperCase())
+              return <div className={`choice-option ${selected ? 'selected' : ''} ${item.status === 'skipped' ? 'skipped' : ''}`} key={item.id}>
+                {activity ? <button onClick={() => { setDetail(activity); setDetailChoiceId(item.id) }} aria-label={`View details for ${activity.name}`}><strong>{shortTitle}</strong><small>{selected ? 'Selected' : item.status === 'skipped' ? 'Not selected' : activity.name}</small><Icon name="chevron" size={15} /></button> : <a href={`#/item/${item.id}`}><strong>{shortTitle}</strong><small>View option</small><Icon name="chevron" size={15} /></a>}
+              </div>
+            })}</div></div>
+          </li>
+        }
+        const item = row.item
         const kind = resolveItemKind(item, entities)
         return <li key={item.id}>
-        <div className={`timeline-marker ${item.time ? '' : 'flex-time'}`}><span className="timeline-time">{item.time || 'Flex'}</span><span className={`timeline-kind ${kind}`} title={itemKindLabels[kind]}>{kind === 'other' ? <i /> : <Icon name={kind} size={16} />}</span></div>
+        <div className={`timeline-marker ${item.time ? '' : 'flex-time'}`}><span className="timeline-time">{itemTimeLabel(item)}</span><span className={`timeline-kind ${kind}`} title={itemKindLabels[kind]}>{kind === 'other' ? <i /> : <Icon name={kind} size={16} />}</span></div>
         <div className="timeline-content">
           <div className="timeline-title"><h3>{item.title}</h3><a className="icon-button edit-visit" href={`#/item/${item.id}`} aria-label={`Edit ${item.title}`}><Icon name="edit" size={16} /></a></div>
-          <div className="meta-line">{item.status !== 'planned' && <span className={`status-badge ${item.status}`}>{item.status}</span>}{item.booking && <StatusBadge booking={item.booking} />}{item.optional && <span className="status-badge optional">Optional</span>}{item.booking?.arrivalBefore && <span className="status-badge neutral">Arrive by {item.booking.arrivalBefore}</span>}</div>
+          <div className="meta-line">{item.status !== 'planned' && <span className={`status-badge ${item.status}`}>{item.status}</span>}{item.booking && <StatusBadge booking={item.booking} hideTime={item.booking.time === item.time} />}{item.optional && <span className="status-badge optional">Optional</span>}{item.booking?.arrivalBefore && <span className="status-badge neutral">Arrive by {item.booking.arrivalBefore}</span>}</div>
           {item.notes && <p className="preserve-lines">{item.notes}</p>}
-          <p>{item.description}</p>{choiceGroup(trip, item) && <div className="notice choice"><p>{choiceGroup(trip, item)}. Selecting one skips the other; both remain in Explore.</p><button className="action" disabled={busy} onClick={() => { void update(selectChoice(trip, item.id)) }}>Choose this option</button></div>}
+          <p>{item.description}</p>
           {item.entityIds.length > 0 && <div className="item-places">{item.entityIds.map((id) => {
             const entity = entities.get(id)
             if (!entity) return null
@@ -143,16 +177,22 @@ export function DayView({ trip, day, todayMode = false, onSaveNote, onDirty, onS
       </li>})}</ol>
     </section>
     {hotel?.type === 'hotel' && <section className="hotel-panel">
-      <p className="eyebrow">Tonight · {hotel.region}</p><div className="hotel-title"><h2><a href={`#/place/${hotel.id}`}>{hotel.name}</a></h2>{stay && <StatusBadge booking={stay.booking} />}</div>
-      <dl><div><dt>Check-in</dt><dd>{hotel.hotel.checkIn || 'Confirm with hotel'}</dd></div><div><dt>Breakfast</dt><dd>{hotel.hotel.breakfast || 'Confirm with hotel'}</dd></div>{hotel.hotel.parking && <div><dt>Parking</dt><dd>{hotel.hotel.parking}</dd></div>}</dl>
-      <div className="hotel-actions"><PlaceActions entity={hotel} /><a className="action" href={`#/place/${hotel.id}`}>Details</a><a className="icon-button" href={`#/stay/${stay?.id}`} aria-label={`Edit stay at ${hotel.name}`}><Icon name="edit" size={16} /></a></div>
-      <details className="hotel-more"><summary>Arrival & stay details</summary>{stay && <BookingDetails booking={stay.booking} />}{hotel.hotel.arrivalRequirements && <p>{hotel.hotel.arrivalRequirements}</p>}{hotel.notes && <p>{hotel.notes}</p>}<p className="small muted">{stay?.checkInDate} — {stay?.checkOutDate} · Checkout {hotel.hotel.checkOut || 'confirm with hotel'}</p>{hotel.hotel.dinner && <p className="small">Dinner: {hotel.hotel.dinner}</p>}</details>
+      <p className="eyebrow">{checkoutOnly ? 'Checking out' : 'Tonight'} · {hotel.region}</p><div className="hotel-title"><h2><a href={`#/place/${hotel.id}`}>{hotel.name}</a></h2>{stayContext && <StatusBadge booking={stayContext.booking} />}</div>
+      <dl>{checkoutOnly ? <div><dt>Check-out</dt><dd>{hotel.hotel.checkOut || 'Confirm with hotel'}</dd></div> : <div><dt>Check-in</dt><dd>{hotel.hotel.checkIn || 'Confirm with hotel'}</dd></div>}<div><dt>Breakfast</dt><dd>{hotel.hotel.breakfast || 'Confirm with hotel'}</dd></div>{hotel.hotel.parking && <div><dt>Parking</dt><dd>{hotel.hotel.parking}</dd></div>}</dl>
+      <div className="hotel-actions"><PlaceActions entity={hotel} /><a className="action" href={`#/place/${hotel.id}`}>Details</a>{stayContext && <a className="icon-button" href={`#/stay/${stayContext.id}`} aria-label={`Edit stay at ${hotel.name}`}><Icon name="edit" size={16} /></a>}</div>
+      <details className="hotel-more"><summary>{checkoutOnly ? 'Departure & stay details' : 'Arrival & stay details'}</summary>{stayContext && <BookingDetails booking={stayContext.booking} />}{hotel.hotel.arrivalRequirements && <p>{hotel.hotel.arrivalRequirements}</p>}{hotel.notes && <p>{hotel.notes}</p>}<p className="small muted">{stayContext?.checkInDate} — {stayContext?.checkOutDate} · Checkout {hotel.hotel.checkOut || 'confirm with hotel'}</p>{hotel.hotel.dinner && <p className="small">Dinner: {hotel.hotel.dinner}</p>}</details>
     </section>}
     {!hotel && <section className="notice no-stay"><h2>No overnight stay</h2><p>No hotel assigned to this night.</p><a className="detail-link" href="#/explore">Choose a hotel in Explore</a></section>}
     {notices.length > 0 && <details className="notices" open={noticesOpen} onToggle={(event) => setNoticesOpen(event.currentTarget.open)}><summary><span>Keep in mind</span><Icon name="chevron" size={17} /></summary><div className="notice-list">{notices.map((notice, i) => <div key={i} className={`notice ${notice.kind}`}><h3>{notice.title}</h3><p>{notice.body}</p></div>)}</div></details>}
     {day.background.length > 0 && <details className="background"><summary>Details & planning background</summary>{day.background.map((paragraph, i) => <p key={i}>{paragraph}</p>)}</details>}
     <section className="day-review" aria-labelledby="day-review-title"><div className="section-heading"><h2 id="day-review-title">Actions & bookings to review</h2></div><div className="actions"><a className="button" href={`#/new/${day.id}`}>Add a place or note</a><a className="action" href="#/explore">Find an alternative</a></div><ActionList trip={trip} dayId={day.id} /><BookingOverview trip={trip} dayId={day.id} /></section>
-    {next && <a className="tomorrow" href={`#/${todayMode ? 'today' : 'day'}/${next.id}`}><span className="eyebrow">Tomorrow · {formatDate(next.date)}</span><strong>{next.title}</strong><span>{next.items.filter((item) => item.status !== 'skipped').slice(0, 3).map((item) => `${item.booking?.time || item.time || ''} ${item.title}`).join(' · ')}</span><span className="detail-link">See the next day <Icon name="arrow" size={18} /></span></a>}
-    <ActivitySheet entity={detail} onClose={() => setDetail(undefined)} />
+    {next && <a className="tomorrow" href={`#/${todayMode ? 'today' : 'day'}/${next.id}`}><span className="eyebrow">Tomorrow · {formatDate(next.date)}</span><strong>{next.title}</strong><span>{next.items.filter((item) => item.status !== 'skipped').slice(0, 3).map((item) => `${item.time ? itemTimeLabel(item) : item.booking?.time || ''} ${item.title}`).join(' · ')}</span><span className="detail-link">See the next day <Icon name="arrow" size={18} /></span></a>}
+    <ActivitySheet entity={detail} selection={detailChoiceId ? (() => {
+      const item = day.items.find((candidate) => candidate.id === detailChoiceId)
+      const group = item && choiceGroup(trip, item)
+      if (!item || !group) return undefined
+      const selected = item.status !== 'skipped' && day.items.some((candidate) => choiceGroup(trip, candidate) === group && candidate.status === 'skipped')
+      return { group, selected, busy, onSelect: () => { void update(selectChoice(trip, item.id)).then((saved) => { if (saved) { setDetail(undefined); setDetailChoiceId(undefined) } }) } }
+    })() : undefined} onClose={() => { setDetail(undefined); setDetailChoiceId(undefined) }} />
   </div>
 }

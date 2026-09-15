@@ -14,9 +14,11 @@ Implemented locally on 14 September 2026. Phase 4 rollout remains out of scope.
 - Day 12's Las Xanas/Naranco entries form an exclusive group. Choosing either skips the other without deleting its library entry. Groups are editable; other source alternatives can be chosen by editing visit places/status.
 - Traveller-entered Drive/document shortcuts and booking links store URLs only, with an empty state when none have been supplied.
 - JSON import has file validation, summary, explicit whole-trip replacement, a current-data export, and pre-import backup download/restore. Restore swaps current and backup atomically. No merging.
+- More can explicitly reset device storage to the current bundled initial JSON. Reset uses the same atomic replacement path, so the previous complete trip becomes the recoverable saved backup before any data changes.
 - Native IndexedDB remains the durable store. Writes resolve after commit, stale tabs are rejected, and failed saves retain form drafts. Navigation, browser Back, unload, the Today date rollover and service-worker updates respect unsaved forms/in-flight writes.
 - Portable schema v2 explicitly migrates v1 in memory without seed merging. Timeline icon choices default safely to automatic classification when absent. V2 exports prevent old builds from silently dropping new fields. Unsupported versions fail safely. The next successful save persists the migrated state.
-- The source converter adds 12 narrative-to-existing-place associations and explicit Day 12 choice groups. Original planning HTML/specification are unchanged. Existing device data is not enriched with these seed changes.
+- The initial conversion added 12 narrative-to-existing-place associations and explicit Day 12 choice groups. The resulting `src/data/initial-trip.json` is now authoritative and maintained directly; the archived converter cannot overwrite it. Original planning HTML/specification remain unchanged. Existing device data is not enriched with seed changes.
+- The canonical-data review added missing direct actions, itinerary time ranges, booking links/state, hotel checkout context on the departure day, and separate selectable rows for Day 1, Day 2 and Day 7 alternatives. Objective seed-quality failures are checked during `npm run check`; unresolved live conditions remain visible rechecks.
 - Full validation, offline browser journeys, cross-context transfer, an actual phase-1-to-phase-2 service-worker upgrade and static `/travel/` hosting have been exercised. See `verification.md`.
 
 ## Material assumptions
@@ -36,4 +38,6 @@ Scheduling a hotel initially assigns one night (not the final departure day). Da
 
 ## Phase 4 — rollout
 
-Not performed. No hosting provider, deployment, account system, backend or synchronization has been added.
+- GitHub Pages deployment is configured for pushes to `main`. The workflow uses Node 24 and the committed lockfile, runs the production build, and publishes only `dist` through GitHub's Pages artifact flow. The existing validation workflow remains separate.
+- The relative production base remains intentional so the PWA works at the `/vakantie-spanje/` repository path and remains portable to other static subdirectories. GitHub's Pages source must be set to **GitHub Actions** once in repository settings.
+- The deployed site and bundled seed itinerary are public. No deployment credentials, account system, backend or synchronization were added.
