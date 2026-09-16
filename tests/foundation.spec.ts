@@ -8,6 +8,25 @@ test.beforeEach(async ({ page }) => {
   await page.clock.setFixedTime(new Date('2026-09-14T12:00:00Z'))
 })
 
+test('dark mode follows the device initially and persists the More page choice', async ({ page }) => {
+  await page.emulateMedia({ colorScheme: 'light' })
+  await page.goto('/#/more')
+  const themeSwitch = page.getByRole('switch', { name: 'Dark mode' })
+  await expect(themeSwitch).toHaveAttribute('aria-checked', 'false')
+  await themeSwitch.click()
+  await expect(themeSwitch).toHaveAttribute('aria-checked', 'true')
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark')
+  await expect.poll(() => page.evaluate(() => localStorage.getItem('green-spain-theme'))).toBe('dark')
+  await page.reload()
+  await expect(page.getByRole('switch', { name: 'Dark mode' })).toHaveAttribute('aria-checked', 'true')
+  await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute('content', '#111312')
+  await page.screenshot({ path: 'test-results/dark-mode-more-phone.png', fullPage: true })
+  await page.getByRole('link', { name: 'Today', exact: true }).click()
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark')
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+  await page.screenshot({ path: 'test-results/dark-mode-today-phone.png', fullPage: true })
+})
+
 test('browse the complete source data and persist a note across an offline reopen', async ({ page, context }) => {
   const errors: string[] = []
   page.on('pageerror', (error) => errors.push(error.message))

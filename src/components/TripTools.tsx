@@ -4,6 +4,7 @@ import { actionDone, actionTargets, actionUsesBookings, bookingLabel, nearAction
 import { tripStore } from '../storage/trip-store'
 import type { SaveTrip } from './Editor'
 import { Icon } from './Icon'
+import type { Theme } from '../theme'
 
 function downloadTrip(trip: Trip, prefix = 'trip-export') {
   const url = URL.createObjectURL(new Blob([serializeTrip(trip)], { type: 'application/json' }))
@@ -41,7 +42,7 @@ export function BookingOverview({ trip, dayId }: { trip: Trip; dayId?: string })
   const confirmed = rows.filter(row => ['booked', 'not-needed'].includes(row.booking.status)).length
   return <details className="more-section booking-overview"><summary><span><strong>Bookings overview</strong><small>{confirmed} of {rows.length} confirmed or not needed</small></span><Icon name="chevron" size={18} /></summary><div className="booking-progress" aria-label={`${confirmed} of ${rows.length} bookings confirmed`}><span style={{ width: `${rows.length ? confirmed / rows.length * 100 : 0}%` }} /></div><section className="tool-section">{content}</section></details>
 }
-export function MoreTools({ trip, initialTrip, onReplace, onDirty }: { trip: Trip; initialTrip: Trip; onReplace: SaveTrip; onDirty: (value: boolean) => void }) {
+export function MoreTools({ trip, initialTrip, onReplace, onDirty, theme, onThemeChange }: { trip: Trip; initialTrip: Trip; onReplace: SaveTrip; onDirty: (value: boolean) => void; theme: Theme; onThemeChange: (theme: Theme) => void }) {
   const [candidate, setCandidate] = useState<Trip | null>(null)
   const [kind, setKind] = useState('Import')
   const [message, setMessage] = useState('')
@@ -71,6 +72,7 @@ export function MoreTools({ trip, initialTrip, onReplace, onDirty }: { trip: Tri
     catch (e) { setMessage((e as Error).message) } finally { setBusy(false) }
   }
   return <div className="more-tools">
+    <section className="more-section appearance-section" aria-labelledby="appearance-title"><div className="preference-row"><span><strong id="appearance-title">Appearance</strong><small>Use dark colors throughout the app</small></span><button className="theme-switch" type="button" role="switch" aria-label="Dark mode" aria-checked={theme === 'dark'} onClick={() => onThemeChange(theme === 'dark' ? 'light' : 'dark')}><span aria-hidden="true" /></button></div></section>
     <details className="more-section trip-data-section"><summary><span><strong>Trip data</strong><small>Back up or move this trip</small></span><Icon name="chevron" size={18} /></summary><section className="tool-section trip-data-body">
       <div className="export-panel"><span className="data-icon"><Icon name="trip" size={20} /></span><div><strong>Keep a portable copy</strong><small>Download everything saved on this device as one JSON file.</small></div><button className="button" onClick={() => downloadTrip(trip)}>Export trip data</button></div>
       <div className="import-panel"><div><strong>Import trip data</strong><small>Choose an export to review before replacing this device’s trip.</small></div><label className="action file-action">Choose file<input aria-label="Import trip data" type="file" accept=".json,application/json" disabled={busy} onChange={e => { void select(e.target.files?.[0]); e.target.value = '' }} /></label></div>

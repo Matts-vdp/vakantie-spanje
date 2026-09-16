@@ -14,11 +14,21 @@
   --surface:#fff;
   --soft:#eaf0e4
 }
+[data-theme=dark] {
+  color:#e2e8e3;
+  background:#111312;
+  --green:#9bc8a8;
+  --muted:#a5aca7;
+  --line:#373c39;
+  --surface:#1b1e1c;
+  --soft:#292e2b
+}
 * {
   box-sizing:border-box
 }
 body {
   margin:0;
+  background:inherit;
   scroll-padding-bottom:calc(170px + env(safe-area-inset-bottom))
 }
 button,input,textarea {
@@ -1692,7 +1702,239 @@ input:focus-visible,select:focus-visible { outline:3px solid #b98138; outline-of
   flex-direction:column;
   gap:10px
 }
+.appearance-section {
+  order:0
+}
+.preference-row {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  min-height:64px;
+  padding:11px 14px
+}
+.preference-row strong,.preference-row small {
+  display:block
+}
+.preference-row strong {
+  font-size:.88rem
+}
+.preference-row small {
+  margin-top:2px;
+  color:var(--muted);
+  font-size:.72rem
+}
+.theme-switch {
+  position:relative;
+  flex:0 0 48px;
+  width:48px;
+  height:28px;
+  padding:0;
+  border:1px solid #94a098;
+  border-radius:999px;
+  background:#d5dcd7
+}
+.theme-switch span {
+  position:absolute;
+  top:3px;
+  left:3px;
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  background:#fff;
+  box-shadow:0 1px 3px #193c3040;
+  transition:transform .16s ease
+}
+.theme-switch[aria-checked=true] {
+  border-color:var(--green);
+  background:var(--green)
+}
+.theme-switch[aria-checked=true] span {
+  transform:translateX(20px)
+}
 .booking-overview { order:1 }
 .action-overview { order:2 }
 .documents-section { order:3 }
 .trip-data-section { order:4 }
+
+/* Device theme: the itinerary remains high-contrast in low light. */
+[data-theme=dark] .date-pill b,
+[data-theme=dark] .day-facts b,
+[data-theme=dark] .day-number b,
+[data-theme=dark] .place-name {
+  color:#dce7df
+}
+[data-theme=dark] .compact-day-heading h1,
+[data-theme=dark] .activity-top span,
+[data-theme=dark] .timeline-marker,
+[data-theme=dark] .timeline-kind,
+[data-theme=dark] .choice-option>button>svg,
+[data-theme=dark] .choice-option>a>svg {
+  color:#9bc8a8
+}
+[data-theme=dark] .date-pill[aria-current=date] {
+  border-color:#779e83;
+  background:#779e83;
+  color:#e3ece6
+}
+[data-theme=dark] .app-header,
+[data-theme=dark] .sheet-head,
+[data-theme=dark] .editor-footer {
+  background:#111312f2
+}
+[data-theme=dark] .bottom-nav {
+  background:#111312f7
+}
+[data-theme=dark] .activity-sheet {
+  background:#111312;
+  box-shadow:0 -18px 55px #0009
+}
+[data-theme=dark] .skip-link,
+[data-theme=dark] .pwa-message,
+[data-theme=dark] textarea,
+[data-theme=dark] input[type=search],
+[data-theme=dark] .field input,
+[data-theme=dark] .field select,
+[data-theme=dark] .filters select {
+  border-color:var(--line);
+  background:var(--surface);
+  color:inherit
+}
+[data-theme=dark] .device-status,
+[data-theme=dark] .tag {
+  background:#272d29;
+  color:#bac3bd
+}
+[data-theme=dark] .action:hover,
+[data-theme=dark] .text-button:hover,
+[data-theme=dark] .bottom-nav a:hover,
+[data-theme=dark] .bottom-nav a[aria-current=page] {
+  background:#26342b
+}
+[data-theme=dark] .bottom-nav a {
+  color:#99a69d
+}
+[data-theme=dark] .bottom-nav a[aria-current=page] {
+  color:#b4dfc0
+}
+[data-theme=dark] .primary,
+[data-theme=dark] .button,
+[data-theme=dark] .filter-chip[aria-pressed=true] {
+  border-color:#7db58d;
+  background:#7db58d;
+  color:#0d2014
+}
+[data-theme=dark] .primary:hover,
+[data-theme=dark] .button:hover {
+  background:#96c5a3
+}
+[data-theme=dark] .hotel-panel {
+  border-color:#405544;
+  background:linear-gradient(145deg,#1d2c22,#24362a)
+}
+[data-theme=dark] .hotel-more {
+  border-color:#405544
+}
+[data-theme=dark] .tomorrow {
+  border-color:#405544;
+  background:linear-gradient(135deg,#1d2c22,#17211b)
+}
+[data-theme=dark] .timeline-kind,
+[data-theme=dark] .timeline-kind.other i {
+  background:var(--surface)
+}
+[data-theme=dark] .timeline-marker:after {
+  background:#404642
+}
+[data-theme=dark] .status-badge,
+[data-theme=dark] .status-badge.neutral {
+  background:#2b302d;
+  color:#bcc8c0
+}
+[data-theme=dark] .status-badge.booked,
+[data-theme=dark] .status-badge.done,
+[data-theme=dark] .status-badge.not-needed {
+  background:#243d2d;
+  color:#aed5b8
+}
+[data-theme=dark] .status-badge.pending,
+[data-theme=dark] .status-badge.unknown,
+[data-theme=dark] .status-badge.needs-check,
+[data-theme=dark] .attention-icon {
+  background:#46351f;
+  color:#e1bd7d
+}
+[data-theme=dark] .status-badge.optional {
+  background:#243847;
+  color:#b3d0e5
+}
+[data-theme=dark] .status-badge.skipped,
+[data-theme=dark] .status-badge.cancelled {
+  background:#3b302d;
+  color:#cfb9b2
+}
+[data-theme=dark] .choice-option,
+[data-theme=dark] .item-place {
+  border-color:#3a403c;
+  background:#222523
+}
+[data-theme=dark] .choice-option.selected {
+  border-color:#668c70;
+  background:#294032
+}
+[data-theme=dark] .choice-option.skipped {
+  background:#292827
+}
+[data-theme=dark] .compact-action,
+[data-theme=dark] .data-icon {
+  background:#2b4433;
+  color:#b4dfc0
+}
+[data-theme=dark] .trip-row.current {
+  background:#243129
+}
+[data-theme=dark] .empty-state {
+  border-color:#526258
+}
+[data-theme=dark] .sheet-choice {
+  border-color:#405544;
+  background:#223329
+}
+[data-theme=dark] .sheet-note {
+  background:#3a3022;
+  color:#dcc69e
+}
+[data-theme=dark] .more-section .booking-progress {
+  background:#2b302d
+}
+[data-theme=dark] .more-section .booking-progress span {
+  background:#88b997
+}
+[data-theme=dark] .trip-data-section[open] {
+  border-color:#444b46;
+  background:#171918
+}
+[data-theme=dark] .trip-data-section>summary {
+  background:linear-gradient(135deg,#222824,#191c1a)
+}
+[data-theme=dark] .theme-switch {
+  border-color:#647168;
+  background:#3c4840
+}
+[data-theme=dark] .theme-switch[aria-checked=true] {
+  border-color:#7db58d;
+  background:#7db58d
+}
+[data-theme=dark] .theme-switch span {
+  background:#f3f6f4
+}
+[data-theme=dark] .import-preview {
+  background:#292e2b
+}
+[data-theme=dark] .success {
+  color:#93c9a0
+}
+[data-theme=dark] .error,
+[data-theme=dark] .danger {
+  color:#eea294
+}

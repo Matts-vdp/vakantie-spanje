@@ -8,6 +8,7 @@ import { Icon, type IconName } from './components/Icon'
 import { PwaStatus } from './components/PwaStatus'
 import { Editor } from './components/Editor'
 import { MoreTools } from './components/TripTools'
+import { readTheme, saveTheme, type Theme } from './theme'
 
 const tabs: { id: string; label: string; icon: IconName }[] = [
   { id: 'today', label: 'Today', icon: 'today' }, { id: 'trip', label: 'Trip', icon: 'trip' },
@@ -71,6 +72,12 @@ export function App() {
   const guardDirty = (value: boolean) => { dirtyRef.current = value; setDirty(value) }
   const [online, setOnline] = useState(navigator.onLine)
   const [now, setNow] = useState(() => new Date())
+  const [theme, setTheme] = useState<Theme>(readTheme)
+
+  function changeTheme(next: Theme) {
+    saveTheme(next)
+    setTheme(next)
+  }
 
   useEffect(() => {
     let cancelled = false
@@ -133,7 +140,7 @@ export function App() {
       {section === 'trip' && <><header className="page-heading"><p className="eyebrow">20 September — 2 October</p><h1>The whole trip</h1><p className="lede">13 days · 12 nights · 6 bases</p></header><div className="trip-list">{trip.days.map((day, index) => <a className={`trip-row ${day.date === current.today ? 'current' : ''}`} key={day.id} href={`#/day/${day.id}`}><span className="day-number">Day<b>{index + 1}</b></span><div><h2>{day.title}</h2><p>{formatDate(day.date)}</p><div className="meta-line">{day.facts.filter(fact => !['Sleep', 'Book'].includes(fact.label)).slice(0, 2).map(fact => <span className="status-badge neutral" key={fact.label}>{fact.label}: {fact.value}</span>)}</div></div><Icon name="chevron" size={18} /></a>)}</div></>}
       {section === 'explore' && <Explore trip={trip} />}
       {section === 'place' && selectedEntity && <PlaceDetail entity={selectedEntity} trip={trip} />}
-      {section === 'more' && <><header className="page-heading"><h1>More</h1></header><MoreTools trip={trip} initialTrip={initialTrip} onReplace={next => saveTrip(next, true)} onDirty={guardDirty} /></>}
+      {section === 'more' && <><header className="page-heading"><h1>More</h1></header><MoreTools trip={trip} initialTrip={initialTrip} onReplace={next => saveTrip(next, true)} onDirty={guardDirty} theme={theme} onThemeChange={changeTheme} /></>}
       {['new', 'entity', 'item', 'stay', 'schedule', 'documents', 'action'].includes(section) && <Editor key={route} trip={trip} mode={section} id={id} onSave={saveTrip} onDirty={guardDirty} />}
     </main>
     <PwaStatus busy={dirty || saving} />
