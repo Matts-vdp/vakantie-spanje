@@ -1265,7 +1265,7 @@ input:focus-visible,select:focus-visible { outline:3px solid #b98138; outline-of
 }
 .hotel-panel {
   overflow:hidden;
-  padding:19px;
+  padding:15px;
   border:1px solid #d0dfca;
   border-radius:14px;
   background:linear-gradient(145deg,#edf3e8,#e4eee0)
@@ -1275,19 +1275,15 @@ input:focus-visible,select:focus-visible { outline:3px solid #b98138; outline-of
   align-items:flex-start;
   justify-content:space-between;
   gap:12px;
-  margin:8px 0 14px
+  margin:5px 0 10px
 }
 .hotel-title h2 {
   margin:0
 }
-.hotel-actions {
+.hotel-primary-action {
   display:flex;
   align-items:center;
-  flex-wrap:wrap;
-  gap:8px
-}
-.hotel-actions>.actions {
-  display:contents
+  margin-top:11px
 }
 .hotel-more {
   margin-top:11px;
@@ -1301,8 +1297,24 @@ input:focus-visible,select:focus-visible { outline:3px solid #b98138; outline-of
   color:var(--green);
   font-weight:650
 }
+.hotel-secondary-actions {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  padding-bottom:4px
+}
 .day-review .section-heading {
   margin-bottom:13px
+}
+.compact-add-action {
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  min-height:36px;
+  color:var(--green);
+  font-size:.8rem;
+  font-weight:700;
+  text-decoration:none
 }
 .review-group {
   margin-top:16px

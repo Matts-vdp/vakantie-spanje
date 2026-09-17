@@ -1,4 +1,4 @@
-export type IconName = 'today' | 'trip' | 'explore' | 'more' | 'arrow' | 'chevron' | 'pin' | 'check' | 'back' | 'edit' | 'close' | 'search' | 'alert' | 'drive' | 'walk' | 'food' | 'visit' | 'stay' | 'flight' | 'bike'
+export type IconName = 'today' | 'trip' | 'explore' | 'more' | 'arrow' | 'chevron' | 'pin' | 'check' | 'back' | 'edit' | 'close' | 'plus' | 'search' | 'alert' | 'drive' | 'walk' | 'food' | 'visit' | 'stay' | 'flight' | 'bike'
 const paths: Record<IconName, string> = {
   today: 'M8 2v4m8-4v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14H3V6a2 2 0 0 1 2-2m2 10h3m4 0h3m-10 3h3',
   trip: 'm3 5 6-2 6 2 6-2v16l-6 2-6-2-6 2Zm6-2v16m6-14v16',
@@ -11,6 +11,7 @@ const paths: Record<IconName, string> = {
   back: 'M19 12H5m6-6-6 6 6 6',
   edit: 'm4 20 4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20Zm9.8-12.2 3 3',
   close: 'm6 6 12 12M18 6 6 18',
+  plus: 'M12 5v14M5 12h14',
   search: 'm20 20-4.5-4.5m2.5-4.5a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z',
   alert: 'M12 9v4m0 4h.01M10.3 4.2 2.4 18a2 2 0 0 0 1.7 3h15.8a2 2 0 0 0 1.7-3L13.7 4.2a2 2 0 0 0-3.4 0Z',
   drive: 'M5 17h14v-5l-2-5H7l-2 5v5Zm2-10-2 5h14l-2-5M7 17v2m10-2v2M7.5 14h.01m9 0h.01',
