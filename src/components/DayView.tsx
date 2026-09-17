@@ -4,7 +4,7 @@ import type { Booking, Day, Entity, Trip } from '../domain/trip'
 import { Icon } from './Icon'
 import { bookingLabel, choiceGroup, selectChoice } from '../domain/operations'
 import { itemKindLabels, itemTimeLabel, resolveItemKind } from '../domain/itinerary'
-import { ActionList, BookingOverview } from './TripTools'
+import { TodayReview } from './TripTools'
 import type { SaveTrip } from './Editor'
 
 type Activity = Extract<Entity, { type: 'activity' }>
@@ -185,7 +185,7 @@ export function DayView({ trip, day, todayMode = false, onSaveNote, onDirty, onS
     {!hotel && <section className="notice no-stay"><h2>No overnight stay</h2><p>No hotel assigned to this night.</p><a className="detail-link" href="#/explore">Choose a hotel in Explore</a></section>}
     {notices.length > 0 && <details className="notices" open={noticesOpen} onToggle={(event) => setNoticesOpen(event.currentTarget.open)}><summary><span>Keep in mind</span><Icon name="chevron" size={17} /></summary><div className="notice-list">{notices.map((notice, i) => <div key={i} className={`notice ${notice.kind}`}><h3>{notice.title}</h3><p>{notice.body}</p></div>)}</div></details>}
     {day.background.length > 0 && <details className="background"><summary>Details & planning background</summary>{day.background.map((paragraph, i) => <p key={i}>{paragraph}</p>)}</details>}
-    <section className="day-review" aria-labelledby="day-review-title"><div className="section-heading"><h2 id="day-review-title">Actions & bookings to review</h2></div><div className="actions"><a className="button" href={`#/new/${day.id}`}>Add a place or note</a><a className="action" href="#/explore">Find an alternative</a></div><ActionList trip={trip} dayId={day.id} /><BookingOverview trip={trip} dayId={day.id} /></section>
+    <section className="day-review" aria-labelledby="day-review-title"><div className="section-heading"><h2 id="day-review-title">Actions & bookings to review</h2></div><div className="actions"><a className="button" href={`#/new/${day.id}`}>Add a place or note</a><a className="action" href="#/explore">Find an alternative</a></div><TodayReview trip={trip} dayId={day.id} /></section>
     {next && <a className="tomorrow" href={`#/${todayMode ? 'today' : 'day'}/${next.id}`}><span className="eyebrow">Tomorrow · {formatDate(next.date)}</span><strong>{next.title}</strong><span>{next.items.filter((item) => item.status !== 'skipped').slice(0, 3).map((item) => `${item.time ? itemTimeLabel(item) : item.booking?.time || ''} ${item.title}`).join(' · ')}</span><span className="detail-link">See the next day <Icon name="arrow" size={18} /></span></a>}
     <ActivitySheet entity={detail} selection={detailChoiceId ? (() => {
       const item = day.items.find((candidate) => candidate.id === detailChoiceId)

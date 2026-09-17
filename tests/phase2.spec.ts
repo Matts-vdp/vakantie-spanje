@@ -200,8 +200,17 @@ test('Today uses the compact ordered flow and activity sheet', async ({ page }) 
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
 
   await route(page, 'today/day-1')
-  await expect(page.locator('.day-review')).toContainText('Hotel El Jisu')
-  await expect(page.locator('.day-review')).not.toContainText('Palacio de Avil\u00e9s')
+  const dayReview = page.locator('.day-review')
+  await expect(dayReview.locator('.attention-row')).toHaveCount(3)
+  await expect(dayReview).toContainText('Hotel El Jisu')
+  const todayRoute = page.url()
+  await dayReview.getByRole('button', { name: /Show more/ }).click()
+  expect(page.url()).toBe(todayRoute)
+  await expect(dayReview.getByRole('button', { name: 'Show less' })).toBeVisible()
+  expect(await dayReview.locator('.attention-row').count()).toBeGreaterThan(3)
+  expect(await dayReview.locator('a[href^="#/action/"]').count()).toBeGreaterThan(0)
+  expect(await dayReview.locator('a[href^="#/item/"]').count()).toBeGreaterThan(0)
+  await expect(dayReview).not.toContainText('Palacio de Avil\u00e9s')
   const arrivalChoice = page.locator('.choice-option').filter({ hasText: 'El Capricho' })
   await expect(arrivalChoice).toBeVisible()
   await arrivalChoice.getByRole('button', { name: /View details for El Capricho/ }).click()
@@ -216,7 +225,7 @@ test('seed confirms reservations while keeping operational hotel checks pending'
     const item = seed.days.flatMap((day: { items: { id: string; booking?: { status: string } }[] }) => day.items).find((candidate: { id: string }) => candidate.id === id)
     expect(item?.booking?.status).toBe('booked')
   }
-  expect(seed.actions.find((action: { id: string }) => action.id === 'action-6').status).toBe('pending')
+  expect(seed.actions.find((action: { id: string }) => action.id === 'action-6').status).toBe('done')
 })
 
 

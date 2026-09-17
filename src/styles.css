@@ -1354,13 +1354,18 @@ input:focus-visible,select:focus-visible { outline:3px solid #b98138; outline-of
 }
 .view-all {
   display:block;
+  width:100%;
   min-height:42px;
   padding:11px 13px;
+  border:0;
   border-top:1px solid var(--line);
+  background:transparent;
   color:var(--green);
   font-size:.76rem;
   font-weight:650;
-  text-decoration:none
+  text-align:left;
+  text-decoration:none;
+  cursor:pointer
 }
 .empty-row {
   display:flex;

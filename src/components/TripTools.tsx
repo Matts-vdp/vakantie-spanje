@@ -27,6 +27,47 @@ export function ActionList({ trip, dayId }: { trip: Trip; dayId?: string }) {
     })}</div></>
   return <details className="more-section action-overview"><summary><span><strong>Booking & check actions</strong><small>{actions.filter(action => !actionDone(trip, action)).length} unresolved items</small></span><Icon name="chevron" size={18} /></summary><section className="tool-section">{content}</section></details>
 }
+
+export function TodayReview({ trip, dayId }: { trip: Trip; dayId: string }) {
+  const [expanded, setExpanded] = useState(false)
+  const day = trip.days.find(candidate => candidate.id === dayId)
+  if (!day) return null
+
+  const actions = nearActions(trip, day).map(action => ({
+    id: `action-${action.id}`,
+    href: `#/action/${action.id}`,
+    title: action.title,
+    detail: `${action.dueDate ?? action.timing} · ${actionUsesBookings(trip, action) ? 'Booking pending' : 'Check needed'}`,
+  }))
+  const limit = new Date(Date.parse(day.date) + 2 * 86400000).toISOString().slice(0, 10)
+  const visits = trip.days.filter(candidate => candidate.date >= day.date && candidate.date <= limit).flatMap(candidate => candidate.items
+    .filter(item => item.booking && item.status !== 'skipped')
+    .map(item => ({ id: item.id, name: item.title, date: candidate.date, booking: item.booking!, route: 'item' })))
+  const stays = trip.stays.filter(stay => stay.checkInDate <= limit && stay.checkOutDate > day.date).map(stay => ({
+    id: stay.id,
+    name: trip.entities.find(entity => entity.id === stay.hotelId)?.name,
+    date: stay.checkInDate,
+    booking: stay.booking,
+    route: 'stay',
+  }))
+  const bookings = [...visits, ...stays]
+    .filter(row => !['booked', 'not-needed', 'cancelled'].includes(row.booking.status))
+    .map(row => ({
+      id: `booking-${row.id}`,
+      href: `#/${row.route}/${row.id}`,
+      title: row.name,
+      detail: `${row.date} · ${bookingLabel(row.booking)}${row.booking.time ? ` · ${row.booking.time}` : ''}`,
+    }))
+  const rows = [...actions, ...bookings]
+  const visibleRows = expanded ? rows : rows.slice(0, 3)
+
+  return <div className="review-group"><div className="attention-list">
+    {!rows.length && <p className="empty-row"><Icon name="check" size={16} />Nothing urgent in the next three days.</p>}
+    {visibleRows.map(row => <a className="attention-row" key={row.id} href={row.href}><span className="attention-icon"><Icon name="alert" size={17} /></span><span><strong>{row.title}</strong><small>{row.detail}</small></span><Icon name="chevron" size={17} /></a>)}
+    {rows.length > 3 && <button className="view-all" type="button" aria-expanded={expanded} onClick={() => setExpanded(value => !value)}>{expanded ? 'Show less' : `Show more (${rows.length - 3})`}</button>}
+  </div></div>
+}
+
 export function BookingOverview({ trip, dayId }: { trip: Trip; dayId?: string }) {
   const day = trip.days.find(d => d.id === dayId)
   const limit = day ? new Date(Date.parse(day.date) + 2 * 86400000).toISOString().slice(0, 10) : ''
