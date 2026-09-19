@@ -10,21 +10,24 @@ describe('phase 2 canonical trip operations', () => {
     const moved = parseTrip(moveItem(trip, 'day-3-item-2', 'day-5', 0))
     expect(moved.days[4].items[0].booking?.time).toBe('10:00')
     expect(moved.days.flatMap(d => d.items).filter(i => i.id === 'day-3-item-2')).toHaveLength(1)
-    expect(actionTargets(moved, moved.actions[7]).dayIds).toEqual(['day-5'])
-    expect(actionDone(moved, moved.actions[7])).toBe(true)
+    const action = moved.actions.find(candidate => candidate.id === 'action-8')!
+    expect(actionTargets(moved, action).dayIds).toEqual(['day-5'])
+    expect(actionDone(moved, action)).toBe(true)
     moved.days[4].items[0].booking!.status = 'pending'
-    expect(actionDone(moved, moved.actions[7])).toBe(false)
+    expect(actionDone(moved, action)).toBe(false)
   })
   it('keeps multi-booking resolution honest and keeps operational hotel confirmations explicit', () => {
     const trip = parseTrip(seed)
     trip.days[7].items[1].booking = { ...emptyBooking(), status: 'booked' }
-    expect(actionDone(trip, trip.actions[9])).toBe(false)
+    const bookingAction = trip.actions.find(action => action.id === 'action-10')!
+    expect(actionDone(trip, bookingAction)).toBe(false)
     trip.days[7].items[2].booking = { ...emptyBooking(), status: 'not-needed' }
-    expect(actionDone(trip, trip.actions[9])).toBe(true)
-    trip.actions[3].status = 'pending'
-    expect(actionDone(trip, trip.actions[3])).toBe(false)
-    trip.actions[3].status = 'done'
-    expect(actionDone(trip, trip.actions[3])).toBe(true)
+    expect(actionDone(trip, bookingAction)).toBe(true)
+    const hotelAction = trip.actions.find(action => action.id === 'action-4')!
+    hotelAction.status = 'pending'
+    expect(actionDone(trip, hotelAction)).toBe(false)
+    hotelAction.status = 'done'
+    expect(actionDone(trip, hotelAction)).toBe(true)
   })
   it('protects shared places and deletes only unused traveller-created entities', () => {
     let trip = parseTrip(seed)
@@ -66,7 +69,7 @@ describe('phase 2 canonical trip operations', () => {
     const trip = parseTrip(seed)
     expect(nearActions(trip, trip.days[1]).map(a => a.id)).toContain('action-8')
     expect(nearActions(trip, trip.days[5]).map(a => a.id)).not.toContain('action-8')
-    trip.actions[15].dueDate = trip.days[1].date
+    trip.actions.find(action => action.id === 'action-16')!.dueDate = trip.days[1].date
     expect(nearActions(trip, trip.days[2]).map(a => a.id)).toContain('action-16')
   })
   it('includes both Day 2 coastal alternatives in the canonical trip', () => {

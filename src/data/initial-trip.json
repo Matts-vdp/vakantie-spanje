@@ -5,7 +5,7 @@
   "timezone": "Europe/Madrid",
   "startDate": "2026-09-20",
   "endDate": "2026-10-02",
-  "updatedAt": "2026-09-15T00:00:00.000Z",
+  "updatedAt": "2026-09-19T00:00:00.000Z",
   "revision": 0,
   "entities": [
     {
@@ -5520,15 +5520,12 @@
           "id": "day-11-item-4",
           "title": "Use the agreed return shuttle",
           "description": "Pickup points and included transport vary by operator; confirm the endpoint when reserving rather than assuming collection from anywhere.",
-          "entityIds": [],
+          "entityIds": [
+            "opt-senda-oso"
+          ],
           "optional": false,
           "status": "planned",
           "notes": "",
-          "booking": {
-            "required": true,
-            "status": "pending",
-            "notes": "The route is not fixed until the operator confirms the agreed pickup point and latest collection time."
-          },
           "kind": "bike"
         },
         {
@@ -5811,21 +5808,6 @@
       "kind": "confirmation"
     },
     {
-      "id": "action-3",
-      "title": "Palacio de Avilés",
-      "description": "Palacio de Avilés — request the modern wing and ask whether an event is booked for the night before the flight.",
-      "timing": "This week",
-      "entityIds": [
-        "hotel-palacio-aviles"
-      ],
-      "dayIds": [],
-      "stayIds": [
-        "stay-6"
-      ],
-      "status": "pending",
-      "kind": "confirmation"
-    },
-    {
       "id": "action-4",
       "title": "Hotel El Jisu",
       "description": "Hotel El Jisu , Camaleño — three nights. Check-in is 15:00–23:30 and check-out is 08:00–12:00. The hotel is 8 km from Potes and 15 km from the Fuente Dé cable car, with free on-site parking. Breakfast is served 08:30–10:30 and dinner 20:30–22:00; ask in advance for a packed breakfast on the early Cares day. Telephone: +34 942 73 30 38.",
@@ -5851,38 +5833,6 @@
       "dayIds": [],
       "stayIds": [
         "stay-4"
-      ],
-      "status": "pending",
-      "kind": "confirmation"
-    },
-    {
-      "id": "action-6",
-      "title": "one-way car hire",
-      "description": "Confirm the one-way car hire fee, Bilbao to Asturias.",
-      "timing": "This week",
-      "entityIds": [],
-      "dayIds": [
-        "day-1",
-        "day-13"
-      ],
-      "itemIds": [
-        "day-1-item-2",
-        "day-13-item-3"
-      ],
-      "status": "done",
-      "kind": "confirmation"
-    },
-    {
-      "id": "action-7",
-      "title": "Fuente Dé cable car",
-      "description": "Fuente Dé cable car — timed ticket online, first available slot. Confirm the 23 September opening time and use the current signed route back to Fuente Dé.",
-      "timing": "2–3 weeks out",
-      "entityIds": [
-        "opt-fuente-de"
-      ],
-      "dayIds": [],
-      "itemIds": [
-        "day-4-item-1"
       ],
       "status": "pending",
       "kind": "confirmation"
@@ -5934,21 +5884,6 @@
       "kind": "booking"
     },
     {
-      "id": "action-11",
-      "title": "Dinner at Don Paco, Llanes, for the arrival night only.",
-      "description": "Dinner at Don Paco, Llanes, for the arrival night only.",
-      "timing": "2–3 weeks out",
-      "entityIds": [
-        "restaurant-don-paco"
-      ],
-      "dayIds": [],
-      "itemIds": [
-        "day-1-item-6"
-      ],
-      "status": "pending",
-      "kind": "booking"
-    },
-    {
       "id": "action-12",
       "title": "Covadonga shuttle bus",
       "description": "Covadonga shuttle bus through the dedicated buslagoscovadonga platform — book an early outward journey and a return time with enough margin for the three-hour walk. Bufones or Gulpiyuri remains optional afterwards.",
@@ -5982,19 +5917,18 @@
     },
     {
       "id": "action-14",
-      "title": "E-bikes at Entrago",
-      "description": "E-bikes at Entrago — reserve the bicycles and return shuttle; confirm the chosen operator's payment method.",
+      "title": "E-bikes and return shuttle at Entrago",
+      "description": "Choose an operator and reserve the e-bikes and return shuttle together. Confirm the pickup endpoint, latest collection time and payment method.",
       "timing": "Final week",
       "entityIds": [
         "opt-senda-oso"
       ],
       "dayIds": [],
       "itemIds": [
-        "day-11-item-2",
-        "day-11-item-4"
+        "day-11-item-2"
       ],
       "status": "pending",
-      "kind": "confirmation"
+      "kind": "booking"
     },
     {
       "id": "action-15",
